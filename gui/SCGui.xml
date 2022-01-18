@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!--=====================================================================================================
+	BetterContracts GUI additions
+	Purpose:	Enhance ingame contracts menu.
+	Author:		Mmtrx		
+	Changelog:
+	 v0.1		17.03.2021	initial beta
+	 v1.0.0		20.04.2021	submit for release 
+     v1.1.0.4    07.07.2021  (Mmtrx) add user-defined missionVehicles.xml, allow missions with no vehicles
+     v1.2.0.0    18.01.2022  (Mmtrx) adapt for FS22
+======================================================================================================-->
+
+<GUI name="npcDetails">
+	<GuiElement type="empty" id="npcbox" size="305px 300px" anchors="0 0 1 1"  hasFrame="true" debugEnabled="false">
+		<!-- left column -->
+		<GuiElement type="text" profile="betterContractsLeft" id="field" position="5px 273px" />
+		<GuiElement type="text" profile="betterContractsLeft" id="widhei" position="5px 240px" text="$l10n_SC_widhei" />
+		<GuiElement type="text" profile="betterContractsLeft" id="line3" position="5px 207px" text="$l10n_SC_worktim" />
+		<GuiElement type="text" profile="betterContractsLeft" id="line4a" position="5px 174px" />
+		<GuiElement type="text" profile="betterContractsLeft" id="line4b" position="5px 141px" />
+		<GuiElement type="text" profile="betterContractsLeft" id="line5" position="5px 108px" text="$l10n_SC_price" />
+		<GuiElement type="text" profile="betterContractsLeft" id="line6" position="5px 75px" />
+		<GuiElement type="text" profile="betterContractsLeft" id="ppmin" position="5px 42px" text="$l10n_SC_profpmin" />
+
+		<!-- right column -->
+		<GuiElement type="text" profile="betterContractsRight" id="filltype" position="100px 273px" />
+		<GuiElement type="text" profile="betterContractsRight" id="dimen" position="100px 240px" />
+		<GuiElement type="text" profile="betterContractsRight" id="etime" position="100px 207px" />
+		<GuiElement type="text" profile="betterContractsRight" id="valu4a" position="100px 174px" />
+		<GuiElement type="text" profile="betterContractsRight" id="valu4b" position="100px 141px" />
+		<GuiElement type="text" profile="betterContractsRight" id="price" position="100px 108px" />
+		<GuiElement type="text" profile="betterContractsRight" id="valu6" position="100px 75px" />
+		<GuiElement type="text" profile="betterContractsRight" id="valu7" position="100px 42px" />
+		<!-- Sort buttons -->
+		<GuiElement type="empty" id="sortbox" profile="emptyPanel" size="305px 45px" position="3px 0px" anchors="1 1 0 0" hasFrame="true" frameThickness="1dp 1dp 1dp 1dp" >
+			<GuiElement type="boxLayout" profile="ingameMenuMapFilterButtonBox" id="layout" size="120px 42px" position="0px -18px" >
+				<GuiElement type="button" profile="SeeContsortCat" id="sortcat" />
+				<GuiElement type="button" profile="SeeContsortProf" id="sortprof" />
+				<GuiElement type="button" profile="SeeContsortpMin" id="sortpmin" />
+			</GuiElement>
+			<GuiElement type="text" profile="betterContractsLeft" position="5px 0px" text="SORT" debugEnabled="false"/>
+			<GuiElement type="text" profile="betterContractsRight" id="helpsort" size="125px 40px" position="55px 0px" text="" debugEnabled="false"/>
+		</GuiElement>
+	</GuiElement>
+</GUI>

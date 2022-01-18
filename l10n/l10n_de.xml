@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<l10n>
+	<texts>
+		<!-- Keys -->
+		<text name = "input_MENU_EXTRA_3" text = "Better Contracts: Details an/aus"/>
+		<!-- Gui Buttons -->
+		<text name="bc_new_contracts" text="Neue Verträge" />
+		<text name="bc_clear_contracts" text="Liste löschen" />
+		<text name="bc_detailsOff" text="Details aus" />
+		<text name="bc_detailsOn" text="Details an" />
+
+		<!-- Display texts -->
+		<text name="SC_widhei" text="Max Breite/ Länge:" />
+		<text name="SC_worktim" text="Zeitschätzung:" />
+		<text name="SC_price" text="Preis:" />
+		<text name="SC_profpmin" text="Profit/min:" />
+		<text name="SC_sort" text="Sort." />
+
+		<text name="SC_field" text="Feld %d / %s" />
+		<text name="SC_worked" text="Feld bearbeitet:" />
+		<text name="SC_delivered" text="Abgeliefert:" />
+		<text name="SC_deliver" text="Zu liefern:" />
+		<text name="SC_keep" text="Eigenanteil:" />
+		<text name="SC_profit" text="Erlös Eigenanteil:" />
+		<text name="SC_usage" text="Verbrauch:" />
+		<text name="SC_cost" text="Materialkosten:" />
+		<text name="SC_togo" text="Fehlt noch:" />
+
+		<!-- Sort button help text -->
+		<text name="SC_sortCat" text="Missionstyp" />
+		<text name="SC_sortProf" text="Nettoprofit" />
+		<text name="SC_sortpMin" text="Profit pro Minute" />
+	</texts>
+</l10n>

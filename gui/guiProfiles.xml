@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!--=====================================================================================================
+    BetterContracts GUI PROFILES
+    Purpose:     Enhance ingame contracts menu.
+    Author:      Mmtrx       
+    Changelog:
+     v0.1        17.03.2021  initial beta
+     v1.0.0      20.04.2021  submit for release 
+     v1.1.0.4    07.07.2021  (Mmtrx) add user-defined missionVehicles.xml, allow missions with no vehicles
+     v1.2.0.0    18.01.2022  (Mmtrx) adapt for FS22
+=======================================================================================================-->
+
+<GUIProfiles>
+    <Presets>
+        <Preset name="len398" value="398px 40px" />
+        <Preset name="colorMainUI" value="0.9910 0.3865 0.0100 1" />
+        <Preset name="colorGlass" value="0.718 0.716 0.715 0.04" />
+        <Preset name="colorWhite" value="1 1 1 1" />
+    </Presets>
+    <Traits>
+        <Trait name="buttonActive">
+            <Value name="iconColor" value="$preset_colorMainUI" />
+            <Value name="iconHighlightedColor" value="$preset_colorWhite" />
+            <Value name="iconFocusedColor" value="$preset_colorMainUI" />
+        </Trait>
+    </Traits>
+
+    <!-- Display Text  - - - - - - - - - - - - - - - - - - - - - -  -->
+    <Profile name="betterContractsLeft" extends="textDefault">
+        <Value name="screenAlign" value="topLeft" />
+        <Value name="positionOrigin" value="topLeft" />
+        <Value name="size" value="200px 30px" />
+        <Value name="textSize" value="16px"/>
+    </Profile>
+    <Profile name="betterContractsRight" extends="betterContractsLeft" >
+        <Value name="textColor" value="$preset_colorMainUI" />
+        <Value name="textAlignment" value="right" />
+    </Profile>
+
+    <!-- Sortbox Buttons - - - - - - - - - - - - - - - - - - - - -  -->
+    <Profile name="SeeContsortCat" extends="buttonBase">
+        <Value name="handleFocus" value="true" />
+        <Value name="size" value="39px 39px" />
+        <Value name="iconSize" value="40px 40px" />
+        <Value name="margin" value="0 0 1.2px 0" />
+        <Value name="imageColor" value="$preset_colorGlass" />
+        <Value name="iconHighlightedColor" value="$preset_colorMainUI" />
+        <Value name="iconTextOffset" value="0px 0px" />
+        <Value name="iconUVs" value="960px 96px 48px 48px" />
+        <Value name="textAlignment" value="left" />
+        <Value name="clickSound" value="PAGING" />
+        <Value name="onHighlight" value="onHighlightCallback" />
+        <Value name="onHighlightRemove" value="onHighlightRemoveCallback" />
+    </Profile>
+    <Profile name="SeeContsortProf" extends="SeeContsortCat">
+        <Value name="iconUVs" value="0px 288px 48px 48px" />
+    </Profile>
+    <Profile name="SeeContsortpMin" extends="SeeContsortCat">
+        <Value name="iconUVs" value="768px 288px 48px 48px" />
+    </Profile>
+
+    <Profile name="SeeContactiveCat" extends="SeeContsortCat" with="buttonActive" />
+    <Profile name="SeeContactiveProf" extends="SeeContsortProf" with="buttonActive" />
+    <Profile name="SeeContactivepMin" extends="SeeContsortpMin" with="buttonActive" />
+</GUIProfiles>

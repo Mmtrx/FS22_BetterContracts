@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<l10n>
+	<texts>
+		<!-- Keys -->
+		<text name = "input_MENU_EXTRA_3" text = "Better Contracts: Szczegóły wł./wył."/>
+		<!-- Gui Buttons -->
+		<text name="bc_new_contracts" text="Nowe kontrakty" />
+		<text name="bc_clear_contracts" text="Wyczyść kontrakty" />
+		<text name="bc_detailsOff" text="Szczegóły wył." />
+		<text name="bc_detailsOn" text="Szczegóły wł." />
+
+		<!-- Display texts -->
+		<text name="SC_widhei" text="Max. szerokość/wysokość:" />
+		<text name="SC_worktim" text="Szacowany czas:" />
+		<text name="SC_price" text="Cena:" />
+		<text name="SC_profpmin" text="Zysk/min:" />
+		<text name="SC_sort" text="Sortowanie" />
+
+		<text name="SC_field" text="Pole %d / %s" />
+		<text name="SC_worked" text="Obrobione pole:" />
+		<text name="SC_delivered" text="Dostarczono:" />
+		<text name="SC_deliver" text="Trzeba dostarczyć:" />
+		<text name="SC_keep" text="Można zatrzymać:" />
+		<text name="SC_profit" text="Zysk ze zbiorów:" />
+		<text name="SC_usage" text="Zużycie:" />
+		<text name="SC_cost" text="Koszt materiału:" />
+		<text name="SC_togo" text="Przejdź do:" />
+
+		<!-- Sort button help text -->
+		<text name="SC_sortCat" text="Typ kontraktu/Nr pola" />
+		<text name="SC_sortProf" text="Zysk netto" />
+		<text name="SC_sortpMin" text="Zysk na minutę" />
+	</texts>
+</l10n>

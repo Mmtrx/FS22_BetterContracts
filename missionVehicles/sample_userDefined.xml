@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--=====================================================================================================
+    BetterContracts user-defined mission vehicles
+    Purpose:     Define vehicles to be used for contracts
+    Author:      RoyalModding, Mmtrx   
+    Usage:       You can define additional vehicle sets to use for specific contracts (aka missions).
+                 You can define mod vehicles/ tools, see requiredMod="FS22_vaderstadSpiritR300S" below.
+                 Your user-defined vehicles are added to the mission vehicles from base game (and possibly
+                 from the map definition), to choose from when a new mission is created.
+                 To make the mod read in your vehicle definitions, rename this file to userDefined.xml.
+                 You can delete any base game or map-defined mission vehicles (and thus use only those
+                 that you defined) by setting overwrite="true" in the <missionVehicles> tag. If you want to try 
+                 this, use extreme
+
+                 CAUTION: You must be sure that you specify a vehicle group for every mission type / fieldsize / 
+                          variant combination possible. For mods, specify the correct modname and filename. 
+                          BetterContracts will try to check this, and issue warnings in the log 
+    Changelog:
+     v0.1        17.03.2021  initial by Royal-Modding
+     v1.1.0.4    07.07.2021  (Mmtrx) add user-defined missionVehicles.xml, allow missions with no vehicles
+     v1.2.0.0    18.01.2022  (Mmtrx) adapt for FS22
+=======================================================================================================-->
+<missionVehicles overwrite="false">
+    <mission type="sow">
+        <!-- grainMission -->
+        <group fieldSize="small" variant="GRAIN">
+            <vehicle filename="$data/vehicles/masseyFerguson/series3700AL/series3700AL.xml">
+                <!-- tractor -->
+                <configuration name="motor" id="2" />
+                <configuration name="wheel" id="3" />
+                <configuration name="fillUnit" id="2" />
+                <configuration name="frontloader" id="1" />
+            </vehicle>
+            <vehicle filename="spiritR300S.xml" requiredMod="FS22_vaderstadSpiritR300S">
+                <!-- seeder -->
+                <configuration name="cover" id="1" />
+                <configuration name="fillVolume" id="1" />
+                <configuration name="wheel" id="1" />
+                <configuration name="fillUnit" id="1" />
+            </vehicle>
+            <vehicle filename="$data/vehicles/agco/weight650/weight650.xml">
+                <!-- weight -->
+                <configuration name="baseMaterial" id="7" />
+            </vehicle>
+        </group>
+
+        <group fieldSize="medium" variant="GRAIN" rewardScale="1.5">
+            <vehicle filename="$data/vehicles/caseIH/magnumT4B/magnumT4B.xml">
+                <!-- tractor -->
+                <configuration name="motor" id="1" />
+                <configuration name="wheel" id="3" />
+                <configuration name="fillUnit" id="1" />
+                <configuration name="frontloader" id="1" />
+            </vehicle>
+            <vehicle filename="$data/vehicles/kuhn/venta4030/venta4030.xml">
+                <!-- seeder -->
+            </vehicle>
+            <vehicle filename="$data/vehicles/kuhn/HR4040/HR4040.xml">
+                <!-- cultivator -->
+            </vehicle>
+            <vehicle filename="$data/vehicles/kuhn/TF1512/TF1512.xml">
+                <!-- frontTank -->
+            </vehicle>
+        </group>
+
+        <group fieldSize="large" variant="GRAIN">
+            <vehicle filename="$data/vehicles/johnDeere/series8R/series8R.xml">
+                <!-- tractor -->
+                <configuration name="motor" id="4" />
+                <configuration name="fillUnit" id="1" />
+                <configuration name="wheel" id="3" />
+            </vehicle>
+            <vehicle filename="data/vehicles/lemken/solitair12/solitair12.xml" /> <!-- seeder -->
+            <vehicle filename="$data/vehicles/johnDeere/pickUp1800/pickUp1800.xml" /> <!-- weight -->
+        </group>
+
+        <!-- maizeMission -->
+        <group fieldSize="small" variant="MAIZE">
+            <vehicle filename="$data/vehicles/valtra/gSeries/gSeries.xml">
+                <!-- tractor -->
+                <configuration name="motor" id="2" />
+                <configuration name="wheel" id="4" />
+                <configuration name="baseMaterial" id="23" />
+                <configuration name="rimColor" id="9" />
+                <configuration name="design" id="2" />
+                <configuration name="fillUnit" id="1" />
+                <configuration name="frontloader" id="1" />
+            </vehicle>
+            <vehicle filename="$data/vehicles/amazone/precea4500/precea4500.xml">
+                <!-- seeder -->
+                <configuration name="folding" id="1" />
+                <configuration name="fillVolume" id="1" />
+                <configuration name="cover" id="1" />
+                <configuration name="wheel" id="1" />
+                <configuration name="fillUnit" id="1" />
+            </vehicle>
+        </group>
+
+        <group fieldSize="medium" variant="MAIZE" rewardScale="0.8">
+            <vehicle filename="$data/vehicles/fendt/fendt700/fendt700.xml">
+                <!-- tractor -->
+                <configuration name="baseMaterial" id="2" />
+                <configuration name="wheel" id="3" />
+                <configuration name="motor" id="2" />
+                <configuration name="fillUnit" id="1" />
+                <configuration name="frontloader" id="1" />
+            </vehicle>
+            <vehicle filename="$data/vehicles/kverneland/optimaRS9m/optimaRS9m.xml" /> <!-- seeder -->
+            <vehicle filename="$data/vehicles/agco/weight1100/weight1100.xml" /> <!-- weight -->
+        </group>
+
+        <group fieldSize="large" variant="MAIZE">
+            <vehicle filename="$data/vehicles/caseIH/magnumT4B/magnumT4B.xml">
+                <!-- tractor -->
+                <configuration name="wheel" id="3" />
+                <configuration name="motor" id="2" />
+                <configuration name="fillUnit" id="1" />
+            </vehicle>
+            <vehicle filename="$data/vehicles/vaderstad/tempoL16/tempoL16.xml" /> <!-- seeder -->
+            <vehicle filename="$data/vehicles/agco/weight1500/weight1500.xml">
+                <!-- weight -->
+                <configuration name="baseMaterial" id="7" />
+            </vehicle>
+        </group>
+
+        <!-- potatoMission -->
+        <group fieldSize="medium" variant="POTATO">
+            <vehicle filename="$data/vehicles/johnDeere/series6M/series6M.xml">
+                <!-- tractor -->
+                <configuration name="motor" id="2" />
+                <configuration name="wheel" id="2" />
+                <configuration name="design" id="5" />
+                <configuration name="fillUnit" id="1" />
+                <configuration name="frontloader" id="1" />
+            </vehicle>
+            <vehicle filename="$data/vehicles/grimme/GL420/GL420.xml" /> <!-- seeder -->
+        </group>
+
+        <group fieldSize="large" variant="POTATO" rewardScale="1.2">
+            <vehicle filename="$data/vehicles/valtra/series8750/series8750.xml">
+                <!-- tractor -->
+                <configuration name="motor" id="1" />
+                <configuration name="baseMaterial" id="9" />
+                <configuration name="rimColor" id="22" />
+                <configuration name="wheel" id="3" />
+                <configuration name="fillUnit" id="1" />
+                <configuration name="frontloader" id="1" />
+            </vehicle>
+            <vehicle filename="$data/vehicles/grimme/GL860/GL860.xml" /> <!-- seeder -->
+            <vehicle filename="$data/vehicles/agco/weight1500/weight1500.xml">
+                <!-- weight -->
+                <configuration name="baseMaterial" id="22" />
+            </vehicle>
+        </group>
+    </mission>
+</missionVehicles>
