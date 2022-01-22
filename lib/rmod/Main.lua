@@ -8,6 +8,6 @@
 ---@param rmodDirectory string
 function InitRoyalMod(rmodDirectory)
     source(Utils.getFilename("RoyalMod.lua", rmodDirectory))
-    printDebug("Royal Mod loaded successfully by " .. g_currentModName)
+    Logging.devInfo("Royal Mod loaded successfully by " .. g_currentModName)
     return true
 end

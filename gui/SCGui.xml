@@ -32,7 +32,7 @@
 		<GuiElement type="text" profile="betterContractsRight" id="valu6" position="100px 75px" />
 		<GuiElement type="text" profile="betterContractsRight" id="valu7" position="100px 42px" />
 		<!-- Sort buttons -->
-		<GuiElement type="empty" id="sortbox" profile="emptyPanel" size="305px 45px" position="3px 0px" anchors="1 1 0 0" hasFrame="true" frameThickness="1dp 1dp 1dp 1dp" >
+		<GuiElement type="empty" id="sortbox" profile="SeeContSortbox" size="305px 45px" position="3px 0px" anchors="1 1 0 0" >
 			<GuiElement type="boxLayout" profile="ingameMenuMapFilterButtonBox" id="layout" size="120px 42px" position="0px -18px" >
 				<GuiElement type="button" profile="SeeContsortCat" id="sortcat" />
 				<GuiElement type="button" profile="SeeContsortProf" id="sortprof" />

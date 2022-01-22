@@ -1,8 +1,3 @@
----${title}
----@author ${author}
----@version r_version_r
----@date 18/01/2022
-
 --=======================================================================================================
 -- BetterContracts SCRIPT
 --
@@ -14,10 +9,10 @@
 --  v1.1.0.3    24.04.2021  (Mmtrx) gui enhancements: addtl details, sort buttons
 --  v1.1.0.4    07.07.2021  (Mmtrx) add user-defined missionVehicles.xml, allow missions with no vehicles
 --  v1.2.0.0    18.01.2022  (Mmtrx) adapt for FS22
+--  v1.2.0.0.rc 22.01.2022  (Mmtrx) release candidate. Gui optics in blue
 --=======================================================================================================
 InitRoyalUtility(Utils.getFilename("lib/utility/", g_currentModDirectory))
 InitRoyalMod(Utils.getFilename("lib/rmod/", g_currentModDirectory))
-r_debug_r = true 
 SC = {
     FERTILIZER = 1, -- prices index
     LIQUIDFERT = 2,
@@ -50,7 +45,7 @@ SC = {
     }
 }
 ---@class BetterContracts : RoyalMod
-BetterContracts = RoyalMod.new(r_debug_r, false)
+BetterContracts = RoyalMod.new(true, false)     --params bool debug, bool sync
 
 function debugPrint(text, ...)
     if BetterContracts.debug then
@@ -58,7 +53,7 @@ function debugPrint(text, ...)
     end
 end
 function BetterContracts:initialize()
-    debugPrint("------- initialize(): %s", self.initialized)
+    debugPrint("[%s] initialize(): %s", self.name,self.initialized)
     if self.initialized ~= nil then return end -- run only once
     g_missionManager.missionMapNumChannels = 6
     self.missionUpdTimeout = 15000

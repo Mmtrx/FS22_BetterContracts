@@ -13,8 +13,9 @@
 <GUIProfiles>
     <Presets>
         <Preset name="len398" value="398px 40px" />
-        <Preset name="colorMainUI" value="0.9910 0.3865 0.0100 1" />
-        <Preset name="colorGlass" value="0.718 0.716 0.715 0.04" />
+        <Preset name="colorMainUI" value="0.0227 0.5346 0.8519 1.0" />
+        <Preset name="colorGlass" value="0.0036 0.0056 0.0065 0.5" />
+        <!--Preset name="colorGlass" value="0.718 0.716 0.715 0.04" /-->
         <Preset name="colorWhite" value="1 1 1 1" />
     </Presets>
     <Traits>
@@ -37,6 +38,13 @@
         <Value name="textAlignment" value="right" />
     </Profile>
 
+    <!-- Sortbox Frame   - - - - - - - - - - - - - - - - - - - - -  -->
+    <Profile name="SeeContSortbox" extends="emptyPanel">
+        <Value name="hasFrame" value="true" />
+        <Value name="frameThickness" value="0 1px 1px 0dp" />
+        <Value name="frameTopColor" value="$preset_colorMainUI" />
+        <Value name="frameRightColor" value="$preset_colorMainUI" />
+    </Profile>
     <!-- Sortbox Buttons - - - - - - - - - - - - - - - - - - - - -  -->
     <Profile name="SeeContsortCat" extends="buttonBase">
         <Value name="handleFocus" value="true" />

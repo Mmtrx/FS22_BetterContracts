@@ -110,10 +110,10 @@ Changelog ${version}:
 	<extraSourceFiles>
 		<sourceFile filename="lib/utility/Main.lua" />
 		<sourceFile filename="lib/rmod/Main.lua" />
-		<sourceFile filename="betterContractsNewEvent.lua" />
-		<sourceFile filename="betterContractsClearEvent.lua" />
 		<sourceFile filename="betterContracts.lua" />
-		<sourceFile filename="missionManagerFix.lua" />
+		<sourceFile filename="scripts/betterContractsNewEvent.lua" />
+		<sourceFile filename="scripts/betterContractsClearEvent.lua" />
+		<sourceFile filename="scripts/missionManagerFix.lua" />
 		<sourceFile filename="scripts/missionVehicles.lua" />
 		<sourceFile filename="scripts/debug.lua" />
 		<sourceFile filename="scripts/gui.lua" />
