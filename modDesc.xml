@@ -10,50 +10,38 @@
 			<![CDATA[
 "Should I take those three fertilizer missions, or rather the 2.3 ha potato harvesting contract?" "How much liquid fertilizer will I need for this job?" If you ever asked yourself questions like these, this mod will help to find the answers. It improves the contract system, both in singleplayer and multiplayer.
 
-- The maximum number and the amount of missions generated is automatically adjusted to the number of fields on the map.
+- The maximum number of contracts and the amount generated per cycle is automatically adjusted to the number of fields on the map.
  
-- You can immediately generate new missions through the "New Contracts" button, or delete all of them with the "Clear Contracts" button.
-
-- With the "Details" button you can toggle on/ off the display of additional contract information. 
+- You can immediately generate new contracts through the "New Contracts" button, or delete all of them with the "Clear Contracts" button.
 
 - You can sort the available contracts by type and field number, by total profit, or by profit per minute, to make it easier to find the one you desire.
  
-- You can activate more than one contract at a time.
+- You can activate more than three contracts at a time.
  
-- The field-number indicator (on the mini-map) of fields with activate contracts will start blinking to help you figure it out where you have to go.
+- The mod adds new vehicle combos for contracts, for the mission generator to chose from.
 
-Changelog ${version}:
-- Additional info display: Apart from field number, field size, mission type it displays additional contract details. Like cost estimates for usage material as fertilizer, herbicide, or seeds. For harvest and baling contracts, it shows the minimum amount to be delivered, and the amount that you can keep (and sell). From this it calculates the total profit value for a contract, i.e. reward minus cost for fertilize/ spray/ sow contracts, and reward plus value of kept harvest for harvest/ baling contracts. It even estimates the time you will probably need for total completion of the job, by taking into account the work speed and work width of the appropriate leasing vehicles/ tools that are offered with the contract.
+- With the "Details" button you can toggle on/ off the display of additional contract information. Like cost estimates for usage material as fertilizer, herbicide, or seeds. For harvest and baling contracts, it shows the minimum amount to be delivered, and the amount that you can keep (and sell). From this it calculates the total profit value for a contract, i.e. reward minus cost for fertilize/ spray/ sow contracts, and reward plus value of kept harvest for harvest/ baling contracts. It even estimates the time you will probably need for total completion of the job, by taking into account the work speed and work width of the appropriate leasing vehicles/ tools that are offered with the contract.
 
-- Added conflicts prevention with other mods
-- Added contracts list sorting
-- Added many new vehicle combos for contracts
-- Improved contracts management
+Disclaimer: All values shown in details display are ESTIMATES. You should not take them absolutely, but rather as an indication of what contracts to prefer among others.
 ]]>
 		</en>
 		<de>
 			<![CDATA[
 "Mach ich jetzt diese drei Düngemissionen, oder doch lieber den 2.3 ha Kartoffelernte-Vertrag?" "Wieviel Flüssigdünger brauche ich für diesen Auftrag?" Falls Sie sich je derartige Fragen gestellt haben, hilft Ihnen dieser Mod bei den Antworten. Er verbessert das Vertragsmanagement, sowohl im Einzelspieler- als im Multiplayer-Modus.
 
-- Die Maximalzahl sowie die Anzahl der jeweils neu generierten Missionen werden automatisch an die Zahl der Felder auf der Karte angepasst.
+- Die Maximalzahl sowie die Anzahl der jeweils neu generierten Verträge wird automatisch an die Zahl der Felder auf der Karte angepasst.
  
-- Sie können über die Schaltfläche "Neue Verträge" sofort neue Missionen generieren oder alle mit dem Button "Liste löschen" entfernen.
-
-- Mit dem "Details" Button kann die Anzeige der zusätzlichen Vertragsdetails ein- und ausgeschaltet werden.
+- Sie können über die Schaltfläche "Neue Verträge" sofort neue Verträge generieren oder alle mit dem Button "Liste löschen" entfernen.
 
 - Sie können die Vertragsliste sortieren nach Vertragstyp/ Feldnummer, nach Gesamtprofit, und nach Profit pro Minute, um einen gewünschten Vertrag schnell zu finden.
  
-- Sie können mehr als einen Vertrag gleichzeitig aktivieren.
+- Sie können mehr als drei Verträge gleichzeitig aktivieren.
  
-- Die Feldnummernanzeigen (auf der Minikarte) der Felder mit Ihren aktiven Verträgen blinken, um Ihnen den Weg zu zeigen.
+- Es wurden einige neue Fahrzeugkombinationen für Verträge hinzugefügt, aus denen der Missionsgenerator wählen kann.
 
-Changelog ${version}:
-- Zusätzliche Details: Neben Feldnummer, Feldgröße, Auftragsart werden weitere Details des Auftrags angezeigt. Z.B. die geschätzten Kosten des Verbrauchsmaterials (Dünger, Pflanzenschutzmittel, Saatgut). Bei Ernte- und Gras-Missionen wird die abzuliefernde Mindestmenge angezeigt, sowie die Erntemenge, die Sie behalten (und verkaufen) können. Daraus ermittelt der Mod den Gesamtertrag der Mission, also Belohnung minus Kosten für Dünge-, Spritz-, und Sähen-Verträge; und Belohnung plus Wert der behaltenen Erntemenge bei den Ernte- und Gras-Verträgen. Er schätzt sogar die Gesamtzeit, die Sie für die Erledigung des Auftrags benötigen werden, und berücksichtigt dafür Arbeitsgeschwindigkeit und Arbeitsbreite der entsprechenden Leasing-Geräte, die für den Vertrag angeboten werden.
+- Mit dem "Details" Button kann die Anzeige der zusätzlichen Vertragsdetails ein- und ausgeschaltet werden. Z.B. die geschätzten Kosten des Verbrauchsmaterials (Dünger, Pflanzenschutzmittel, Saatgut). Bei Ernte- und Gras-Missionen wird die abzuliefernde Mindestmenge angezeigt, sowie die Erntemenge, die Sie behalten (und verkaufen) können. Daraus ermittelt der Mod den Gesamtertrag der Mission, also Belohnung minus Kosten für Dünge-, Spritz-, und Sähen-Verträge; und Belohnung plus Wert der behaltenen Erntemenge bei den Ernte- und Gras-Verträgen. Er schätzt sogar die Gesamtzeit, die Sie für die Erledigung des Auftrags benötigen werden, und berücksichtigt dafür Arbeitsgeschwindigkeit und Arbeitsbreite der entsprechenden Leasing-Geräte, die für den Vertrag angeboten werden.
 
-- Konfliktverhütung mit anderen Mods hinzugefügt
-- Sortierung der Vertragslisten hinzugefügt
-- Es wurden viele neue Fahrzeugkombinationen für Verträge hinzugefügt
-- Verbessertes Vertragsmanagement
+Warnung: Alle in der Detailanzeige angegebenen Werte sind GESCHÄTZT. Sie sollten sie also nicht als absolute Zahlen verstehen, sondern als Hinweis, welche Verträge vielleicht anderen vorzuziehen sind.
 ]]>
 		</de>
 		<fr>
@@ -65,22 +53,15 @@ Ce mod permet d'améliorer le système de contrat, à la fois en solo et multijo
  
 - Vous pouvez désormais générer de nouveaux contrats via le bouton "Nouveaux contrats" et même effacer ceux que vous n'avez pas activé depuis l'écran de gestion des contrats.
 
-- Les contrats sont désormais triés par type et numéro de champ pour vous permettre de trouver plus facilement celui que vous désirez.
-
-- Affichage des détails supplémentaires des contrats directement à l'aide d'un raccourci clavier depuis le menu des contrats
- 
-- Tri des contrats par type, champs, bénéfice attendu et profit par minute
+- Tri des contrats par type/ champs, bénéfice attendu et profit par minute pour vous permettre de trouver plus facilement celui que vous désirez.
 
 - Vous pouvez activer plusieurs contrats à la fois.
  
-- L'indicateur de numéro de champ (sur la mini-carte) des champs sur lesquels vous allez activer les contrats, commencera à clignoter pour vous aider à déterminer où vous devez aller.
-
-Changelog ${version}:
-- Informations supplémentaires pour les contrats : En plus du type de contrat et du numéro+taille du champ, vous trouverez maintenant les coûts estimés du contrat (engrais, herbicide, semence), le surplus de récolte ou de pressage, le calcul automatique du profit net généré. Il y a même l'affichage du temps que vous passerez à réaliser le contrat avec le matériel proposé en location avec celui-ci.
-- Ajout de la prévention des conflits avec d'autres mods
-- Ajout du tri de la liste des contrats
 - Ajout de nombreux nouveaux combos de véhicules pour les contrats
-- Amélioration de la gestion des contrats
+
+- Affichage des détails supplémentaires des contrats directement à l'aide d'un raccourci clavier depuis le menu des contrats. En plus du type de contrat et du numéro+taille du champ, vous trouverez maintenant les coûts estimés du contrat (engrais, herbicide, semence), le surplus de récolte ou de pressage, le calcul automatique du profit net généré. Il y a même l'affichage du temps que vous passerez à réaliser le contrat avec le matériel proposé en location avec celui-ci.
+
+Avertissement: toutes les valeurs indiquées dans l'affichage détaillé sont des ESTIMATIONS. Il ne faut donc pas les considérer comme des chiffres absolus, mais plutôt comme une indication des contrats qui pourraient être préférés à d'autres.
 ]]>
 		</fr>
 		<ru>
@@ -97,11 +78,9 @@ Changelog ${version}:
  
 - Индикатор поля (на мини-карте), на которые вы взяли контракты, начнут мигать, чтобы помочь вам понять, куда вам необходимо двигаться.
 
-Changelog ${version}:
-- Добавлена профилактика конфликтов с другими модами
-- Сортировка списка добавленных контрактов
 - Добавлено много новых комбинаций техники для контрактов
-- Улучшено управление контрактами
+
+Внимание: Все значения, указанные на подробном дисплее, являются ИСКЛЮЧИТЕЛЬНЫМИ. Поэтому не следует воспринимать их как абсолютные цифры, а как указание на то, какие контракты могут быть предпочтительнее других.
 ]]>
 		</ru>
 	</description>
