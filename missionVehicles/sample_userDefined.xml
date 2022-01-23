@@ -97,7 +97,7 @@
         </group>
 
         <group fieldSize="medium" variant="MAIZE" rewardScale="0.8">
-            <vehicle filename="$data/vehicles/fendt/fendt700/fendt700.xml">
+            <vehicle filename="$data/vehicles/fendt/vario700/vario700.xml">
                 <!-- tractor -->
                 <configuration name="baseMaterial" id="2" />
                 <configuration name="wheel" id="3" />

@@ -96,16 +96,6 @@ function BetterContracts:getFromVehicle(cat, m)
 		return false 
 	end
 	if cat == 4 then wwidth = 0 end -- init for search for biggest wwidth
-	--[[	
-	for _, v in ipairs(m.vehiclesToLoad) do
-		vecc = {vec = g_storeManager.xmlFilenameToItem[string.lower(v.filename)],
-				con = v.configurations}
-		if vecc.vec == nil then
-			Logging.warning("**[%s] - could not get store item for '%s'",self.name,v.filename)
-			return false 
-		end
-		table.insert(vehicles, vecc)
-	end]]
 	for _, v in ipairs(m.vehiclesToLoad) do	-- main loop over vehicles to load
 		vec = g_storeManager.xmlFilenameToItem[string.lower(v.filename)]
 		con = v.configurations

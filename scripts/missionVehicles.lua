@@ -27,13 +27,15 @@ function BetterContracts.loadMissionVehicles(missionManager, superFunc, ...)
             debugPrint("[%s] %s map detected, loading mission vehicles created by %s", self.name, "FS19_ThueringerHoehe", "Lahmi")
             missionManager.missionVehicles = {}
             self:loadExtraMissionVehicles(self.directory .. "missionVehicles/FS19_ThueringerHoehe/baseGame.xml")
-            self:loadExtraMissionVehicles(self.directory .. "missionVehicles/FS19_ThueringerHoehe/claasPack.xml")          
         else
+            if self.debug then
+                self:checkExtraMissionVehicles(self.directory .. "missionVehicles/baseGame.xml")
+            end
             self:loadExtraMissionVehicles(self.directory .. "missionVehicles/baseGame.xml")
             -- self:loadExtraMissionVehicles(self.directory .. "missionVehicles/claasPack.xml")
         end
         local userdef = self.directory .. "missionVehicles/userDefined.xml"
-        if fileExists(userdef) then 
+        if fileExists(userdef) and self:checkExtraMissionVehicles(userdef) then 
             self:loadExtraMissionVehicles(userdef)
         end    
         self:validateMissionVehicles()
@@ -52,12 +54,75 @@ function BetterContracts:validateMissionVehicles()
             for _,f in ipairs({"small","medium","large"}) do
                 if g_missionManager.missionVehicles[type][f] == nil or 
                     #g_missionManager.missionVehicles[type][f] == 0 then
-                    Logging.devWarning("[%s] No missionVehicles for %s missions on %s fields",
+                    Logging.warning("[%s] No missionVehicles for %s missions on %s fields",
                         self.name, type, f)
                 end
             end
         end
     end
+end
+
+function BetterContracts:checkExtraMissionVehicles(xmlFilename)
+    -- check if all vehicles specified can be loaded
+    local modName, modDirectory, filename, ignore 
+    local check = true 
+    local xmlFile = loadXMLFile("loadExtraMissionVehicles", xmlFilename)
+    local i = 0
+    while true do
+        local baseKey = string.format("missionVehicles.mission(%d)", i)
+        if hasXMLProperty(xmlFile, baseKey) then
+            local missionType = getXMLString(xmlFile, baseKey .. "#type") or ""
+            --self:loadExtraMissionVehicles_groups(xmlFile, baseKey, missionType, modDirectory)
+            local j = 0
+            while true do
+                local groupKey = string.format("%s.group(%d)", baseKey, j)
+                if hasXMLProperty(xmlFile, groupKey) then
+                    --self:loadExtraMissionVehicles_vehicles(xmlFile, groupKey, modDirectory)
+                    local k = 0 
+                    while true do
+                        local vehicleKey = string.format("%s.vehicle(%d)", groupKey, k)
+                        if hasXMLProperty(xmlFile, vehicleKey) then
+                            local baseDirectory = nil
+                            local vfile = getXMLString(xmlFile, vehicleKey .. "#filename") or "missingFilename"
+                            ignore = false
+                            modName = getXMLString(xmlFile, vehicleKey .. "#requiredMod")
+                            if getXMLBool(xmlFile, vehicleKey .. "#isMod") then
+                                baseDirectory = modDirectory
+                            elseif modName~= nil then 
+                                if g_modIsLoaded[modName]then
+                                    baseDirectory = g_modNameToDirectory[modName]
+                                else
+                                    Logging.warning("[%s] required Mod %s not found, ignoring mission vehicle %s",
+                                        self.name, modName, vfile)
+                                    ignore = true
+                                    check = false
+                                end 
+                            end
+                            if not ignore then
+                                filename = Utils.getFilename(vfile, baseDirectory)
+                                -- try to load from store item
+                                if g_storeManager.xmlFilenameToItem[string.lower(filename)] == nil then
+                                    Logging.warning("**[%s] - could not get store item for '%s'",self.name,filename)
+                                    check = false 
+                                end 
+                            end
+                        else
+                            break
+                        end
+                        k = k +1
+                    end    
+                else
+                    break
+                end
+                j = j +1
+            end
+        else
+            break
+        end
+        i = i + 1
+    end
+    delete(xmlFile)
+    return check
 end
 
 function BetterContracts:loadExtraMissionVehicles(xmlFilename)

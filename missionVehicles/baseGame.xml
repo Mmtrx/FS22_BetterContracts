@@ -43,8 +43,8 @@
 
         <!-- maizeMission -->
         <group fieldSize="small" variant="MAIZE" rewardScale="1.4">
-            <vehicle filename="$data/vehicles/bizon/z056/z056.xml" /> <!-- combine -->
-            <vehicle filename="$data/vehicles/capello/quasarF4/quasarF4.xml">
+            <vehicle filename="$data/vehicles/newHolland/chSeries/chSeries.xml" /> <!-- combine -->
+            <vehicle filename="$data/vehicles/capello/diamant8/diamant8.xml">
                 <!-- header -->
                 <configuration name="baseMaterial" id="36" />
             </vehicle>
@@ -52,7 +52,7 @@
                 <!-- tractor -->
                 <configuration name="wheel" id="4" />
             </vehicle>
-            <vehicle filename="$data/vehicles/strautmann/SEK802/SEK802.xml">
+            <vehicle filename="$data/vehicles/claas/carat/carat.xml">
                 <!-- trailer -->
                 <configuration name="fillVolume" id="4" />
                 <configuration name="trailer" id="3" />
@@ -61,14 +61,14 @@
         </group>
 
         <group fieldSize="medium" variant="MAIZE">
-            <vehicle filename="$data/vehicles/rostselmash/161/161.xml">
+            <vehicle filename="$data/vehicles/claas/lexion8000/lexion8000.xml">
                 <!-- combine -->
                 <configuration name="wheel" id="2" />
             </vehicle>
-            <vehicle filename="$data/vehicles/capello/diamantHS8/diamantHS8.xml">
+            <vehicle filename="$data/vehicles/claas/corio1275C/corio1275C.xml" />
                 <!-- header -->
-                <configuration name="baseMaterial" id="2" />
-            </vehicle>
+            <vehicle filename="$data/vehicles/claas/corio1275CTrailer/corio1275CTrailer.xml" />
+                <!-- header trailer -->
             <vehicle filename="$data/vehicles/jcb/fastrac4220/fastrac4220.xml">
                 <!-- tractor -->
                 <configuration name="wheel" id="3" />
@@ -90,15 +90,12 @@
         </group>
 
         <group fieldSize="large" variant="MAIZE">
-            <vehicle filename="$data/vehicles/deutzFahr/topLiner4090/topLiner4090.xml">
+            <vehicle filename="$data/vehicles/johndeere/x9_1100/x9_1100.xml">
                 <!-- combine -->
-                <configuration name="wheel" id="4" />
+                <configuration name="wheel" id="3" />
             </vehicle>
-            <vehicle filename="$data/vehicles/caseIH/header4408/header4408.xml">
-                <!-- header -->
-                <configuration name="baseMaterial" id="23" />
-            </vehicle>
-            <vehicle filename="$data/vehicles/deutzFahr/header4090Trailer/header4090Trailer.xml" /> <!-- headerTrailer -->
+            <vehicle filename="$data/vehicles/johnDeere/headerC16F/headerC16F.xml" /> <!-- header -->
+            <vehicle filename="$data/vehicles/nardi/n60_45/n60_45.xml" /> <!-- headerTrailer -->
             <vehicle filename="$data/vehicles/newHolland/T7/T7.xml">
                 <!-- tractor -->
                 <configuration name="motor" id="2" />
@@ -402,7 +399,7 @@
         </group>
 
         <group fieldSize="medium" variant="MAIZE" rewardScale="0.8">
-            <vehicle filename="$data/vehicles/fendt/fendt700/fendt700.xml">
+            <vehicle filename="$data/vehicles/fendt/vario700/vario700.xml">
                 <!-- tractor -->
                 <configuration name="baseMaterial" id="2" />
                 <configuration name="wheel" id="3" />
@@ -476,7 +473,7 @@
         </group>
 
         <group fieldSize="medium">
-            <vehicle filename="$data/vehicles/fendt/fendt300/fendt300.xml">
+            <vehicle filename="$data/vehicles/fendt/vario700/vario700.xml">
                 <!-- tractor -->
                 <configuration name="baseMaterial" id="2" />
                 <configuration name="wheel" id="6" />
@@ -484,7 +481,7 @@
                 <configuration name="fillUnit" id="1" />
                 <configuration name="frontloader" id="1" />
             </vehicle>
-            <vehicle filename="$data/vehicles/einboeck/rotation1200/rotation1200.xml" /> <!-- weeder -->
+            <vehicle filename="$data/vehicles/einboeck/pneumaticstarPro1200/pneumaticstarPro1200.xml" /> <!-- weeder -->
             <vehicle filename="$data/vehicles/agco/weight650/weight650.xml">
                 <!-- weight -->
                 <configuration name="baseMaterial" id="6" />
@@ -492,12 +489,12 @@
         </group>
 
         <group fieldSize="large">
-            <vehicle filename="$data/vehicles/steyr/profiCVT/profiCVT.xml">
+            <vehicle filename="$data/vehicles/fendt/vario700/vario700.xml">
                 <!-- tractor -->
+                <configuration name="baseMaterial" id="2" />
+                <configuration name="wheel" id="6" />
                 <configuration name="motor" id="2" />
-                <configuration name="wheel" id="5" />
                 <configuration name="fillUnit" id="1" />
-                <configuration name="frontloader" id="1" />
             </vehicle>
             <vehicle filename="$data/vehicles/treffler/TS1520/TS1520.xml" /> <!-- weeder -->
             <vehicle filename="$data/vehicles/agco/weight1100/weight1100.xml">
@@ -718,7 +715,7 @@
                 <configuration name="frontloader" id="1" />
             </vehicle>
             <vehicle filename="$data/vehicles/newHolland/bigBaler1290HD/bigBaler1290HD.xml" /> <!-- baler -->
-            <vehicle filename="$data/vehicles/kuhn/kuhnSW4014/kuhnSW4014.xml" /> <!-- bale wrapper -->
+            <vehicle filename="$data/vehicles/kuhn/SW4014/SW4014.xml" /> <!-- bale wrapper -->
             <vehicle filename="$data/vehicles/jcb/fastrac8330/fastrac8330.xml">
                 <!-- tractor -->
                 <configuration name="motor" id="1" />
