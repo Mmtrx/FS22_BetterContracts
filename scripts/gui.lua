@@ -140,9 +140,10 @@ function detailsButtonCallback(inGameMenu)
 end
 
 function updateList(frCon)
-	-- if a mission was created or deleted, update our tables
+	-- if a new mission was created, update our tables, so that we can show the details
+	-- if deleted or taken by another player, postpone refresh to next 15sec update tick
 	local self = BetterContracts
-	if #self.miss ~= self.numCont then
+	if #g_missionManager:getMissionsList(g_currentMission:getFarmId()) > self.numCont then
 		self:refresh()
 	end
 end
@@ -154,8 +155,12 @@ function populateCell(frCon, list, sect, index, cell)
 		return
 	end
 	local id = frCon.sectionContracts[sect].contracts[index].mission.id
-	local prof = self.IdToCont[id][2].profit or 0
-	local cat = self.IdToCont[id][1]
+	if IdToCont[id] == nil or IdToCont[id][2] == nil then
+		debugPrint("populateCell(): empty IdToCont for id %s. sect/index: %s/%s",
+			id, sect,index)
+	end
+	local prof = self.IdToCont[id] and self.IdToCont[id][2] and self.IdToCont[id][2].profit or 0
+	local cat = self.IdToCont[id] and self.IdToCont[id][1] or 0
 	local showProf = false
 	if cat==1 or cat==2 or cat==4 then 
 	-- only for harvest, spread, mow contracts

@@ -125,6 +125,10 @@ function BetterContracts:initialize()
         g_showDevelopmentWarnings = true
         addConsoleCommand("printBetterContracts", "Print detail stats for all available missions.", "consoleCommandPrint", self)
         addConsoleCommand("restartGame", 'Restart my savegame [savegameId]', 'restartGame', self)
+        addConsoleCommand("gsFieldGenerateMission", "Force generating a new mission for given field", "consoleGenerateFieldMission", g_missionManager)
+        addConsoleCommand("gsMissionLoadAllVehicles", "Loading and unloading all field mission vehicles", "consoleLoadAllFieldMissionVehicles", g_missionManager)
+        addConsoleCommand("gsMissionHarvestField", "Harvest a field and print the liters", "consoleHarvestField", g_missionManager)
+        addConsoleCommand("gsMissionTestHarvests", "Run an expansive tests for harvest missions", "consoleHarvestTests", g_missionManager)
     end
 end
 
@@ -163,7 +167,7 @@ function BetterContracts:onPostLoadMap(mapNode, mapFile)
 
     -- initialize constants depending on game manager instances
     self.ft = g_fillTypeManager.fillTypes
-    self.miss = g_missionManager.missions
+    --self.miss = g_missionManager.missions
     self.prices = {
         -- storeprices per 1000 l
         g_storeManager.xmlFilenameToItem["data/objects/bigbagpallet/fertilizer/bigbagpallet_fertilizer.xml"].price,
@@ -268,14 +272,21 @@ function BetterContracts:loadGUI(canLoad, guiPath)
     return canLoad
 end
 function BetterContracts:refresh()
-    -- refresh our contract tables
+    -- refresh our contract tables. Called by onFrameOpen/updateList, and every 15 sec by self:onUpdate
     self.harvest, self.spread, self.simple, self.baling, self.transp = {}, {}, {}, {}, {}
     self.IdToCont, self.fieldToMission = {}, {}
-    local m
-    for i, m in ipairs(self.miss) do
-        self.IdToCont[m.id] = self:addMission(m)
+    local list = g_missionManager:getMissionsList(g_currentMission:getFarmId())
+    local res = {}
+    debugPrint("[%s] refresh() at %s sec, found %d contracts", self.name, 
+        g_i18n:formatNumber(g_currentMission.time/1000)  ,#list)
+    self.numCont = 0
+    for _, m in ipairs(list) do
+        res = self:addMission(m)
+        if res[1] and res[1] > 0 then
+            self.IdToCont[m.id] = res 
+            self.numCont = self.numCont +1
+        end
     end
-    self.numCont = #self.miss
 end
 function BetterContracts:addMission(m)
     -- add mission m to the corresponding BetterContracts list
@@ -305,9 +316,16 @@ function BetterContracts:addMission(m)
             _,dura = self:estWorktime(wid, hei, self.WORKWIDTH[4+cat+cat1], self.SPEEDLIMS[4+cat+cat1])
         end
         if (cat==1 or cat==4) and m.expectedLiters == nil then 
+            -- a not completely defined mission. MP sync problem?
             Logging.warning("[%s]:addMission(): contract '%s field %s ft %s' has no expectedLiters.", 
                 self.name, m.type.name, m.field.fieldId, m.fillType)
             m.expectedLiters = 0 
+            if self.debug then
+                debugPrint("[%s] removing mission:", self.name)
+                DebugUtil.printTableRecursively(m,".",0,2)
+            end
+            m:delete()
+            return {0, cont}
         end 
     end
     if cat == 1 then
