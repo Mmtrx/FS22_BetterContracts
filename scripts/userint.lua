@@ -112,12 +112,17 @@ function BetterContracts:getFromVehicle(cat, m)
 			if self:isMower(vtype) and tonumber(vec.specs.workingWidth) > wwidth then
 				wwidth = tonumber(vec.specs.workingWidth)
 				speed = vec.specs.speedLimit
-				vtype = vec.categoryName
-				spr = string.sub(vec.xmlFilename, 15)
 			end
 		elseif cat == 2 and vtype == "SLURRYTANKS" 
 			and vec.functions[1] == g_i18n:getText("function_slurrySpreaderWithoutTool")
 			then  -- skip this, it's a slurry barrel w/o spreader
+
+		elseif cat == 1 and vtype == "BEETVEHICLES" then  
+			if vec.name == "Rexor 6300 Platinum" then 
+				wwidth, speed = 2.8, 10.
+				break 
+			end
+			-- else skip this, it's a beet harvester that needs a header
 
 		elseif cat == 1 and self:isHarvester(vtype) or cat == 2 and self:isSpreader(vtype) or cat == 3 and self:isSimple(vtype) then
 			speed = vec.specs.speedLimit
@@ -127,8 +132,11 @@ function BetterContracts:getFromVehicle(cat, m)
 					wwidth = Vehicle.getSpecValueWorkingWidthConfig(vec, nil, con, nil, true)
 				end
 				if wwidth == nil then
+					if vec.name == "Ventor 4150" then wwidth = 3.3 end
+				end
+				if wwidth == nil then
 					Logging.warning("**[%s]:getFromVehicle() - could not get workingWidth for '%s'", self.name,spr)
-					DebugUtil.printTableRecursively(vec," ",1,2)
+					DebugUtil.printTableRecursively(vec," ",0,0)
 				end
 			end
 			break

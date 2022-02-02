@@ -10,6 +10,7 @@
 --  v1.1.0.4    07.07.2021  (Mmtrx) add user-defined missionVehicles.xml, allow missions with no vehicles
 --  v1.2.0.0    18.01.2022  (Mmtrx) adapt for FS22
 --  v1.2.0.0.rc 22.01.2022  (Mmtrx) release candidate. Gui optics in blue
+--  v1.2.0.1.rc 30.01.2022  (Mmtrx) enabled MP
 --=======================================================================================================
 InitRoyalUtility(Utils.getFilename("lib/utility/", g_currentModDirectory))
 InitRoyalMod(Utils.getFilename("lib/rmod/", g_currentModDirectory))
@@ -45,7 +46,7 @@ SC = {
     }
 }
 ---@class BetterContracts : RoyalMod
-BetterContracts = RoyalMod.new(true, false)     --params bool debug, bool sync
+BetterContracts = RoyalMod.new(false, false)     --params bool debug, bool sync
 
 function debugPrint(text, ...)
     if BetterContracts.debug then
@@ -53,6 +54,12 @@ function debugPrint(text, ...)
     end
 end
 function BetterContracts:initialize()
+    self.modSettings= string.sub(g_modsDirectory,1,-3) .. "Settings/"
+    -- check for debug switch in modSettings/
+    if not self.debug and      
+        fileExists(self.modSettings.."BetterContracts.debug") then
+        self.debug = true 
+    end
     debugPrint("[%s] initialize(): %s", self.name,self.initialized)
     if self.initialized ~= nil then return end -- run only once
     g_missionManager.missionMapNumChannels = 6
@@ -75,17 +82,17 @@ function BetterContracts:initialize()
         7 spray
         8 fertilize
         9 transport
-        10 snow
+        10 supplyTransport (Mod)
     ]]
     self.typeToCat = {4, 3, 3, 2, 1, 3, 2, 2, 5, 5} -- mission.type to self category: harvest, spread, simple, mow, transport
     self.harvest = {} -- harvest missions       1
     self.spread = {} -- sow, spray, fertilize   2
     self.simple = {} -- plow, cultivate, weed   3
     self.baling = {} -- mow/ bale               4
-    self.transp = {} -- transport, snow         5
+    self.transp = {} -- transport, supplyTrans  5
     self.IdToCont = {} -- to find a contract from its mission id
     self.fieldToMission = {} -- to find a contract from its field number
-    self.catHarvest = "BEETHARVESTING CORNHEADERS COTTONVEHICLES CUTTERS POTATOHARVESTING POTATOVEHICLES SUGARCANEHARVESTING"
+    self.catHarvest = "BEETHARVESTING BEETVEHICLES CORNHEADERS COTTONVEHICLES CUTTERS POTATOHARVESTING POTATOVEHICLES SUGARCANEHARVESTING SUGARCANEVEHICLES"
     self.catSpread = "fertilizerspreaders seeders planters sprayers sprayervehicles slurrytanks manurespreaders"
     self.catSimple = "CULTIVATORS DISCHARROWS PLOWS POWERHARROWS SUBSOILERS WEEDERS"
     self.isOn = false
@@ -98,15 +105,22 @@ function BetterContracts:initialize()
         {"sortprof", g_i18n:getText("SC_sortProf")},
         {"sortpmin", g_i18n:getText("SC_sortpMin")}
     }
-    self.modsSettings= string.sub(g_modsDirectory,1,-2) .. "Settings/"
-
-
     if g_modIsLoaded["FS22_RefreshContracts"] then
         self.needsRefreshContractsConflictsPrevention = true
     end
+    if g_modIsLoaded["FS22_SupplyTransportContracts"] then
+        self.supplyTransport = true
+    end
+    -- to load own mission vehicles:
     Utility.overwrittenFunction(MissionManager, "loadMissionVehicles", BetterContracts.loadMissionVehicles)
-
-    -- Append functions for ingame menu contracts frame
+    -- get addtnl mission vales from server:
+    Utility.appendedFunction(HarvestMission, "writeStream", BetterContracts.writeStream)
+    Utility.appendedFunction(HarvestMission, "readStream", BetterContracts.readStream)
+    Utility.appendedFunction(BaleMission, "writeStream", BetterContracts.writeStream)
+    Utility.appendedFunction(BaleMission, "readStream", BetterContracts.readStream)
+    Utility.appendedFunction(AbstractMission, "writeUpdateStream", BetterContracts.writeUpdateStream)
+    Utility.appendedFunction(AbstractMission, "readUpdateStream", BetterContracts.readUpdateStream)
+    -- functions for ingame menu contracts frame:
     InGameMenuContractsFrame.onFrameOpen = Utils.overwrittenFunction(InGameMenuContractsFrame.onFrameOpen, onFrameOpen)
     InGameMenuContractsFrame.onFrameClose = Utils.appendedFunction(InGameMenuContractsFrame.onFrameClose, onFrameClose)
     InGameMenuContractsFrame.updateFarmersBox = Utils.appendedFunction(InGameMenuContractsFrame.updateFarmersBox, updateFarmersBox)
@@ -115,12 +129,9 @@ function BetterContracts:initialize()
     InGameMenuContractsFrame.sortList = Utils.overwrittenFunction(InGameMenuContractsFrame.sortList, sortList)
     -- to allow multiple missions:
     MissionManager.hasFarmReachedMissionLimit =
-        Utils.overwrittenFunction(
-        nil,
-        function()
-            return false
-        end
-    )
+        Utils.overwrittenFunction(nil,
+            function() return false end
+            )
     if self.debug then
         g_showDevelopmentWarnings = true
         addConsoleCommand("printBetterContracts", "Print detail stats for all available missions.", "consoleCommandPrint", self)
@@ -129,6 +140,10 @@ function BetterContracts:initialize()
         addConsoleCommand("gsMissionLoadAllVehicles", "Loading and unloading all field mission vehicles", "consoleLoadAllFieldMissionVehicles", g_missionManager)
         addConsoleCommand("gsMissionHarvestField", "Harvest a field and print the liters", "consoleHarvestField", g_missionManager)
         addConsoleCommand("gsMissionTestHarvests", "Run an expansive tests for harvest missions", "consoleHarvestTests", g_missionManager)
+        addConsoleCommand("gsFieldSetFruit", "Sets a given fruit to field", "consoleCommandSetFieldFruit", g_fieldManager)
+        addConsoleCommand("gsFieldSetFruitAll", "Sets a given fruit to all fields", "consoleCommandSetFieldFruitAll", g_fieldManager)
+        addConsoleCommand("gsFieldSetGround", "Sets a given fruit to field", "consoleCommandSetFieldGround", g_fieldManager)
+        addConsoleCommand("gsFieldSetGroundAll", "Sets a given fruit to allfield", "consoleCommandSetFieldGroundAll", g_fieldManager)
     end
 end
 
@@ -143,14 +158,6 @@ function BetterContracts:onSetMissionInfo(missionInfo, missionDynamicInfo)
 end
 
 function BetterContracts:onPostLoadMap(mapNode, mapFile)
-    -- test workwidth:
-    self.k165 = g_storeManager.xmlFilenameToItem["data/vehicles/bredal/k165/k165.xml"]
-    self.k105 = g_storeManager.xmlFilenameToItem["data/vehicles/bredal/k105/k105.xml"]
-    self.amaz = g_storeManager.xmlFilenameToItem["data/vehicles/amazone/zats3200/zats3200.xml"]
-    StoreItemUtil.loadSpecsFromXML(self.k165)
-    StoreItemUtil.loadSpecsFromXML(self.k105)
-    StoreItemUtil.loadSpecsFromXML(self.amaz)
-
     -- adjust max missions
     local fieldsAmount = TableUtility.count(g_fieldManager.fields)
     local adjustedFieldsAmount = math.max(fieldsAmount, 45)
@@ -167,7 +174,6 @@ function BetterContracts:onPostLoadMap(mapNode, mapFile)
 
     -- initialize constants depending on game manager instances
     self.ft = g_fillTypeManager.fillTypes
-    --self.miss = g_missionManager.missions
     self.prices = {
         -- storeprices per 1000 l
         g_storeManager.xmlFilenameToItem["data/objects/bigbagpallet/fertilizer/bigbagpallet_fertilizer.xml"].price,
@@ -188,6 +194,11 @@ function BetterContracts:onPostLoadMap(mapNode, mapFile)
     self.gameMenu = g_currentMission.inGameMenu
     self.frCon = self.gameMenu.pageContracts
 
+    -- check mission types
+    for i = #self.typeToCat, g_missionManager.nextMissionTypeId -1 do
+        Logging.warning("[%s] ignoring new mission type %s (id %s)", self.name, 
+                g_missionManager.missionTypes[i].name, i)
+    end
     -- load my gui xmls
     if not self:loadGUI(true, self.directory .. "gui/") then
         Logging.warning("'%s.Gui' failed to load! Supporting files are missing.", self.name)
@@ -237,7 +248,7 @@ function BetterContracts:onUpdate(dt)
     local self = BetterContracts
     self.missionUpdTimer = self.missionUpdTimer + dt
     if self.missionUpdTimer >= self.missionUpdTimeout then
-        self:refresh()
+        if self.isOn then self:refresh() end  -- only needed when GUI shown
         self.missionUpdTimer = 0
     end
 end
@@ -287,6 +298,19 @@ function BetterContracts:refresh()
             self.numCont = self.numCont +1
         end
     end
+    self.missionUpdTimer = 0        -- don't call us again too soon
+end
+function BetterContracts:getFilltypePrice(m)
+    -- get price for harvest/ mow-bale missions
+    if m.sellPointId then
+        m:tryToResolveSellPoint()
+    end
+    if not m.sellPoint then
+        Logging.warning("[%s]:addMission(): contract '%s %s on field %s' has no sellPoint.", 
+            self.name, m.type.name, self.ft[m.fillType].title, m.field.fieldId)
+        return 0
+    end
+    return m.sellPoint:getEffectiveFillTypePrice(m.fillType)
 end
 function BetterContracts:addMission(m)
     -- add mission m to the corresponding BetterContracts list
@@ -300,10 +324,9 @@ function BetterContracts:addMission(m)
         if wid > hei then
             wid, hei = hei, wid
         end
-
         self.fieldToMission[m.field.fieldId] = m
-
         vfound, wwidth, speed, vtype, vname = self:getFromVehicle(cat, m)
+
         -- estimate mission duration:
         if vfound and wwidth > 0  then
             _, dura = self:estWorktime(wid, hei, wwidth, speed)
@@ -315,22 +338,17 @@ function BetterContracts:addMission(m)
             -- cat/index: 1/6, 3/7, 4/8 = harvest, plow, mow
             _,dura = self:estWorktime(wid, hei, self.WORKWIDTH[4+cat+cat1], self.SPEEDLIMS[4+cat+cat1])
         end
-        if (cat==1 or cat==4) and m.expectedLiters == nil then 
-            -- a not completely defined mission. MP sync problem?
-            Logging.warning("[%s]:addMission(): contract '%s field %s ft %s' has no expectedLiters.", 
-                self.name, m.type.name, m.field.fieldId, m.fillType)
+        if (cat==1 or cat==4) and m.expectedLiters == nil then
+            -- need to test mow-bale missions 
+            Logging.warning("[%s]:addMission(): contract '%s %s on field %s' has no expectedLiters.", 
+                self.name, m.type.name, self.ft[m.fillType].title, m.field.fieldId)
             m.expectedLiters = 0 
-            if self.debug then
-                debugPrint("[%s] removing mission:", self.name)
-                DebugUtil.printTableRecursively(m,".",0,2)
-            end
-            m:delete()
             return {0, cont}
         end 
     end
     if cat == 1 then
         local keep = math.floor(m.expectedLiters * 0.265)
-        local price = m.sellPoint:getEffectiveFillTypePrice(m.fillType)
+        local price = self:getFilltypePrice(m)
         local profit = rew + keep * price
         cont = {
             miss = m,
@@ -362,7 +380,7 @@ function BetterContracts:addMission(m)
         table.insert(self.simple, cont)
     elseif cat == 4 then
         local keep = math.floor(m.expectedLiters * 0.2105)
-        local price = m.sellPoint:getEffectiveFillTypePrice(m.fillType)
+        local price = self:getFilltypePrice(m)
         local profit = rew + keep * price
         cont = {
             miss = m,
@@ -371,7 +389,6 @@ function BetterContracts:addMission(m)
             worktime = dura * 3, -- dura is just the mow time, adjust for windrowing/ baling
             ftype = self.ft[m.fillType].title,
             deliver = math.ceil(m.expectedLiters - keep),
-            --#bales to be delivered
             keep = keep, --can be sold on your own
             price = price * 1000,
             profit = profit,
@@ -382,6 +399,9 @@ function BetterContracts:addMission(m)
     else
         cont = {
             miss = m,
+            ftype = self.ft[m.fillType].title or "",    -- set by supplyTransp mission
+            deliver = m.contractLiters or "",           --          ""              --
+            price = m.pricePerLitre * 1000 or "",       --          ""              --
             profit = rew,
             permin = 0,
             reward = rew
@@ -389,4 +409,23 @@ function BetterContracts:addMission(m)
         table.insert(self.transp, cont)
     end
     return {cat, cont}
+end
+function BetterContracts.writeStream(self, streamId, connection)
+    streamWriteFloat32(streamId, self.expectedLiters)
+    streamWriteFloat32(streamId, self.depositedLiters)
+end
+function BetterContracts.readStream(self, streamId, connection)
+    self.expectedLiters = streamReadFloat32(streamId)
+    self.depositedLiters = streamReadFloat32(streamId)
+end
+function BetterContracts.writeUpdateStream(self, streamId, connection, dirtyMask)
+    local fieldPercent, depo = 0., 0.
+    if self.fieldPercentageDone then fieldPercent = self.fieldPercentageDone end
+    if self.depositedLiters then depo = self.depositedLiters end
+    streamWriteFloat32(streamId, fieldPercent)
+    streamWriteFloat32(streamId, depo)
+end
+function BetterContracts.readUpdateStream(self, streamId, timestamp, connection)
+    self.fieldPercentageDone = streamReadFloat32(streamId)
+    self.depositedLiters = streamReadFloat32(streamId)
 end

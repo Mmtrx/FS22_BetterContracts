@@ -141,9 +141,9 @@ end
 
 function updateList(frCon)
 	-- if a new mission was created, update our tables, so that we can show the details
-	-- if deleted or taken by another player, postpone refresh to next 15sec update tick
+	-- No:(if deleted or taken by another player, postpone refresh to next 15sec update tick)
 	local self = BetterContracts
-	if #g_missionManager:getMissionsList(g_currentMission:getFarmId()) > self.numCont then
+	if #g_missionManager:getMissionsList(g_currentMission:getFarmId()) ~= self.numCont then
 		self:refresh()
 	end
 end
@@ -155,7 +155,7 @@ function populateCell(frCon, list, sect, index, cell)
 		return
 	end
 	local id = frCon.sectionContracts[sect].contracts[index].mission.id
-	if IdToCont[id] == nil or IdToCont[id][2] == nil then
+	if self.IdToCont[id] == nil or self.IdToCont[id][2] == nil then
 		debugPrint("populateCell(): empty IdToCont for id %s. sect/index: %s/%s",
 			id, sect,index)
 	end
@@ -297,10 +297,15 @@ function updateFarmersBox(frCon, field, npc)
 
 		if active then
 			self.my.line3:setText(g_i18n:getText("SC_worked"))
-			self.my.etime:setText(string.format("%.1f%%", m:getFieldCompletion() * 100))
+			self.my.etime:setText(string.format("%.1f%%", m.fieldPercentageDone * 100))
+			--self.my.etime:setText(string.format("%.1f%%", m:getFieldCompletion() * 100))
 
-			local delivered, togo = MathUtil.round(m.depositedLiters / 100) * 100,
-									MathUtil.round((c.deliver - m.depositedLiters) / 100) * 100
+			-- get depositedLiters from server (how?)
+			local depo = 1000 		-- just interim value
+			if m.depositedLiters then depo = m.depositedLiters end
+
+			local delivered, togo = MathUtil.round(depo / 100) * 100,
+									MathUtil.round((c.deliver - depo) / 100) * 100
 			text4a, text4b = g_i18n:getText("SC_delivered"), g_i18n:getText("SC_togo")
 			local val4a, val4b = g_i18n:formatVolume(delivered), g_i18n:formatVolume(togo)
 			if cat == 4 then
