@@ -1,6 +1,9 @@
 # FS22_BetterContracts
-Farming Simulator mod to enhance contracts handling
 
+[Download latest release](https://github.com/Mmtrx/FS22_BetterContracts/releases/latest)
+
+Farming Simulator mod to enhance contracts handling
+---
 "Should I take those three fertilizer missions, or rather the 2.3 ha potato harvesting contract?" "How much liquid fertilizer will I need for this job?" If you ever asked yourself questions like these, this mod will help to find the answers. It improves the contract system, both in singleplayer and multiplayer.
 - The maximum number and the amount of missions generated is automatically adjusted to the number of fields on the map.
 - You can immediately generate new missions through the "New Contracts" button, or delete all of them with the "Clear Contracts" button.
