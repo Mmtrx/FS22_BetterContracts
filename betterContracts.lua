@@ -11,6 +11,7 @@
 --  v1.2.0.0    18.01.2022  (Mmtrx) adapt for FS22
 --  v1.2.0.0.rc 22.01.2022  (Mmtrx) release candidate. Gui optics in blue
 --  v1.2.0.1.rc 30.01.2022  (Mmtrx) enabled MP
+--  v1.2.1.0    09.02.2022  (Mmtrx) support for FS22_SuppyTransportontracts by GtX
 --=======================================================================================================
 InitRoyalUtility(Utils.getFilename("lib/utility/", g_currentModDirectory))
 InitRoyalMod(Utils.getFilename("lib/rmod/", g_currentModDirectory))
@@ -19,6 +20,14 @@ SC = {
     LIQUIDFERT = 2,
     HERBICIDE = 3,
     SEEDS = 4,
+    -- my mission cats:
+    HARVEST = 1,
+    SPREAD = 2,
+    SIMPLE = 3,
+    BALING = 4,
+    TRANSP = 5,
+    SUPPLY = 6,
+    -- Gui controls:
     CONTROLS = {
         npcbox = "npcbox",
         sortbox = "sortbox",
@@ -84,12 +93,13 @@ function BetterContracts:initialize()
         9 transport
         10 supplyTransport (Mod)
     ]]
-    self.typeToCat = {4, 3, 3, 2, 1, 3, 2, 2, 5, 5} -- mission.type to self category: harvest, spread, simple, mow, transport
+    self.typeToCat = {4, 3, 3, 2, 1, 3, 2, 2, 5, 6} -- mission.type to self category: harvest, spread, simple, mow, transport
     self.harvest = {} -- harvest missions       1
     self.spread = {} -- sow, spray, fertilize   2
     self.simple = {} -- plow, cultivate, weed   3
     self.baling = {} -- mow/ bale               4
-    self.transp = {} -- transport, supplyTrans  5
+    self.transp = {} -- transport               5
+    self.supply = {} -- supplyTransport mod     6
     self.IdToCont = {} -- to find a contract from its mission id
     self.fieldToMission = {} -- to find a contract from its field number
     self.catHarvest = "BEETHARVESTING BEETVEHICLES CORNHEADERS COTTONVEHICLES CUTTERS POTATOHARVESTING POTATOVEHICLES SUGARCANEHARVESTING SUGARCANEVEHICLES"
@@ -113,6 +123,9 @@ function BetterContracts:initialize()
     end
     -- to load own mission vehicles:
     Utility.overwrittenFunction(MissionManager, "loadMissionVehicles", BetterContracts.loadMissionVehicles)
+    -- fix AbstractMission: 
+    Utility.overwrittenFunction(AbstractMission, "new", abstractMissionNew)
+
     -- get addtnl mission vales from server:
     Utility.appendedFunction(HarvestMission, "writeStream", BetterContracts.writeStream)
     Utility.appendedFunction(HarvestMission, "readStream", BetterContracts.readStream)
@@ -195,7 +208,7 @@ function BetterContracts:onPostLoadMap(mapNode, mapFile)
     self.frCon = self.gameMenu.pageContracts
 
     -- check mission types
-    for i = #self.typeToCat, g_missionManager.nextMissionTypeId -1 do
+    for i = #self.typeToCat+1, g_missionManager.nextMissionTypeId -1 do
         Logging.warning("[%s] ignoring new mission type %s (id %s)", self.name, 
                 g_missionManager.missionTypes[i].name, i)
     end
@@ -318,7 +331,7 @@ function BetterContracts:addMission(m)
     local dim, wid, hei, dura, wwidth, speed, vtype, vname, vfound
     local cat = self.typeToCat[m.type.typeId]
     local rew = m:getReward()
-    if cat < 5 then
+    if cat < SC.TRANSP then
         dim = self:getDimensions(m.field, false)
         wid, hei = dim.width, dim.height
         if wid > hei then
@@ -330,7 +343,7 @@ function BetterContracts:addMission(m)
         -- estimate mission duration:
         if vfound and wwidth > 0  then
             _, dura = self:estWorktime(wid, hei, wwidth, speed)
-        elseif not vfound or cat~=2 then
+        elseif not vfound or cat~=SC.SPREAD then
             Logging.warning("[%s]:addMission(): problem with vehicles for contract '%s field %s'.", 
                 self.name, m.type.name, m.field.fieldId)
             local cat1 = cat == 1 and 1 or 0 
@@ -338,15 +351,14 @@ function BetterContracts:addMission(m)
             -- cat/index: 1/6, 3/7, 4/8 = harvest, plow, mow
             _,dura = self:estWorktime(wid, hei, self.WORKWIDTH[4+cat+cat1], self.SPEEDLIMS[4+cat+cat1])
         end
-        if (cat==1 or cat==4) and m.expectedLiters == nil then
-            -- need to test mow-bale missions 
+        if (cat==SC.HARVEST or cat==SC.BALING) and m.expectedLiters == nil then
             Logging.warning("[%s]:addMission(): contract '%s %s on field %s' has no expectedLiters.", 
                 self.name, m.type.name, self.ft[m.fillType].title, m.field.fieldId)
             m.expectedLiters = 0 
             return {0, cont}
         end 
     end
-    if cat == 1 then
+    if cat == SC.HARVEST then
         local keep = math.floor(m.expectedLiters * 0.265)
         local price = self:getFilltypePrice(m)
         local profit = rew + keep * price
@@ -364,10 +376,10 @@ function BetterContracts:addMission(m)
             reward = rew
         }
         table.insert(self.harvest, cont)
-    elseif cat == 2 then
+    elseif cat == SC.SPREAD then
         cont = self:spreadMission(m, wid, hei, wwidth, speed)
         table.insert(self.spread, cont)
-    elseif cat == 3 then
+    elseif cat == SC.SIMPLE then
         cont = {
             miss = m,
             width = wid,
@@ -378,8 +390,9 @@ function BetterContracts:addMission(m)
             reward = rew
         }
         table.insert(self.simple, cont)
-    elseif cat == 4 then
-        local keep = math.floor(m.expectedLiters * 0.2105)
+    elseif cat == SC.BALING then
+        local deliver = math.ceil(m.expectedLiters * 0.7895/(0.8/BaleMission.FILL_SUCCESS_FACTOR))
+        local keep = math.floor(m.expectedLiters - deliver) --can be sold on your own
         local price = self:getFilltypePrice(m)
         local profit = rew + keep * price
         cont = {
@@ -388,7 +401,7 @@ function BetterContracts:addMission(m)
             height = hei,
             worktime = dura * 3, -- dura is just the mow time, adjust for windrowing/ baling
             ftype = self.ft[m.fillType].title,
-            deliver = math.ceil(m.expectedLiters - keep),
+            deliver = deliver,
             keep = keep, --can be sold on your own
             price = price * 1000,
             profit = profit,
@@ -396,12 +409,21 @@ function BetterContracts:addMission(m)
             reward = rew
         }
         table.insert(self.baling, cont)
-    else
+    elseif cat == SC.SUPPLY then    
         cont = {
             miss = m,
-            ftype = self.ft[m.fillType].title or "",    -- set by supplyTransp mission
-            deliver = m.contractLiters or "",           --          ""              --
-            price = m.pricePerLitre * 1000 or "",       --          ""              --
+            worktime = 0,
+            ftype = self.ft[m.fillType].title,
+            deliver = m.contractLiters,
+            price = m.pricePerLitre * 1000,
+            profit =  rew - m.contractLiters * m.pricePerLitre,
+            permin = 0,
+            reward = rew
+        }
+        table.insert(self.transp, cont)
+    else -- cat == SC.TRANSP
+        cont = {
+            miss = m,
             profit = rew,
             permin = 0,
             reward = rew
@@ -428,4 +450,10 @@ end
 function BetterContracts.readUpdateStream(self, streamId, timestamp, connection)
     self.fieldPercentageDone = streamReadFloat32(streamId)
     self.depositedLiters = streamReadFloat32(streamId)
+end
+function abstractMissionNew(isServer, superf, isClient, customMt )
+    local self = superf(isServer, isClient, customMt)
+    self.mission = g_currentMission 
+    -- Fix for error in AbstractMission 'self.mission' still missing in Version 1.2.0.2
+    return self
 end

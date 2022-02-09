@@ -17,11 +17,13 @@
 		<text name="SC_sort" text="Sort." />
 
 		<text name="SC_field" text="Feld %d / %s" />
+		<text name="SC_fillType" text="Warentyp:" />
 		<text name="SC_worked" text="Feld bearbeitet:" />
 		<text name="SC_delivered" text="Abgeliefert:" />
 		<text name="SC_deliver" text="Zu liefern:" />
 		<text name="SC_keep" text="Eigenanteil:" />
 		<text name="SC_profit" text="Erlös Eigenanteil:" />
+		<text name="SC_profitSupply" text="Profit:" />
 		<text name="SC_usage" text="Verbrauch:" />
 		<text name="SC_cost" text="Materialkosten:" />
 		<text name="SC_togo" text="Fehlt noch:" />

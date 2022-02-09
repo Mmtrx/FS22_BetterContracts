@@ -162,7 +162,7 @@ function populateCell(frCon, list, sect, index, cell)
 	local prof = self.IdToCont[id] and self.IdToCont[id][2] and self.IdToCont[id][2].profit or 0
 	local cat = self.IdToCont[id] and self.IdToCont[id][1] or 0
 	local showProf = false
-	if cat==1 or cat==2 or cat==4 then 
+	if cat==SC.HARVEST or cat==SC.SPREAD or cat==SC.BALING then 
 	-- only for harvest, spread, mow contracts
 		local reward = cell:getAttribute("reward")
 		local rewtext = reward:getText()
@@ -246,16 +246,7 @@ function updateFarmersBox(frCon, field, npc)
 	if not self.isOn then
 		return
 	end
-	if field == nil then -- it's a transport/snow mission
-		self.my.npcbox:setVisible(false)
-		return
-	end
-	self.my.npcbox:setVisible(true)
-
-	local text4a, text4b
-	local text = string.format(g_i18n:getText("SC_field"), field.fieldId, g_i18n:formatArea(field.fieldArea, 2))
-	self.my.field:setText(text)
-
+ 
 	local section, ix = frCon.contractsList:getSelectedPath()
 	local cont, m, con = nil, nil, nil
 	local secCons = frCon.sectionContracts[section]
@@ -274,23 +265,61 @@ function updateFarmersBox(frCon, field, npc)
 	end
 	local cat = con[1]
 	local c = con[2]
+	self.my.npcbox:setVisible(true)
+
+	-- handle non-field missions
+	if cat == SC.TRANSP then 		-- it's a transport/snow mission
+		self.my.npcbox:setVisible(false)
+		return
+	elseif cat == SC.SUPPLY then -- a supplyTransp mission (mod)
+		self.my.field:setText(g_i18n:getText("SC_fillType")) 	-- line 1
+		self.my.filltype:setText(c.ftype)
+    	self.my.widhei:setText("") 			-- line 2
+		self.my.dimen:setText("")
+    	self.my.line3:setText("") 			-- line 3
+		self.my.etime:setText("")
+		if cont.active then
+			self.my.line4a:setText(g_i18n:getText("SC_delivered"))
+			self.my.line4b:setText(g_i18n:getText("SC_togo"))
+			self.my.valu4a:setText(g_i18n:formatVolume(MathUtil.round(m.deliveredLiters,-2)))
+			self.my.valu4b:setText(g_i18n:formatVolume(MathUtil.round(m.contractLiters-m.deliveredLiters,-2)))
+		else
+			self.my.line4a:setText(g_i18n:getText("SC_deliver"))
+			self.my.line4b:setText("")
+			self.my.valu4a:setText(g_i18n:formatVolume(MathUtil.round(m.contractLiters,-2)))
+			self.my.valu4b:setText("")
+		end
+
+		self.my.line5:setText(g_i18n:getText("SC_price")) 
+		self.my.price:setText(g_i18n:formatMoney(c.price))
+		self.my.line6:setText(g_i18n:getText("SC_profitSupply"))
+		self.my.valu6:setText(g_i18n:formatMoney(c.profit))
+    	self.my.ppmin:setText("")
+		self.my.valu7:setText("")
+		return
+	end 
+
+	-- handle field missions
+	if field ~= nil then 
+		local text = string.format(g_i18n:getText("SC_field"), field.fieldId, g_i18n:formatArea(field.fieldArea, 2))
+		self.my.field:setText(text)
+    	self.my.widhei:setText(g_i18n:getText("SC_widhei"))
+    	self.my.ppmin:setText(g_i18n:getText("SC_profpmin"))
+	end
 	local etime = c.worktime
-	if cat == 2 then
+	if cat == SC.SPREAD then
 		etime = c.worktime[c.bestj]
 	end
-	if cat > 4 then
-		return
-	end -- should not happen, since field==nil was already checked
-
 	self.my.dimen:setText(string.format("%s / %s m", g_i18n:formatNumber(c.width), g_i18n:formatNumber(c.height)))
 	self.my.line3:setText(g_i18n:getText("SC_worktim"))
 	self.my.etime:setText(g_i18n:formatMinutes(etime / 60))
 	self.my.valu7:setText(g_i18n:formatMoney(c.permin))
 	self.my.line5:setText(g_i18n:getText("SC_price")) -- will be overwritten if active/ cat 4
-	self.my.line5:setVisible(cat ~= 3) -- price field only for harvest/ spread/ mow contracts
+	self.my.line5:setVisible(cat ~= SC.SIMPLE) -- price field only for harvest/ spread/ mow contracts
 
-	if cat == 1 or cat == 4 then -- harvest / mow contract
+	if cat == SC.HARVEST or cat == SC.BALING then -- harvest / mow contract
 		local active = cont.active
+		local text, text4a, text4b
 		--get current price
 		local price = m.sellPoint:getEffectiveFillTypePrice(m.fillType)
 		self.my.filltype:setText(c.ftype)
@@ -298,17 +327,15 @@ function updateFarmersBox(frCon, field, npc)
 		if active then
 			self.my.line3:setText(g_i18n:getText("SC_worked"))
 			self.my.etime:setText(string.format("%.1f%%", m.fieldPercentageDone * 100))
-			--self.my.etime:setText(string.format("%.1f%%", m:getFieldCompletion() * 100))
 
-			-- get depositedLiters from server (how?)
-			local depo = 1000 		-- just interim value
+			local depo = 1000 		-- just as protection
 			if m.depositedLiters then depo = m.depositedLiters end
 
 			local delivered, togo = MathUtil.round(depo / 100) * 100,
 									MathUtil.round((c.deliver - depo) / 100) * 100
 			text4a, text4b = g_i18n:getText("SC_delivered"), g_i18n:getText("SC_togo")
 			local val4a, val4b = g_i18n:formatVolume(delivered), g_i18n:formatVolume(togo)
-			if cat == 4 then
+			if cat == SC.BALING then
 				local bUnit = g_i18n:getText("unit_bale")
 				bUnit = string.sub(bUnit, 1, 1):upper() .. string.sub(bUnit, 2)
 				text4a = text4a .." (4k "..bUnit..")" 
@@ -331,7 +358,7 @@ function updateFarmersBox(frCon, field, npc)
 		self.my.price:setText(g_i18n:formatMoney(price * 1000))
 		self.my.line6:setText(g_i18n:getText("SC_profit"))
 		self.my.valu6:setText(g_i18n:formatMoney(price * c.keep))
-	elseif cat == 2 then -- spread contract
+	elseif cat == SC.SPREAD then -- spread contract
 		local j = c.bestj
 		self.my.filltype:setText(c.ftype[j])
 		self.my.line4a:setText("")

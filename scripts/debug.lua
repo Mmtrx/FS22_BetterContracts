@@ -121,8 +121,12 @@ function BetterContracts:consoleCommandPrint()
 		print(sep .. "Transp Miss" .. sep)
 		for i, c in ipairs(self.transp) do
 			local rew = c.miss:getReward()
+			local ftype,deliv,price = "", "", 0
+			if self.supplyTransport and c.miss:isa(SupplyTransportMission) then
+				ftype,deliv,price = c.ftype, c.deliver, c.price
+			end	
 			print(string.format("%2s %10.10s %32s %10s %10.10s %10s %21d %10s", i, c.miss.type.name, g_i18n:formatNumber(rew), 
-				"--", c.ftype, c.deliver, MathUtil.round(c.price), g_i18n:formatNumber(rew)))
+				"--", ftype, deliv, MathUtil.round(price), g_i18n:formatNumber(rew)))
 		end
 	end
 end
