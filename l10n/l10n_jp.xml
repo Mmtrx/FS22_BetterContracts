@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<l10n>
+	<texts>
+		<!-- Keys -->
+		<text name = "input_MENU_EXTRA_3" text = "契約詳細表示切替"/>
+		<!-- Gui Buttons -->
+		<text name="bc_new_contracts" text="契約更新" />
+		<text name="bc_clear_contracts" text="契約解除" />
+		<text name="bc_detailsOff" text="詳細非表示" />
+		<text name="bc_detailsOn" text="詳細表示" />
+
+		<!-- Display texts -->
+		<text name="SC_widhei" text="ほ場 横幅 / 縦幅:" />
+		<text name="SC_worktim" text="作業時間:" />
+		<text name="SC_price" text="価格:" />
+		<text name="SC_profpmin" text="利益 / 分:" />
+		<text name="SC_sort" text="表示順" />
+
+		<text name="SC_field" text="畑 %d / %s" />
+		<text name="SC_worked" text="進行度:" />
+		<text name="SC_delivered" text="納品(済):" />
+		<text name="SC_deliver" text="納品量:" />
+		<text name="SC_keep" text="残余量:" />
+		<text name="SC_profit" text="残余利益:" />
+		<text name="SC_usage" text="消費量:" />
+		<text name="SC_cost" text="負担額:" />
+		<text name="SC_togo" text="納品(残):" />
+
+		<!-- Sort button help text -->
+		<text name="SC_sortCat" text="作業別" />
+		<text name="SC_sortProf" text="純利益" />
+		<text name="SC_sortpMin" text="分利益" />
+	</texts>
+</l10n>
