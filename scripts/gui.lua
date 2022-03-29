@@ -10,32 +10,41 @@
 --  v1.1.1.0	24.04.2021  (Mmtrx) gui enhancements: addtl details, sort buttons
 --  v1.1.1.4    07.07.2021  (Mmtrx) add user-defined missionVehicles.xml, allow missions with no vehicles
 --  v1.2.0.0    18.01.2022  (Mmtrx) adapt for FS22
+--  v1.2.2.0    30.03.2022  recognize conflict FS22_Contracts_Plus, 
+--                          details for transport missions
 --=======================================================================================================
 
 -------------------- Gui enhance functions ---------------------------------------------------
-function onFrameOpen(self, superFunc, ...)
-	if BetterContracts.needsRefreshContractsConflictsPrevention then
-		-- this will prevent execution of FS22_RefreshContracts code (because they check for that field to be nil)
-		BetterContracts.gameMenu.refreshContractsElement_Button = 1
-	end
-	superFunc(self, ...)
-	BetterContracts.gameMenu.refreshContractsElement_Button = nil
-
+function onFrameOpen(superself, superFunc, ...)
 	local self = BetterContracts
 	local inGameMenu = self.gameMenu
+	if self.needsRefreshContractsConflictsPrevention then
+		-- this will prevent execution of FS22_RefreshContracts code (because they check for that field to be nil)
+		inGameMenu.refreshContractsElement_Button = 1
+	end
+	if self.preventContractsPlus then
+		-- this will prevent execution of FS22_Contracts_Plus code (because they check for those fields to be nil)
+		inGameMenu.newContractsButton = 1
+		inGameMenu.clearContractsButton = 1
+	end
+	superFunc(superself, ...)
+	inGameMenu.refreshContractsElement_Button = nil
+	inGameMenu.newContractsButton = nil 
+	inGameMenu.clearContractsButton = nil 
+
 	local parent = inGameMenu.menuButton[1].parent
 	-- add new buttons
-	if inGameMenu.newContractsButton == nil then
-		inGameMenu.newContractsButton = inGameMenu.menuButton[1]:clone(parent)
-		inGameMenu.newContractsButton.onClickCallback = onClickNewContractsCallback
-		inGameMenu.newContractsButton:setText(g_i18n:getText("bc_new_contracts"))
-		inGameMenu.newContractsButton:setInputAction("MENU_EXTRA_1")
+	if inGameMenu.newButton == nil then
+		inGameMenu.newButton = inGameMenu.menuButton[1]:clone(parent)
+		inGameMenu.newButton.onClickCallback = onClickNewContractsCallback
+		inGameMenu.newButton:setText(g_i18n:getText("bc_new_contracts"))
+		inGameMenu.newButton:setInputAction("MENU_EXTRA_1")
 	end
-	if inGameMenu.clearContractsButton == nil then
-		inGameMenu.clearContractsButton = inGameMenu.menuButton[1]:clone(parent)
-		inGameMenu.clearContractsButton.onClickCallback = onClickClearContractsCallback
-		inGameMenu.clearContractsButton:setText(g_i18n:getText("bc_clear_contracts"))
-		inGameMenu.clearContractsButton:setInputAction("MENU_EXTRA_2")
+	if inGameMenu.clearButton == nil then
+		inGameMenu.clearButton = inGameMenu.menuButton[1]:clone(parent)
+		inGameMenu.clearButton.onClickCallback = onClickClearContractsCallback
+		inGameMenu.clearButton:setText(g_i18n:getText("bc_clear_contracts"))
+		inGameMenu.clearButton:setInputAction("MENU_EXTRA_2")
 	end
 	if inGameMenu.detailsButton == nil then
 		local button = inGameMenu.menuButton[1]:clone(parent)
@@ -61,8 +70,8 @@ function onFrameClose()
 	local inGameMenu = g_currentMission.inGameMenu
 	for _, button in ipairs(
 		{
-			inGameMenu.newContractsButton,
-			inGameMenu.clearContractsButton,
+			inGameMenu.newButton,
+			inGameMenu.clearButton,
 			inGameMenu.detailsButton
 		}
 	) do
@@ -74,8 +83,8 @@ function onFrameClose()
 	if BetterContracts.eventExtra3 ~= nil then
 		g_inputBinding:removeActionEvent(BetterContracts.eventExtra3)
 	end
-	inGameMenu.newContractsButton = nil
-	inGameMenu.clearContractsButton = nil
+	inGameMenu.newButton = nil
+	inGameMenu.clearButton = nil
 	inGameMenu.detailsButton = nil
 end
 
@@ -83,16 +92,16 @@ function onClickMenuExtra1(inGameMenu, superFunc, ...)
 	if superFunc ~= nil then
 		superFunc(inGameMenu, ...)
 	end
-	if inGameMenu.newContractsButton ~= nil then
-		inGameMenu.newContractsButton.onClickCallback(inGameMenu)
+	if inGameMenu.newButton ~= nil then
+		inGameMenu.newButton.onClickCallback(inGameMenu)
 	end
 end
 function onClickMenuExtra2(inGameMenu, superFunc, ...)
 	if superFunc ~= nil then
 		superFunc(inGameMenu, ...)
 	end
-	if inGameMenu.clearContractsButton ~= nil then
-		inGameMenu.clearContractsButton.onClickCallback(inGameMenu)
+	if inGameMenu.clearButton ~= nil then
+		inGameMenu.clearButton.onClickCallback(inGameMenu)
 	end
 end
 function onClickMenuExtra3(inGameMenu)
@@ -268,34 +277,50 @@ function updateFarmersBox(frCon, field, npc)
 	self.my.npcbox:setVisible(true)
 
 	-- handle non-field missions
-	if cat == SC.TRANSP then 		-- it's a transport/snow mission
-		self.my.npcbox:setVisible(false)
+	self.my.field:setText(g_i18n:getText("SC_fillType")) 	-- line 1
+	self.my.filltype:setText(c.ftype)
+	self.my.widhei:setText("") 			-- line 2
+	self.my.dimen:setText("")
+	self.my.line3:setText("") 			-- line 3
+	self.my.etime:setText("")
+	if cont.active then
+		self.my.line4a:setText(g_i18n:getText("SC_delivered"))
+		self.my.line4b:setText(g_i18n:getText("SC_togo"))
+	else
+		self.my.line4a:setText(g_i18n:getText("SC_deliver"))
+		self.my.line4b:setText("")
+		self.my.valu4b:setText("")
+	end
+	self.my.line6:setText(g_i18n:getText("SC_profitSupply"))
+	self.my.valu6:setText(g_i18n:formatMoney(c.profit))
+	self.my.ppmin:setText("")
+	self.my.valu7:setText("")
+
+	if cat == SC.TRANSP then 		-- it's a transport mission (maybe mod)
+		if cont.active then
+			self.my.valu4a:setText(string.format("%d Pal.", m.numFinished))
+			self.my.valu4b:setText(string.format("%d Pal.",m.numObjects - m.numFinished))
+		else
+			self.my.valu4a:setText(string.format("%d Pal.",m.numObjects))
+			self.my.ppmin:setText(g_i18n:getText("SC_timeleft"))
+			local secLeft =  m.timeLeft / 1000 
+			local hh = math.floor(secLeft / 3600)
+			local mm = (secLeft - 3600*hh) / 60
+			local ss = (mm - math.floor(mm)) *60
+			self.my.valu7:setText(string.format("%02d:%02d:%02d",hh,mm,ss))
+		end
+		self.my.line5:setText("")
+		self.my.price:setText("")
 		return
 	elseif cat == SC.SUPPLY then -- a supplyTransp mission (mod)
-		self.my.field:setText(g_i18n:getText("SC_fillType")) 	-- line 1
-		self.my.filltype:setText(c.ftype)
-    	self.my.widhei:setText("") 			-- line 2
-		self.my.dimen:setText("")
-    	self.my.line3:setText("") 			-- line 3
-		self.my.etime:setText("")
 		if cont.active then
-			self.my.line4a:setText(g_i18n:getText("SC_delivered"))
-			self.my.line4b:setText(g_i18n:getText("SC_togo"))
 			self.my.valu4a:setText(g_i18n:formatVolume(MathUtil.round(m.deliveredLiters,-2)))
 			self.my.valu4b:setText(g_i18n:formatVolume(MathUtil.round(m.contractLiters-m.deliveredLiters,-2)))
 		else
-			self.my.line4a:setText(g_i18n:getText("SC_deliver"))
-			self.my.line4b:setText("")
 			self.my.valu4a:setText(g_i18n:formatVolume(MathUtil.round(m.contractLiters,-2)))
-			self.my.valu4b:setText("")
 		end
-
 		self.my.line5:setText(g_i18n:getText("SC_price")) 
 		self.my.price:setText(g_i18n:formatMoney(c.price))
-		self.my.line6:setText(g_i18n:getText("SC_profitSupply"))
-		self.my.valu6:setText(g_i18n:formatMoney(c.profit))
-    	self.my.ppmin:setText("")
-		self.my.valu7:setText("")
 		return
 	end 
 
@@ -303,8 +328,8 @@ function updateFarmersBox(frCon, field, npc)
 	if field ~= nil then 
 		local text = string.format(g_i18n:getText("SC_field"), field.fieldId, g_i18n:formatArea(field.fieldArea, 2))
 		self.my.field:setText(text)
-    	self.my.widhei:setText(g_i18n:getText("SC_widhei"))
-    	self.my.ppmin:setText(g_i18n:getText("SC_profpmin"))
+		self.my.widhei:setText(g_i18n:getText("SC_widhei"))
+		self.my.ppmin:setText(g_i18n:getText("SC_profpmin"))
 	end
 	local etime = c.worktime
 	if cat == SC.SPREAD then

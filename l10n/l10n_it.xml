@@ -25,6 +25,9 @@
 		<text name="SC_usage" text="Usage:" />
 		<text name="SC_cost" text="Cost of material:" />
 		<text name="SC_togo" text="To go:" />
+		<text name="SC_fillType" text="Type of goods:" />
+		<text name="SC_profitSupply" text="Profit:" />
+		<text name="SC_timeleft" text="Time left:" />
 
 		<!-- Sort button help text -->
 		<text name="SC_sortCat" text="mission type/ fieldnumber" />

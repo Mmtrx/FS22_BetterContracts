@@ -25,6 +25,9 @@
 		<text name="SC_usage" text="Расходовать:" />
 		<text name="SC_cost" text="Стоимость материала:" />
 		<text name="SC_togo" text="Необходимо доставить:" />
+		<text name="SC_fillType" text="Type of goods:" />
+		<text name="SC_profitSupply" text="Profit:" />
+		<text name="SC_timeleft" text="Time left:" />
 
 		<!-- Sort button help text -->
 		<text name="SC_sortCat" text="тип работ/ номер поля" />

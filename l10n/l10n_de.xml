@@ -27,6 +27,7 @@
 		<text name="SC_usage" text="Verbrauch:" />
 		<text name="SC_cost" text="Materialkosten:" />
 		<text name="SC_togo" text="Fehlt noch:" />
+		<text name="SC_timeleft" text="Restzeit:" />
 
 		<!-- Sort button help text -->
 		<text name="SC_sortCat" text="Missionstyp" />

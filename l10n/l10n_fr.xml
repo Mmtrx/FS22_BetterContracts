@@ -25,10 +25,13 @@
 		<text name="SC_usage" text="Utilisation:" />
 		<text name="SC_cost" text="Coûts des équipements:" />
 		<text name="SC_togo" text="A venir:" />
+		<text name="SC_fillType" text="Produit:" />
+		<text name="SC_profitSupply" text="Profit:" />
+		<text name="SC_timeleft" text="Temps restant:" />
 
 		<!-- Sort button help text -->
 		<text name="SC_sortCat" text="Type / champ" />
 		<text name="SC_sortProf" text="Profit net" />
-		<text name="SC_sortpMin" text="profit par minute" />
+		<text name="SC_sortpMin" text="Profit par minute" />
 	</texts>
 </l10n>

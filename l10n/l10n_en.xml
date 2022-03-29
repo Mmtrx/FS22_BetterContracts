@@ -27,8 +27,10 @@
 		<text name="SC_usage" text="Usage:" />
 		<text name="SC_cost" text="Cost of material:" />
 		<text name="SC_togo" text="To go:" />
+		<text name="SC_timeleft" text="Time left:" />
 
 		<!-- Sort button help text -->
+		<text name="SC_sort" text="SORT" />
 		<text name="SC_sortCat" text="mission type" />
 		<text name="SC_sortProf" text="net profit" />
 		<text name="SC_sortpMin" text="profit per minute" />
