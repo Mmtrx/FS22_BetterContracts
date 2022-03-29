@@ -38,7 +38,7 @@
 				<GuiElement type="button" profile="SeeContsortProf" id="sortprof" />
 				<GuiElement type="button" profile="SeeContsortpMin" id="sortpmin" />
 			</GuiElement>
-			<GuiElement type="text" profile="betterContractsLeft" position="5px 0px" text="SORT" debugEnabled="false"/>
+			<GuiElement type="text" profile="betterContractsLeft" position="5px 0px" text="$l10n_SC_sort" debugEnabled="false"/>
 			<GuiElement type="text" profile="betterContractsRight" id="helpsort" size="125px 40px" position="55px 0px" text="" debugEnabled="false"/>
 		</GuiElement>
 	</GuiElement>
