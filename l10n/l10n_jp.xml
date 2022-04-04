@@ -4,6 +4,8 @@
 		<!-- Keys -->
 		<text name = "input_MENU_EXTRA_3" text = "契約詳細表示切替"/>
 		<!-- Gui Buttons -->
+		<text name="bc_hidden" text="Hidden: %d" />
+		<text name="bc_other" text="Other" />
 		<text name="bc_new_contracts" text="契約更新" />
 		<text name="bc_clear_contracts" text="契約解除" />
 		<text name="bc_detailsOff" text="詳細非表示" />

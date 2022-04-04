@@ -14,6 +14,7 @@
 --  v1.2.1.0    09.02.2022  support for FS22_SupplyTransportContracts by GtX
 --  v1.2.2.0    30.03.2022  recognize conflict FS22_Contracts_Plus, adjust harvest keep formulas to FS22 1.3.1
 --                          details for transport missions
+--  v1.2.3.0    04.04.2022  filter contracts per jobtype
 --=======================================================================================================
 InitRoyalUtility(Utils.getFilename("lib/utility/", g_currentModDirectory))
 InitRoyalMod(Utils.getFilename("lib/rmod/", g_currentModDirectory))
@@ -85,7 +86,7 @@ function BetterContracts:initialize()
 	self.SPEEDLIMS = {15,   12,         15,             15,             0,      10,         12,   20} 
 	self.WORKWIDTH = {42,   24,          6,              6,             0,       9,         4.9,   9} 
 	--[[  contract types:
-		1 mow/ bale
+		1 mow_bale
 		2 plow
 		3 cultivate
 		4 sow
@@ -96,23 +97,25 @@ function BetterContracts:initialize()
 		9 transport
 		10 supplyTransport (Mod)
 	]]
-	self.typeToCat = {4, 3, 3, 2, 1, 3, 2, 2, 5, 6} -- mission.type to self category: harvest, spread, simple, mow, transport
-	self.harvest = {} -- harvest missions       1
-	self.spread = {} -- sow, spray, fertilize   2
-	self.simple = {} -- plow, cultivate, weed   3
-	self.baling = {} -- mow/ bale               4
-	self.transp = {} -- transport               5
-	self.supply = {} -- supplyTransport mod     6
+	-- mission.type to BC category: harvest, spread, simple, mow, transp, supply
+	self.typeToCat = {4, 3, 3, 2, 1, 3, 2, 2, 5, 6} 
+	self.harvest = {} -- harvest missions       	1
+	self.spread = {} -- sow, spray, fertilize   	2
+	self.simple = {} -- plow, cultivate, weed   	3
+	self.mow_bale = {} -- mow/ bale             	4
+	self.transp = {} -- transport   				5
+	self.supply = {} -- supplyTransport mod 		6
 	self.IdToCont = {} -- to find a contract from its mission id
 	self.fieldToMission = {} -- to find a contract from its field number
 	self.catHarvest = "BEETHARVESTING BEETVEHICLES CORNHEADERS COTTONVEHICLES CUTTERS POTATOHARVESTING POTATOVEHICLES SUGARCANEHARVESTING SUGARCANEVEHICLES"
 	self.catSpread = "fertilizerspreaders seeders planters sprayers sprayervehicles slurrytanks manurespreaders"
 	self.catSimple = "CULTIVATORS DISCHARROWS PLOWS POWERHARROWS SUBSOILERS WEEDERS"
 	self.isOn = false
-	self.numCont = 0 -- # of contracts in our tables
-	self.my = {} -- will hold my gui element adresses
-	self.sort = 0 -- sorted status: 1 cat, 2 prof, 3 permin
-	self.lastSort = 0 -- last sorted status
+	self.numCont = 0 	-- # of contracts in our tables
+	self.numHidden = 0 	-- # of hidden (filtered) contracts 
+	self.my = {} 		-- will hold my gui element adresses
+	self.sort = 0 		-- sorted status: 1 cat, 2 prof, 3 permin
+	self.lastSort = 0 	-- last sorted status
 	self.buttons = {
 		{"sortcat", g_i18n:getText("SC_sortCat")}, -- {button id, help text}
 		{"sortprof", g_i18n:getText("SC_sortProf")},
@@ -145,7 +148,7 @@ function BetterContracts:initialize()
 	InGameMenuContractsFrame.onFrameClose = Utils.appendedFunction(InGameMenuContractsFrame.onFrameClose, onFrameClose)
 	InGameMenuContractsFrame.updateFarmersBox = Utils.appendedFunction(InGameMenuContractsFrame.updateFarmersBox, updateFarmersBox)
 	InGameMenuContractsFrame.populateCellForItemInSection = Utils.appendedFunction(InGameMenuContractsFrame.populateCellForItemInSection, populateCell)
-	InGameMenuContractsFrame.updateList = Utils.prependedFunction(InGameMenuContractsFrame.updateList, updateList)
+	InGameMenuContractsFrame.updateList = Utils.overwrittenFunction(InGameMenuContractsFrame.updateList, updateList)
 	InGameMenuContractsFrame.sortList = Utils.overwrittenFunction(InGameMenuContractsFrame.sortList, sortList)
 	-- to allow multiple missions:
 	MissionManager.hasFarmReachedMissionLimit =
@@ -242,6 +245,52 @@ function BetterContracts:onPostLoadMap(mapNode, mapFile)
 	for _, name in pairs(SC.CONTROLS) do
 		self.my[name] = self.frCon.farmerBox:getDescendantById(name)
 	end
+
+	-- setup fieldjob types:
+	local fjobs = {
+		mow_bale	= g_i18n:getText("fieldJob_jobType_baling"),
+		cultivate 	= g_i18n:getText("fieldJob_jobType_cultivating"),
+		fertilize 	= g_i18n:getText("fieldJob_jobType_fertilizing"),
+		harvest 	= g_i18n:getText("fieldJob_jobType_harvesting" ),
+		plow   		= g_i18n:getText("fieldJob_jobType_plowing"),
+		sow     	= g_i18n:getText("fieldJob_jobType_sowing"),
+		spray   	= g_i18n:getText("fieldJob_jobType_spraying"),
+		weed    	= g_i18n:getText("fieldJob_jobType_weeding"),
+	}
+	self.fieldjobs = {}
+	for i = 1, 8 do 
+		local type = g_missionManager.missionTypes[i] 
+		table.insert(self.fieldjobs, {type.typeId, type.name, fjobs[type.name]})
+	end
+	table.sort(self.fieldjobs, function(a,b)
+				return a[3] < b[3]
+				end)
+	self.fieldjobs[9] = {9,"transport", g_i18n:getText("bc_other")}
+	-- initial state: show all types
+	self.filterState = {
+		mow_bale	= true,
+		cultivate 	= true,
+		fertilize 	= true,
+		harvest 	= true,
+		plow   		= true,
+		sow     	= true,
+		spray   	= true,
+		weed    	= true,
+		transport 	= true,
+		supplyTransport = true
+	}
+	-- set controls for filterbox:
+	self.my.filterlayout = self.frCon.contractsContainer:getDescendantById("filterlayout")
+	self.my.hidden = self.frCon.contractsContainer:getDescendantById("hidden")
+	for i, name in ipairs({"fb1","fb2","fb3",
+		"fb4","fb5","fb6","fb7","fb8","fb9"}) do
+		self.my[name] = self.frCon.contractsContainer:getDescendantById(name)
+		local button = self.my[name]
+		button.onClickCallback = onClickFilterButton
+		button.pressed = true 
+		-- set button text
+		button.elements[1]:setText(self.fieldjobs[i][3])
+	end
 	-- set callbacks for our 3 sort buttons
 	for _, name in ipairs({"sortcat", "sortprof", "sortpmin"}) do
 		self.my[name].onClickCallback = onClickSortButton
@@ -250,9 +299,9 @@ function BetterContracts:onPostLoadMap(mapNode, mapFile)
 		self.my[name].onFocusCallback = onHighSortButton
 		self.my[name].onLeaveCallback = onRemoveSortButton
 	end
-	-- set static texts: "SORT"
-	self.my.sort:setText(g_i18n:getText("SC_sort"))
 
+	self.my.filterlayout:setVisible(true)
+	self.my.hidden:setVisible(false)
 	self.my.npcbox:setVisible(false)
 	self.my.sortbox:setVisible(false)
 	self.initialized = true
@@ -277,17 +326,33 @@ function BetterContracts:loadGUI(canLoad, guiPath)
 		else
 			canLoad = false
 		end
+		local xmlFile, layout 
 		-- load "SCGui.xml"
 		fname = guiPath .. "SCGui.xml"
 		if canLoad and fileExists(fname) then
-			local xmlFile = loadXMLFile("Temp", fname)
+			xmlFile = loadXMLFile("Temp", fname)
 			local fbox = self.frCon.farmerBox
 			g_gui:loadGuiRec(xmlFile, "GUI", fbox, self.frCon)
-			local layout = fbox:getDescendantById("layout")
+			layout = fbox:getDescendantById("layout")
 			layout:invalidateLayout(true) -- adjust sort buttons
 			fbox:applyScreenAlignment()
 			fbox:updateAbsolutePosition()
 			fbox:onGuiSetupFinished() -- connect the tooltip elements
+			delete(xmlFile)
+		else
+			canLoad = false
+			Logging.error("[GuiLoader %s]  Required file '%s' could not be found!", self.name, fname)
+		end
+		-- load "filterGui.xml"
+		fname = guiPath .. "filterGui.xml"
+		if canLoad and fileExists(fname) then
+			xmlFile = loadXMLFile("Temp", fname)
+			local cont = self.frCon.contractsContainer
+			g_gui:loadGuiRec(xmlFile, "GUI", cont, self.frCon)
+			layout = cont:getDescendantById("filterlayout")
+			cont:applyScreenAlignment()
+			cont:updateAbsolutePosition()
+			layout:invalidateLayout(true) -- adjust filter buttons
 			delete(xmlFile)
 		else
 			canLoad = false
@@ -298,7 +363,8 @@ function BetterContracts:loadGUI(canLoad, guiPath)
 end
 function BetterContracts:refresh()
 	-- refresh our contract tables. Called by onFrameOpen/updateList, and every 15 sec by self:onUpdate
-	self.harvest, self.spread, self.simple, self.baling, self.transp = {}, {}, {}, {}, {}
+	self.harvest, self.spread, self.simple, self.mow_bale, self.transp, self.supply =
+		 {}, {}, {}, {}, {}, {}
 	self.IdToCont, self.fieldToMission = {}, {}
 	local list = g_missionManager:getMissionsList(g_currentMission:getFarmId())
 	local res = {}
@@ -409,7 +475,7 @@ function BetterContracts:addMission(m)
 			permin = profit / dura / 3 * 60,
 			reward = rew
 		}
-		table.insert(self.baling, cont)
+		table.insert(self.mow_bale, cont)
 	elseif cat == SC.SUPPLY then    
 		cont = {
 			miss = m,

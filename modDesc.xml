@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <modDesc descVersion="64">
 	<author>Mmtrx</author>
-	<version>1.2.2.0</version>
+	<version>1.2.3.0</version>
 	<title>
 		<en>Better Contracts</en>
 	</title>
@@ -23,6 +23,9 @@
 - With the "Details" button you can toggle on/ off the display of additional contract information. Like cost estimates for usage material as fertilizer, herbicide, or seeds. For harvest and baling contracts, it shows the minimum amount to be delivered, and the amount that you can keep (and sell). From this it calculates the total profit value for a contract, i.e. reward minus cost for fertilize/ spray/ sow contracts, and reward plus value of kept harvest for harvest/ baling contracts. It even estimates the time you will probably need for total completion of the job, by taking into account the work speed and work width of the appropriate leasing vehicles/ tools that are offered with the contract.
 
 Disclaimer: All values shown in details display are ESTIMATES. You should not take them absolutely, but rather as an indication of what contracts to prefer among others.
+
+Changelog v1.2.3.0:
+- Added display filter function for contracts list 
 
 Changelog v1.2.2.0:
 - Adjusted calculation of keep / deliver values for harvest / baling contracts
@@ -47,6 +50,9 @@ Changelog v1.2.2.0:
 - Mit dem "Details" Button kann die Anzeige der zusätzlichen Vertragsdetails ein- und ausgeschaltet werden. Z.B. die geschätzten Kosten des Verbrauchsmaterials (Dünger, Pflanzenschutzmittel, Saatgut). Bei Ernte- und Gras-Missionen wird die abzuliefernde Mindestmenge angezeigt, sowie die Erntemenge, die Sie behalten (und verkaufen) können. Daraus ermittelt der Mod den Gesamtertrag der Mission, also Belohnung minus Kosten für Dünge-, Spritz-, und Sähen-Verträge; und Belohnung plus Wert der behaltenen Erntemenge bei den Ernte- und Gras-Verträgen. Er schätzt sogar die Gesamtzeit, die Sie für die Erledigung des Auftrags benötigen werden, und berücksichtigt dafür Arbeitsgeschwindigkeit und Arbeitsbreite der entsprechenden Leasing-Geräte, die für den Vertrag angeboten werden.
 
 Warnung: Alle in der Detailanzeige angegebenen Werte sind GESCHÄTZT. Sie sollten sie also nicht als absolute Zahlen verstehen, sondern als Hinweis, welche Verträge vielleicht anderen vorzuziehen sind.
+
+Changelog v1.2.3.0:
+- Anzeigefilter für die Vertragsliste hinzugefügt 
 
 Changelog v1.2.2.0:
 - Berechnung der Mindestliefer- und Eigenmengen angepasst bei Ernte- und Gras-Verträgen
@@ -73,6 +79,9 @@ Ce mod permet d'améliorer le système de contrat, à la fois en solo et multijo
 
 Avertissement: toutes les valeurs indiquées dans l'affichage détaillé sont des ESTIMATIONS. Il ne faut donc pas les considérer comme des chiffres absolus, mais plutôt comme une indication des contrats qui pourraient être préférés à d'autres.
 
+Changelog v1.2.3.0:
+- Ajout d'une fonction de filtre d'affichage pour la liste des contrats 
+
 Changelog v1.2.2.0:
 - Calcul ajusté des valeurs de conservation et de livraison pour les contrats de récolte et de mise en balles
 - Ajout de la prévention des conflits avec d'autres mods
@@ -96,6 +105,9 @@ Changelog v1.2.2.0:
 - Добавлено много новых комбинаций техники для контрактов
 
 Внимание: Все значения, указанные на подробном дисплее, являются ИСКЛЮЧИТЕЛЬНЫМИ. Поэтому не следует воспринимать их как абсолютные цифры, а как указание на то, какие контракты могут быть предпочтительнее других.
+
+Changelog v1.2.3.0:
+- Added display filter function for contracts list 
 
 Changelog v1.2.2.0:
 - Adjusted calculation of keep / deliver values for harvest / baling contracts

@@ -4,6 +4,8 @@
 		<!-- Keys -->
 		<text name = "input_MENU_EXTRA_3" text = "Better Contracts: Détails on/off"/>
 		<!-- Gui Buttons -->
+		<text name="bc_hidden" text="Hidden: %d" />
+		<text name="bc_other" text="Other" />
 		<text name="bc_new_contracts" text="Nuovi Contratti" />
 		<text name="bc_clear_contracts" text="Pulisci lista" />
 		<text name="bc_detailsOff" text="Details off" />

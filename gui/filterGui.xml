@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!--=====================================================================================================
+	BetterContracts GUI additions
+	Purpose:	Enhance ingame contracts menu with filterbox
+	Author:		Mmtrx		
+	Changelog:
+	 v1.2.0.1	29.03.2022	initial beta
+	 v1.2.3.0   04.04.2022  filter contracts per jobtype
+======================================================================================================-->
+<GUI name="bc_filterbox">
+	<!-- filter buttons -->
+	<GuiElement type="boxLayout" profile="myFilterOptionPage" id="filterlayout" size="1186px 46px" position="212px 410px" debugEnabled="false">
+		<GuiElement type="button" profile="myFilterDynamicButton" id="fb1" onClick="" >
+			<GuiElement type="text" profile="myFilterDynamicText" />
+		</GuiElement>
+		<GuiElement type="button" profile="myFilterDynamicButtonAlt" id="fb2"  >
+			<GuiElement type="text" profile="myFilterDynamicText" />
+		</GuiElement>
+		<GuiElement type="button" profile="myFilterDynamicButton" id="fb3"  >
+			<GuiElement type="text" profile="myFilterDynamicText" />
+		</GuiElement>
+		<GuiElement type="button" profile="myFilterDynamicButtonAlt" id="fb4"  >
+			<GuiElement type="text" profile="myFilterDynamicText" />
+		</GuiElement>
+		<GuiElement type="button" profile="myFilterDynamicButton" id="fb5"  >
+			<GuiElement type="text" profile="myFilterDynamicText" />
+		</GuiElement>
+		<GuiElement type="button" profile="myFilterDynamicButtonAlt" id="fb6"  >
+			<GuiElement type="text" profile="myFilterDynamicText" />
+		</GuiElement>
+		<GuiElement type="button" profile="myFilterDynamicButton" id="fb7"  >
+			<GuiElement type="text" profile="myFilterDynamicText" />
+		</GuiElement>
+		<GuiElement type="button" profile="myFilterDynamicButtonAlt" id="fb8"  >
+			<GuiElement type="text" profile="myFilterDynamicText" />
+		</GuiElement>
+		<GuiElement type="button" profile="myFilterDynamicButton" id="fb9"  >
+			<GuiElement type="text" profile="myFilterDynamicText" text="Other"/>
+		</GuiElement>
+	</GuiElement>
+	<!-- number hidden contracts (anchor middleLeft)-->
+	<GuiElement type="text" profile="myFilterDynamicTextInactive" id="hidden" size="140px 40px" position="0px -398px" anchors="0 0 0.5 0.5" textAlignment="left" />
+</GUI>

@@ -12,6 +12,7 @@
 --  v1.2.0.0    18.01.2022  (Mmtrx) adapt for FS22
 --  v1.2.2.0    30.03.2022  recognize conflict FS22_Contracts_Plus, 
 --                          details for transport missions
+--  v1.2.3.0    04.04.2022  filter contracts per jobtype
 --=======================================================================================================
 
 -------------------- Gui enhance functions ---------------------------------------------------
@@ -31,6 +32,7 @@ function onFrameOpen(superself, superFunc, ...)
 	inGameMenu.refreshContractsElement_Button = nil
 	inGameMenu.newContractsButton = nil 
 	inGameMenu.clearContractsButton = nil 
+	FocusManager:unsetFocus(self.frCon.contractsList)  -- to allow focus movement
 
 	local parent = inGameMenu.menuButton[1].parent
 	-- add new buttons
@@ -148,13 +150,89 @@ function detailsButtonCallback(inGameMenu)
 	frCon:updateDetailContents(s, i)
 end
 
-function updateList(frCon)
-	-- if a new mission was created, update our tables, so that we can show the details
-	-- No:(if deleted or taken by another player, postpone refresh to next 15sec update tick)
+function makeCon(m)
+	local missionInfo = m:getData()
+	return {
+		mission = m,
+		active = m.status == AbstractMission.STATUS_RUNNING,
+		finished = m.status == AbstractMission.STATUS_FINISHED,
+		possible = m.status == AbstractMission.STATUS_STOPPED,
+		jobType = missionInfo.jobType
+	}
+end
+function updateList(frCon,superFunc)
+	-- complete overwrite, to handle filterbutton settings 
+	-- called from messageCenter on mission change events (start,dismiss,finish),
+	--  mission generated / deleted
 	local self = BetterContracts
-	if #g_missionManager:getMissionsList(g_currentMission:getFarmId()) ~= self.numCont then
+	local list = g_missionManager:getMissionsList(g_currentMission:getFarmId())
+	local numCont = #list 
+	local hasMissions = numCont ~= 0
+	if  numCont ~= self.numCont then
+		-- update our own mission type tables, so that we can show the details
 		self:refresh()
 	end
+	frCon.contractsListBox:setVisible(hasMissions)
+	frCon.detailsBox:setVisible(hasMissions)
+	frCon.noContractsBox:setVisible(not hasMissions)
+
+	frCon.contracts = {}
+	self.numHidden = 0 
+	for _, m in ipairs(list) do
+		local nofilter = m.status == AbstractMission.STATUS_RUNNING or 
+						m.status == AbstractMission.STATUS_FINISHED
+		if nofilter or self.filterState[m.type.name] then 
+			table.insert(frCon.contracts, makeCon(m))
+		else
+			self.numHidden = self.numHidden +1
+		end
+	end
+	frCon:sortList()
+	frCon.contractsList:reloadData()
+	self.my.hidden:setText(string.format(g_i18n:getText("bc_hidden"),self.numHidden))
+	self.my.hidden:setVisible(self.numHidden > 0)
+end
+function filterList(typeId, show)
+	-- called when a filterbutton was clicked. Gui contractsFrame is up, i.e.
+	--  contracts list is already there. Needs some adjustments only 
+	local self = BetterContracts
+	local frCon = self.frCon
+	local mycats = {"harvest", "spread", "simple","mow_bale","transp", "supply"}
+	local mycat = mycats[self.typeToCat[typeId]]
+	local type = g_missionManager:getMissionTypeById(typeId)
+	local nofilter, multi  
+	debugPrint("*filterList - show: %s, mycat: %s, type.name %s",
+		show, mycat, type.name)
+	if show then
+		-- re-insert filtered contracts:
+		for _, c in ipairs(self[mycat]) do
+			nofilter = c.miss.status == AbstractMission.STATUS_RUNNING or 
+						c.miss.status == AbstractMission.STATUS_FINISHED
+			-- harvest/mow/transp lists contain only one fieldjob type:
+			multi = mycat=="simple" or mycat=="spread"
+			if not nofilter and (not multi or c.miss.type == type) then 
+				table.insert(frCon.contracts, makeCon(c.miss))
+				self.numHidden = self.numHidden -1
+			end
+		end
+	else
+	-- remove filtered-off contracts:
+		local remove = {}
+		for _, c in ipairs(frCon.contracts) do
+			nofilter = c.active or c.finished  
+			if not nofilter and c.mission.type.typeId == typeId then 
+				table.insert(remove, c)
+			end
+		end
+		for _, c in ipairs(remove) do 
+			table.removeElement(frCon.contracts, c)
+		end
+		self.numHidden = self.numHidden + #remove
+	end
+	frCon:sortList()
+	frCon.contractsList:reloadData()
+	self.my.hidden:setText(string.format(g_i18n:getText("bc_hidden"),self.numHidden))
+	self.my.hidden:setVisible(self.numHidden > 0)
 end
 function populateCell(frCon, list, sect, index, cell)
 	local profit = cell:getAttribute("profit")
@@ -433,6 +511,27 @@ function BetterContracts:radioButton(st)
 	self.my[self.buttons[st][1]]:applyProfile(prof.active[st]) -- set this Button Active
 	self.my[self.buttons[a][1]]:applyProfile(prof.std[a]) -- reset the other 2
 	self.my[self.buttons[b][1]]:applyProfile(prof.std[b])
+end
+function onClickFilterButton(frCon, button)
+	local self = BetterContracts
+	local index = tonumber(button.id:sub(-1))
+	local typeId = self.fieldjobs[index][1]
+	local type   = self.fieldjobs[index][2]
+	debugPrint("*** Filter button %s: state %s, type %d %s", button.id, 
+		button.pressed, typeId, type)
+	button.pressed = not button.pressed 
+	self.filterState[type] = button.pressed
+
+	local prof = "myFilterDynamicTextInactive"
+	if button.pressed then prof = "myFilterDynamicText" end
+	button.elements[1]:applyProfile(prof)
+
+	filterList(typeId, button.pressed)
+	-- if button "Other" clicked:
+	if self.supplyTransport and typeId == 9 then -- also handle type 10 supplyTransport:
+		self.filterState.supplyTransport = button.pressed
+		filterList(10, button.pressed)
+	end		
 end
 function onClickSortButton(frCon, button)
 	local self, n = BetterContracts, 0
