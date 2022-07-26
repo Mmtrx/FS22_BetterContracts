@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<modDesc descVersion="64">
+<modDesc descVersion="67">
 	<author>Mmtrx</author>
-	<version>1.2.3.0</version>
+	<version>1.2.3.1</version>
 	<title>
 		<en>Better Contracts</en>
 	</title>
@@ -124,7 +124,6 @@ Changelog v1.2.2.0:
 		<sourceFile filename="betterContracts.lua" />
 		<sourceFile filename="scripts/betterContractsNewEvent.lua" />
 		<sourceFile filename="scripts/betterContractsClearEvent.lua" />
-		<sourceFile filename="scripts/missionManagerFix.lua" />
 		<sourceFile filename="scripts/missionVehicles.lua" />
 		<sourceFile filename="scripts/debug.lua" />
 		<sourceFile filename="scripts/gui.lua" />

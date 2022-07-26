@@ -10,16 +10,10 @@
 --  v1.1.0.3    24.04.2021  (Mmtrx) gui enhancements: addtl details, sort buttons
 --  v1.1.0.4    07.07.2021  (Mmtrx) add user-defined missionVehicles.xml, allow missions with no vehicles
 --  v1.2.0.0    18.01.2022  (Mmtrx) adapt for FS22
+--   		    13.04.2022  moved restartGame() to DebugCommands
 --=======================================================================================================
 
 -------------------- development helper functions ---------------------------------------------------
-function BetterContracts:restartGame(savegameId)
-	if not g_server then return end
-	local gameId = savegameId or "1"
-	if tonumber(gameId) and tonumber(gameId) < 11 then
-		restartApplication(true, " -cheats -autoStartSavegameId "..gameId)
-	end
-end
 function BetterContracts:consoleCommandPrint()
 	-- print table of current missions
 	local sep = string.rep("-", 45)

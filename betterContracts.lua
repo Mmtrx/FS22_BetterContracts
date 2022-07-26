@@ -15,6 +15,8 @@
 --  v1.2.2.0    30.03.2022  recognize conflict FS22_Contracts_Plus, adjust harvest keep formulas to FS22 1.3.1
 --                          details for transport missions
 --  v1.2.3.0    04.04.2022  filter contracts per jobtype
+--   		    04.05.2022  moved restartGame() to DebugCommands. MaxMissions 80
+--  v1.2.3.1    26.07.2022  add NPCHarvest to fix harvest contracts
 --=======================================================================================================
 InitRoyalUtility(Utils.getFilename("lib/utility/", g_currentModDirectory))
 InitRoyalMod(Utils.getFilename("lib/rmod/", g_currentModDirectory))
@@ -67,14 +69,14 @@ function debugPrint(text, ...)
 	end
 end
 function BetterContracts:initialize()
-	self.modSettings= string.sub(g_modsDirectory,1,-3) .. "Settings/"
+	debugPrint("[%s] initialize(): %s", self.name,self.initialized)
+	if self.initialized ~= nil then return end -- run only once
 	-- check for debug switch in modSettings/
+	self.modSettings= getUserProfileAppPath().."modSettings/"
 	if not self.debug and      
 		fileExists(self.modSettings.."BetterContracts.debug") then
 		self.debug = true 
 	end
-	debugPrint("[%s] initialize(): %s", self.name,self.initialized)
-	if self.initialized ~= nil then return end -- run only once
 	g_missionManager.missionMapNumChannels = 6
 	self.missionUpdTimeout = 15000
 	self.missionUpdTimer = 0 -- will also update on frame open of contracts page
@@ -136,6 +138,9 @@ function BetterContracts:initialize()
 	-- fix AbstractMission: 
 	Utility.overwrittenFunction(AbstractMission, "new", abstractMissionNew)
 
+	-- fix Harvest NPC Mission: 
+	Utility.overwrittenFunction(FieldManager, "updateNPCField", NPCHarvest)
+
 	-- get addtnl mission values from server:
 	Utility.appendedFunction(HarvestMission, "writeStream", BetterContracts.writeStream)
 	Utility.appendedFunction(HarvestMission, "readStream", BetterContracts.readStream)
@@ -157,7 +162,6 @@ function BetterContracts:initialize()
 			)
 	if self.debug then
 		addConsoleCommand("printBetterContracts", "Print detail stats for all available missions.", "consoleCommandPrint", self)
-		addConsoleCommand("restartGame", 'Restart my savegame [savegameId]', 'restartGame', self)
 		addConsoleCommand("gsFieldGenerateMission", "Force generating a new mission for given field", "consoleGenerateFieldMission", g_missionManager)
 		addConsoleCommand("gsMissionLoadAllVehicles", "Loading and unloading all field mission vehicles", "consoleLoadAllFieldMissionVehicles", g_missionManager)
 		addConsoleCommand("gsMissionHarvestField", "Harvest a field and print the liters", "consoleHarvestField", g_missionManager)
@@ -179,9 +183,9 @@ function BetterContracts:onPostLoadMap(mapNode, mapFile)
 	-- adjust max missions
 	local fieldsAmount = TableUtility.count(g_fieldManager.fields)
 	local adjustedFieldsAmount = math.max(fieldsAmount, 45)
-	MissionManager.MAX_MISSIONS = math.min(120, math.ceil(adjustedFieldsAmount * 0.60)) -- max missions = 60% of fields amount (minimum 45 fields) max 120
-	MissionManager.MAX_TRANSPORT_MISSIONS = math.max(math.ceil(MissionManager.MAX_MISSIONS / 15), 2) -- max transport missions is 1/15 of maximum missions but not less then 2
-	MissionManager.MAX_MISSIONS = MissionManager.MAX_MISSIONS + MissionManager.MAX_TRANSPORT_MISSIONS -- add max transport missions to max missions
+	MissionManager.MAX_MISSIONS = math.min(80, math.ceil(adjustedFieldsAmount * 0.60)) -- max missions = 60% of fields amount (minimum 45 fields) max 120
+	--MissionManager.MAX_TRANSPORT_MISSIONS = math.max(math.ceil(MissionManager.MAX_MISSIONS / 15), 2) -- max transport missions is 1/15 of maximum missions but not less then 2
+	--MissionManager.MAX_MISSIONS = MissionManager.MAX_MISSIONS + MissionManager.MAX_TRANSPORT_MISSIONS -- add max transport missions to max missions
 	MissionManager.MAX_MISSIONS_PER_GENERATION = math.min(MissionManager.MAX_MISSIONS / 5, 30) -- max missions per generation = max mission / 5 but not more then 30
 	MissionManager.MAX_TRIES_PER_GENERATION = math.ceil(MissionManager.MAX_MISSIONS_PER_GENERATION * 1.5) -- max tries per generation 50% more then max missions per generation
 	debugPrint("[%s] Fields amount %s (%s)", self.name, fieldsAmount, adjustedFieldsAmount)
@@ -535,4 +539,21 @@ function abstractMissionNew(isServer, superf, isClient, customMt )
 	self.mission = g_currentMission 
 	-- Fix for error in AbstractMission 'self.mission' still missing in Version 1.2.0.2
 	return self
+end
+function NPCHarvest(self, superf, field, allowUpdates)
+	-- don't let NPCs harvest
+	local fruitDesc, harvestReadyState, maxHarvestState
+	if allowUpdates and field.fruitType ~= nil then
+		fruitDesc = g_fruitTypeManager:getFruitTypeByIndex(field.fruitType)
+		harvestReadyState = fruitDesc.maxHarvestingGrowthState
+		if fruitDesc.maxPreparingGrowthState > -1 then
+			harvestReadyState = fruitDesc.maxPreparingGrowthState
+		end
+		maxHarvestState = FieldUtil.getMaxHarvestState(field, field.fruitType)
+		if maxHarvestState ~= harvestReadyState then
+			superf(self, field, allowUpdates)
+		end
+	else
+		superf(self, field, allowUpdates)
+	end
 end
