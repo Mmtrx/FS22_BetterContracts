@@ -4,8 +4,8 @@
 		<!-- Keys -->
 		<text name = "input_MENU_EXTRA_3" text = "Better Contracts: Szczegóły wł./wył."/>
 		<!-- Gui Buttons -->
-		<text name="bc_hidden" text="Hidden: %d" />
-		<text name="bc_other" text="Other" />
+		<text name="bc_hidden" text="Ukryty: %d" />
+		<text name="bc_other" text="Inny" />
 		<text name="bc_new_contracts" text="Nowe kontrakty" />
 		<text name="bc_clear_contracts" text="Wyczyść kontrakty" />
 		<text name="bc_detailsOff" text="Szczegóły wył." />
@@ -27,9 +27,9 @@
 		<text name="SC_usage" text="Zużycie:" />
 		<text name="SC_cost" text="Koszt materiału:" />
 		<text name="SC_togo" text="Przejdź do:" />
-		<text name="SC_fillType" text="Type of goods:" />
-		<text name="SC_profitSupply" text="Profit:" />
-		<text name="SC_timeleft" text="Time left:" />
+		<text name="SC_fillType" text="Rodzaj ładunku:" />
+		<text name="SC_profitSupply" text="Zysk:" />
+		<text name="SC_timeleft" text="Pozostały czas:" />
 
 		<!-- Sort button help text -->
 		<text name="SC_sortCat" text="Typ kontraktu/Nr pola" />
