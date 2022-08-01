@@ -156,6 +156,26 @@
         </group>
 
         <group fieldSize="large" variant="SUGARBEET">
+            <vehicle filename="$data/vehicles/grimme/rexor6300/rexor6300.xml" /> <!-- combine -->
+            <vehicle filename="$data/vehicles/jcb/fastrac8330/fastrac8330.xml">
+                <configuration name="wheel" id="4" />
+            </vehicle>
+            <vehicle filename="$data/vehicles/jcb/fastrac8330/fastrac8330.xml">
+                <configuration name="wheel" id="4" />
+            </vehicle>
+            <vehicle filename="$data/vehicles/rudolphSohn/tdk301RA/tdk301RA.xml">
+                <!-- trailer -->
+                <configuration name="fillUnit" id="2"/>
+                <configuration name="baseMaterial" id="2"/>
+                <configuration name="fillVolume" id="2"/>
+            </vehicle>
+            <vehicle filename="$data/vehicles/rudolphSohn/tdk301RA/tdk301RA.xml">
+                <configuration name="fillUnit" id="2"/>
+                <configuration name="baseMaterial" id="2"/>
+                <configuration name="fillVolume" id="2"/>
+            </vehicle>
+        </group>
+        <group fieldSize="large" variant="SUGARBEET">
             <vehicle filename="$data/vehicles/ropa/tiger6S/tiger6S.xml" /> <!-- combine -->
             <vehicle filename="$data/vehicles/ropa/rrXL9/rrXL9.xml" /> <!-- header -->
             <vehicle filename="$data/vehicles/ropa/rrXLTrailer/rrXLTrailer.xml" /> <!-- headerTrailer -->
