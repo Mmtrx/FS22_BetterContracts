@@ -537,23 +537,40 @@ end
 function abstractMissionNew(isServer, superf, isClient, customMt )
 	local self = superf(isServer, isClient, customMt)
 	self.mission = g_currentMission 
-	-- Fix for error in AbstractMission 'self.mission' still missing in Version 1.2.0.2
+	-- Fix for error in AbstractMission 'self.mission' still missing in Version 1.6
 	return self
 end
 function NPCHarvest(self, superf, field, allowUpdates)
-	-- don't let NPCs harvest
-	local fruitDesc, harvestReadyState, maxHarvestState
-	if allowUpdates and field.fruitType ~= nil then
+	if not allowUpdates then 
+		superf(self, field, allowUpdates)
+		return
+	end
+	local fruitDesc, harvestReadyState, maxHarvestState, area, total
+	local x, z = FieldUtil.getMeasurementPositionOfField(field)
+	if field.fruitType ~= nil then
+
+		-- leave a withered field for plow/ grubber missions
 		fruitDesc = g_fruitTypeManager:getFruitTypeByIndex(field.fruitType)
+		local withered = fruitDesc.witheredState
+		if withered ~= nil then
+			area, total = FieldUtil.getFruitArea(x - 1, z - 1, x + 1, z - 1, x - 1, z + 1, FieldUtil.FILTER_EMPTY, FieldUtil.FILTER_EMPTY, field.fruitType, withered, withered, 0, 0, 0, false)
+			if area > 0.5*total and math.random() < 0.5 then return end
+		end
+
+		-- don't let NPCs harvest
 		harvestReadyState = fruitDesc.maxHarvestingGrowthState
 		if fruitDesc.maxPreparingGrowthState > -1 then
 			harvestReadyState = fruitDesc.maxPreparingGrowthState
 		end
 		maxHarvestState = FieldUtil.getMaxHarvestState(field, field.fruitType)
-		if maxHarvestState ~= harvestReadyState then
-			superf(self, field, allowUpdates)
-		end
+		if maxHarvestState == harvestReadyState then return end
+
+		-- leave a cut field for plow/ grubber mission
+		area, total = FieldUtil.getFruitArea(x - 1, z - 1, x + 1, z - 1, x - 1, z + 1, FieldUtil.FILTER_EMPTY, FieldUtil.FILTER_EMPTY, field.fruitType, fruitDesc.cutState, fruitDesc.cutState, 0, 0, 0, false)
+		if area > 0.5 * total and g_currentMission.snowSystem.height < SnowSystem.MIN_LAYER_HEIGHT and math.random() < 0.3 then return end 
 	else
-		superf(self, field, allowUpdates)
+		-- leave empty (plowed/grubbered) field for sow mission
+		if self:getFruitIndexForField(field) ~= nil and math.random() < 0.5 then return end
 	end
+	superf(self, field, allowUpdates)
 end
