@@ -13,9 +13,57 @@
 --  v1.2.2.0    30.03.2022  recognize conflict FS22_Contracts_Plus, 
 --                          details for transport missions
 --  v1.2.3.0    04.04.2022  filter contracts per jobtype
+--  v1.2.4.0    26.08.2022  allow for other (future) mission types, 
+-- 							fix distorted menu page for different screen aspect ratios,
+-- 							show fruit type to harvest in contracts list 
 --=======================================================================================================
 
--------------------- Gui enhance functions ---------------------------------------------------
+function BetterContracts:loadGUI(canLoad, guiPath)
+	if canLoad then
+		local fname
+		-- load my gui profiles
+		fname = guiPath .. "guiProfiles.xml"
+		if fileExists(fname) then
+			g_gui:loadProfiles(fname)
+		else
+			canLoad = false
+		end
+		local xmlFile, layout 
+		-- load "SCGui.xml"
+		fname = guiPath .. "SCGui.xml"
+		if canLoad and fileExists(fname) then
+			xmlFile = loadXMLFile("Temp", fname)
+			local fbox = self.frCon.farmerBox
+			-- load our "npcbox" as child of farmerBox:
+			g_gui:loadGuiRec(xmlFile, "GUI", fbox, self.frCon)
+			local npcbox = fbox:getDescendantById("npcbox")
+			npcbox:applyScreenAlignment()
+			npcbox:updateAbsolutePosition()
+			layout = fbox:getDescendantById("layout")
+			layout:invalidateLayout(true) -- adjust sort buttons
+			delete(xmlFile)
+		else
+			canLoad = false
+			Logging.error("[GuiLoader %s]  Required file '%s' could not be found!", self.name, fname)
+		end
+		-- load "filterGui.xml"
+		fname = guiPath .. "filterGui.xml"
+		if canLoad and fileExists(fname) then
+			xmlFile = loadXMLFile("Temp", fname)
+			local cont = self.frCon.contractsContainer
+			g_gui:loadGuiRec(xmlFile, "GUI", cont, self.frCon)
+			layout = cont:getDescendantById("filterlayout")
+			layout:applyScreenAlignment()
+			layout:updateAbsolutePosition()
+			layout:invalidateLayout(true) -- adjust filter buttons
+			delete(xmlFile)
+		else
+			canLoad = false
+			Logging.error("[GuiLoader %s]  Required file '%s' could not be found!", self.name, fname)
+		end
+	end
+	return canLoad
+end
 function onFrameOpen(superself, superFunc, ...)
 	local self = BetterContracts
 	local inGameMenu = self.gameMenu
@@ -242,9 +290,12 @@ function populateCell(frCon, list, sect, index, cell)
 		return
 	end
 	local id = frCon.sectionContracts[sect].contracts[index].mission.id
+	local cont
 	if self.IdToCont[id] == nil or self.IdToCont[id][2] == nil then
 		debugPrint("populateCell(): empty IdToCont for id %s. sect/index: %s/%s",
 			id, sect,index)
+	else
+		cont = self.IdToCont[id][2]
 	end
 	local prof = self.IdToCont[id] and self.IdToCont[id][2] and self.IdToCont[id][2].profit or 0
 	local cat = self.IdToCont[id] and self.IdToCont[id][1] or 0
@@ -256,6 +307,11 @@ function populateCell(frCon, list, sect, index, cell)
 		reward:setText(g_i18n:formatMoney(prof, 0, true, true))
 		profit:setText(rewtext)
 		showProf = true
+		if cat == SC.HARVEST and cont ~= nil then 
+			-- overwrite "contract" with fruittype to harvest
+			local fruit = cell:getAttribute("contract")
+			fruit:setText(g_i18n:getText("bc_harvest").. cont.ftype)
+		end
 	end
 	profit:setVisible(showProf)
 end
@@ -399,6 +455,15 @@ function updateFarmersBox(frCon, field, npc)
 		end
 		self.my.line5:setText(g_i18n:getText("SC_price")) 
 		self.my.price:setText(g_i18n:formatMoney(c.price))
+        return
+    elseif cat == SC.OTHER then
+        self.my.field:setText("")
+		self.my.line5:setText("")
+		self.my.price:setText("")
+        self.my.line4a:setText("")
+        self.my.valu4a:setText("")
+        self.my.line4b:setText("")
+        self.my.valu4b:setText("")
 		return
 	end 
 

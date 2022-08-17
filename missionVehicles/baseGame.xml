@@ -8,6 +8,8 @@
     Changelog:
      v1.2.0.1   29.03.2022  initial beta
      v1.2.3.1   01.08.2022  adapt vehicle configs for FS22
+     v1.2.4.0   17.08.2022  correct tractor/ weight for sow-small-grain and weed-small
+
 ======================================================================================================-->
 <missionVehicles overwrite="false">
  
@@ -291,17 +293,15 @@
     <mission type="sow">
         <!-- grainMission -->
         <group fieldSize="small" variant="GRAIN">
-            <vehicle filename="$data/vehicles/masseyFerguson/series3700AL/series3700AL.xml">
+            <vehicle filename="$data/vehicles/newHolland/t6/t6.xml">
                 <!-- tractor -->
-                <configuration name="motor" id="2" />
-                <configuration name="wheel" id="3" />
-                <configuration name="fillUnit" id="2" />
-                <configuration name="frontloader" id="1" />
+                <configuration name="motor" id="3" />
+                <configuration name="wheel" id="20" />
             </vehicle>
-            <vehicle filename="$data/vehicles/amazone/centaya3000Super/centaya3000Super.xml">
+            <vehicle filename="$data/vehicles/amazone/centaya3000Super/centaya3000Super.xml"    >
                 <!-- seeder -->
             </vehicle>
-            <vehicle filename="$data/vehicles/agco/weight650/weight650.xml">
+            <vehicle filename="$data/vehicles/tenwinkel/weight1000/weight1000.xml">
                 <configuration name="baseMaterial" id="7" />
             </vehicle>
         </group>
@@ -391,9 +391,9 @@
 
     <mission type="weed">
         <group fieldSize="small" rewardScale="0.7">
-            <vehicle filename="$data/vehicles/masseyFerguson/series3700AL/series3700AL.xml">
+            <vehicle filename="$data/vehicles/zetor/majorCL80/majorCL80.xml">
                 <!-- tractor -->
-                <configuration name="wheel" id="5" />
+                <configuration name="wheel" id="7" />
             </vehicle>
             <vehicle filename="$data/vehicles/einboeck/pneumaticstar900/pneumaticstar900.xml" /> <!-- weeder -->
             <vehicle filename="$data/vehicles/agco/weight650/weight650.xml">

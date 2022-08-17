@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <modDesc descVersion="67">
 	<author>Mmtrx</author>
-	<version>1.2.3.1</version>
+	<version>1.2.4.0</version>
 	<title>
 		<en>Better Contracts</en>
 	</title>
@@ -23,6 +23,11 @@
 - With the "Details" button you can toggle on/ off the display of additional contract information. Like cost estimates for usage material as fertilizer, herbicide, or seeds. For harvest and baling contracts, it shows the minimum amount to be delivered, and the amount that you can keep (and sell). From this it calculates the total profit value for a contract, i.e. reward minus cost for fertilize/ spray/ sow contracts, and reward plus value of kept harvest for harvest/ baling contracts. It even estimates the time you will probably need for total completion of the job, by taking into account the work speed and work width of the appropriate leasing vehicles/ tools that are offered with the contract.
 
 Disclaimer: All values shown in details display are ESTIMATES. You should not take them absolutely, but rather as an indication of what contracts to prefer among others.
+
+Changelog v1.2.4.0:
+- Added (interim) fix for "lazy NPCs": leave more work for contracts
+- Allow for (future) other contract types 
+- Fixed screen resolution issues
 
 Changelog v1.2.3.0:
 - Added display filter function for contracts list 
@@ -51,6 +56,11 @@ Changelog v1.2.2.0:
 
 Warnung: Alle in der Detailanzeige angegebenen Werte sind GESCHÄTZT. Sie sollten sie also nicht als absolute Zahlen verstehen, sondern als Hinweis, welche Verträge vielleicht anderen vorzuziehen sind.
 
+Changelog v1.2.4.0:
+- Temporärer Fix "Faule NPCs": Mehr (Ernte-)Verträge verfügbar
+- Weitere Vertragstypen möglich 
+- Probleme mit verschiedenen Bildschirmformaten behoben 
+
 Changelog v1.2.3.0:
 - Anzeigefilter für die Vertragsliste hinzugefügt 
 
@@ -78,6 +88,11 @@ Ce mod permet d'améliorer le système de contrat, à la fois en solo et multijo
 - Affichage des détails supplémentaires des contrats directement à l'aide d'un raccourci clavier depuis le menu des contrats. En plus du type de contrat et du numéro+taille du champ, vous trouverez maintenant les coûts estimés du contrat (engrais, herbicide, semence), le surplus de récolte ou de pressage, le calcul automatique du profit net généré. Il y a même l'affichage du temps que vous passerez à réaliser le contrat avec le matériel proposé en location avec celui-ci.
 
 Avertissement: toutes les valeurs indiquées dans l'affichage détaillé sont des ESTIMATIONS. Il ne faut donc pas les considérer comme des chiffres absolus, mais plutôt comme une indication des contrats qui pourraient être préférés à d'autres.
+
+Changelog v1.2.4.0:
+- Ajout d'un correctif (provisoire) "NPC paresseux": laisser plus de travail aux contrats
+- Permettre (à l'avenir) d'autres types de contrats 
+- Correction des problèmes de résolution d'écran
 
 Changelog v1.2.3.0:
 - Ajout d'une fonction de filtre d'affichage pour la liste des contrats 

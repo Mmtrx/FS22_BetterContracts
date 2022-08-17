@@ -11,6 +11,8 @@
 		<text name="bc_detailsOff" text="Szczegóły wył." />
 		<text name="bc_detailsOn" text="Szczegóły wł." />
 
+		<text name="bc_harvest" text="Harv. " />
+
 		<!-- Display texts -->
 		<text name="SC_widhei" text="Max. szerokość/wysokość:" />
 		<text name="SC_worktim" text="Szacowany czas:" />

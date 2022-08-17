@@ -12,6 +12,8 @@
 		<text name="bc_detailsOn" text="Детали вкл." />
 
 		<!-- Display texts -->
+		<text name="bc_harvest" text="Harv. " />
+
 		<text name="SC_widhei" text="Макс. ширина/длина:" />
 		<text name="SC_worktim" text="Предполагаемое время:" />
 		<text name="SC_price" text="Цена/1000л:" />

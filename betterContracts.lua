@@ -17,6 +17,9 @@
 --  v1.2.3.0    04.04.2022  filter contracts per jobtype
 --   		    04.05.2022  moved restartGame() to DebugCommands. MaxMissions 80
 --  v1.2.3.1    26.07.2022  add NPCHarvest to fix harvest contracts
+--  v1.2.4.0    26.08.2022  allow for other (future) mission types, 
+-- 							fix distorted menu page for different screen aspect ratios,
+-- 							show fruit type to harvest in contracts list 
 --=======================================================================================================
 InitRoyalUtility(Utils.getFilename("lib/utility/", g_currentModDirectory))
 InitRoyalMod(Utils.getFilename("lib/rmod/", g_currentModDirectory))
@@ -32,6 +35,7 @@ SC = {
 	BALING = 4,
 	TRANSP = 5,
 	SUPPLY = 6,
+    OTHER = 7,
 	-- Gui controls:
 	CONTROLS = {
 		npcbox = "npcbox",
@@ -100,13 +104,32 @@ function BetterContracts:initialize()
 		10 supplyTransport (Mod)
 	]]
 	-- mission.type to BC category: harvest, spread, simple, mow, transp, supply
-	self.typeToCat = {4, 3, 3, 2, 1, 3, 2, 2, 5, 6} 
+	-- self.typeToCat = {4, 3, 3, 2, 1, 3, 2, 2, 5, 6} 
+    self.typeToCat = {}
+    local function addMapping(name, category)
+        local missionType = g_missionManager:getMissionType(name)
+        if missionType ~= nil then
+            self.typeToCat[missionType.typeId] = category
+        end
+    end
+    addMapping("mow_bale", SC.BALING)
+    addMapping("plow", SC.SIMPLE)
+    addMapping("cultivate", SC.SIMPLE)
+    addMapping("sow", SC.SPREAD)
+    addMapping("harvest", SC.HARVEST)
+    addMapping("weed", SC.SIMPLE)
+    addMapping("spray", SC.SPREAD)
+    addMapping("fertilize", SC.SPREAD)
+    addMapping("transport", SC.TRANSP)
+    addMapping("deadwood", SC.OTHER)
+    addMapping("treeTransport", SC.OTHER)
 	self.harvest = {} -- harvest missions       	1
 	self.spread = {} -- sow, spray, fertilize   	2
 	self.simple = {} -- plow, cultivate, weed   	3
 	self.mow_bale = {} -- mow/ bale             	4
 	self.transp = {} -- transport   				5
 	self.supply = {} -- supplyTransport mod 		6
+    self.other = {} -- deadwood, treeTrans			7
 	self.IdToCont = {} -- to find a contract from its mission id
 	self.fieldToMission = {} -- to find a contract from its field number
 	self.catHarvest = "BEETHARVESTING BEETVEHICLES CORNHEADERS COTTONVEHICLES CUTTERS POTATOHARVESTING POTATOVEHICLES SUGARCANEHARVESTING SUGARCANEVEHICLES"
@@ -241,7 +264,7 @@ function BetterContracts:onPostLoadMap(mapNode, mapFile)
 	local rewd = self.frCon.contractsList.cellDatabase.autoCell1:getDescendantByName("reward")
 	local profit = rewd:clone(self.frCon.contractsList.cellDatabase.autoCell1)
 	profit.name = "profit"
-	profit:setPosition(-110 / 1920, -12/1080)
+	profit:setPosition(-110/1920, -12/1080 *g_aspectScaleY) 	-- 
 	--profit:setTextColor(1, 1, 1, 1)
 	profit.textBold = false
 	profit:setVisible(false)
@@ -320,55 +343,10 @@ function BetterContracts:onUpdate(dt)
 	end
 end
 
-function BetterContracts:loadGUI(canLoad, guiPath)
-	if canLoad then
-		local fname
-		-- load my gui profiles
-		fname = guiPath .. "guiProfiles.xml"
-		if fileExists(fname) then
-			g_gui:loadProfiles(fname)
-		else
-			canLoad = false
-		end
-		local xmlFile, layout 
-		-- load "SCGui.xml"
-		fname = guiPath .. "SCGui.xml"
-		if canLoad and fileExists(fname) then
-			xmlFile = loadXMLFile("Temp", fname)
-			local fbox = self.frCon.farmerBox
-			g_gui:loadGuiRec(xmlFile, "GUI", fbox, self.frCon)
-			layout = fbox:getDescendantById("layout")
-			layout:invalidateLayout(true) -- adjust sort buttons
-			fbox:applyScreenAlignment()
-			fbox:updateAbsolutePosition()
-			fbox:onGuiSetupFinished() -- connect the tooltip elements
-			delete(xmlFile)
-		else
-			canLoad = false
-			Logging.error("[GuiLoader %s]  Required file '%s' could not be found!", self.name, fname)
-		end
-		-- load "filterGui.xml"
-		fname = guiPath .. "filterGui.xml"
-		if canLoad and fileExists(fname) then
-			xmlFile = loadXMLFile("Temp", fname)
-			local cont = self.frCon.contractsContainer
-			g_gui:loadGuiRec(xmlFile, "GUI", cont, self.frCon)
-			layout = cont:getDescendantById("filterlayout")
-			cont:applyScreenAlignment()
-			cont:updateAbsolutePosition()
-			layout:invalidateLayout(true) -- adjust filter buttons
-			delete(xmlFile)
-		else
-			canLoad = false
-			Logging.error("[GuiLoader %s]  Required file '%s' could not be found!", self.name, fname)
-		end
-	end
-	return canLoad
-end
 function BetterContracts:refresh()
 	-- refresh our contract tables. Called by onFrameOpen/updateList, and every 15 sec by self:onUpdate
-	self.harvest, self.spread, self.simple, self.mow_bale, self.transp, self.supply =
-		 {}, {}, {}, {}, {}, {}
+	self.harvest, self.spread, self.simple, self.mow_bale, self.transp, self.supply, self.other =
+		 {}, {}, {}, {}, {}, {}, {}
 	self.IdToCont, self.fieldToMission = {}, {}
 	local list = g_missionManager:getMissionsList(g_currentMission:getFarmId())
 	local res = {}
@@ -492,7 +470,7 @@ function BetterContracts:addMission(m)
 			reward = rew
 		}
 		table.insert(self.supply, cont)
-	else -- cat == SC.TRANSP
+	elseif cat == SC.TRANSP then
 		cont = {
 			miss = m,
 			worktime = 0,
@@ -503,7 +481,18 @@ function BetterContracts:addMission(m)
 			reward = rew
 		}
 		table.insert(self.transp, cont)
-	end
+    elseif cat == SC.OTHER then
+        cont = {
+            miss = m,
+            worktime = 0,
+            profit = rew,
+            permin = 0,
+            reward = rew
+        }
+        table.insert(self.other, cont)
+	else 	
+		Logging.warning("[%s]: Unknown cat %s in addMission(m)", self.name, cat)
+    end
 	return {cat, cont}
 end
 function getPalletType(m)

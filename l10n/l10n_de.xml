@@ -12,6 +12,8 @@
 		<text name="bc_detailsOn" text="Details an" />
 
 		<!-- Display texts -->
+		<text name="bc_harvest" text="Ernte " />
+
 		<text name="SC_widhei" text="Max Breite/ Länge:" />
 		<text name="SC_worktim" text="Zeitschätzung:" />
 		<text name="SC_price" text="Preis:" />
