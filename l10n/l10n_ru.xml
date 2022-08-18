@@ -4,38 +4,38 @@
 		<!-- Keys -->
 		<text name = "input_MENU_EXTRA_3" text = "Better Contracts: Детали вкл./выкл."/>
 		<!-- Gui Buttons -->
-		<text name="bc_hidden" text="Hidden: %d" />
-		<text name="bc_other" text="Other" />
+		<text name="bc_hidden" text="Скрыто: %d" />
+		<text name="bc_other" text="Другое" />
 		<text name="bc_new_contracts" text="Новые контракты" />
 		<text name="bc_clear_contracts" text="Очистить контракты" />
 		<text name="bc_detailsOff" text="Детали выкл." />
 		<text name="bc_detailsOn" text="Детали вкл." />
 
 		<!-- Display texts -->
-		<text name="bc_harvest" text="Harv. " />
+		<text name="bc_harvest" text="Собр. " />
 
 		<text name="SC_widhei" text="Макс. ширина/длина:" />
-		<text name="SC_worktim" text="Предполагаемое время:" />
-		<text name="SC_price" text="Цена/1000л:" />
+		<text name="SC_worktim" text="Расчётное время:" />
+		<text name="SC_price" text="Цена/1000 л:" />
 		<text name="SC_profpmin" text="Прибыль/мин:" />
 		<text name="SC_sort" text="Сорт." />
 
 		<text name="SC_field" text="Поле %d / %s" />
+		<text name="SC_fillType" text="Тип культ.:" />
 		<text name="SC_worked" text="Выполнено:" />
 		<text name="SC_delivered" text="Доставлено:" />
 		<text name="SC_deliver" text="Необходимо ещё доставить:" />
 		<text name="SC_keep" text="Можно оставить:" />
 		<text name="SC_profit" text="Прибыль от урожая:" />
+		<text name="SC_profitSupply" text="Прибыль:" />
 		<text name="SC_usage" text="Расходовать:" />
 		<text name="SC_cost" text="Стоимость материала:" />
 		<text name="SC_togo" text="Необходимо доставить:" />
-		<text name="SC_fillType" text="Type of goods:" />
-		<text name="SC_profitSupply" text="Profit:" />
-		<text name="SC_timeleft" text="Time left:" />
+		<text name="SC_timeleft" text="Треб. время:" />
 
 		<!-- Sort button help text -->
-		<text name="SC_sortCat" text="тип работ/ номер поля" />
-		<text name="SC_sortProf" text="чистая прибыль" />
-		<text name="SC_sortpMin" text="прибыль в минуту" />
+		<text name="SC_sortCat" text="Тип работ/№ поля" />
+		<text name="SC_sortProf" text="Чистая прибыль" />
+		<text name="SC_sortpMin" text="Доход в мин." />
 	</texts>
 </l10n>
