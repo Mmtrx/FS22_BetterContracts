@@ -35,7 +35,7 @@ SC = {
 	BALING = 4,
 	TRANSP = 5,
 	SUPPLY = 6,
-    OTHER = 7,
+	OTHER = 7,
 	-- Gui controls:
 	CONTROLS = {
 		npcbox = "npcbox",
@@ -105,31 +105,32 @@ function BetterContracts:initialize()
 	]]
 	-- mission.type to BC category: harvest, spread, simple, mow, transp, supply
 	-- self.typeToCat = {4, 3, 3, 2, 1, 3, 2, 2, 5, 6} 
-    self.typeToCat = {}
-    local function addMapping(name, category)
-        local missionType = g_missionManager:getMissionType(name)
-        if missionType ~= nil then
-            self.typeToCat[missionType.typeId] = category
-        end
-    end
-    addMapping("mow_bale", SC.BALING)
-    addMapping("plow", SC.SIMPLE)
-    addMapping("cultivate", SC.SIMPLE)
-    addMapping("sow", SC.SPREAD)
-    addMapping("harvest", SC.HARVEST)
-    addMapping("weed", SC.SIMPLE)
-    addMapping("spray", SC.SPREAD)
-    addMapping("fertilize", SC.SPREAD)
-    addMapping("transport", SC.TRANSP)
-    addMapping("deadwood", SC.OTHER)
-    addMapping("treeTransport", SC.OTHER)
+	self.typeToCat = {}
+	local function addMapping(name, category)
+		local missionType = g_missionManager:getMissionType(name)
+		if missionType ~= nil then
+			self.typeToCat[missionType.typeId] = category
+		end
+	end
+	addMapping("mow_bale", SC.BALING)
+	addMapping("plow", SC.SIMPLE)
+	addMapping("cultivate", SC.SIMPLE)
+	addMapping("sow", SC.SPREAD)
+	addMapping("harvest", SC.HARVEST)
+	addMapping("weed", SC.SIMPLE)
+	addMapping("spray", SC.SPREAD)
+	addMapping("fertilize", SC.SPREAD)
+	addMapping("transport", SC.TRANSP)
+	addMapping("supplyTransport", SC.SUPPLY)
+	addMapping("deadwood", SC.OTHER)
+	addMapping("treeTransport", SC.OTHER)
 	self.harvest = {} -- harvest missions       	1
 	self.spread = {} -- sow, spray, fertilize   	2
 	self.simple = {} -- plow, cultivate, weed   	3
 	self.mow_bale = {} -- mow/ bale             	4
 	self.transp = {} -- transport   				5
 	self.supply = {} -- supplyTransport mod 		6
-    self.other = {} -- deadwood, treeTrans			7
+	self.other = {} -- deadwood, treeTrans			7
 	self.IdToCont = {} -- to find a contract from its mission id
 	self.fieldToMission = {} -- to find a contract from its field number
 	self.catHarvest = "BEETHARVESTING BEETVEHICLES CORNHEADERS COTTONVEHICLES CUTTERS POTATOHARVESTING POTATOVEHICLES SUGARCANEHARVESTING SUGARCANEVEHICLES"
@@ -481,18 +482,18 @@ function BetterContracts:addMission(m)
 			reward = rew
 		}
 		table.insert(self.transp, cont)
-    elseif cat == SC.OTHER then
-        cont = {
-            miss = m,
-            worktime = 0,
-            profit = rew,
-            permin = 0,
-            reward = rew
-        }
-        table.insert(self.other, cont)
+	elseif cat == SC.OTHER then
+		cont = {
+			miss = m,
+			worktime = 0,
+			profit = rew,
+			permin = 0,
+			reward = rew
+		}
+		table.insert(self.other, cont)
 	else 	
 		Logging.warning("[%s]: Unknown cat %s in addMission(m)", self.name, cat)
-    end
+	end
 	return {cat, cont}
 end
 function getPalletType(m)
