@@ -16,6 +16,8 @@
 --  v1.2.4.0    26.08.2022  allow for other (future) mission types, 
 -- 							fix distorted menu page for different screen aspect ratios,
 -- 							show fruit type to harvest in contracts list 
+--  v.1.2.4.1 	05.09.2022	indicate leased equipment for active missions
+--							allow clear/new contracts button only for master user
 --=======================================================================================================
 
 function BetterContracts:loadGUI(canLoad, guiPath)
@@ -314,6 +316,16 @@ function populateCell(frCon, list, sect, index, cell)
 		end
 	end
 	profit:setVisible(showProf)
+	-- indicate leased equipment for active missions
+	if cont and cont.miss.status == AbstractMission.STATUS_RUNNING then
+		local indicator = cell:getAttribute("indicatorActive")
+		local txt = ""
+		if cont.miss.spawnedVehicles then
+			txt = g_i18n:getText("bc_leased")
+		end
+		indicator:setText(g_i18n:getText("fieldJob_active")..txt)
+		indicator:setVisible(true)
+	end
 end
 function sortList(frCon, superfunc)
 	-- sort frCon.contracts according to sort button clicked

@@ -20,9 +20,10 @@
 --  v1.2.4.0    26.08.2022  allow for other (future) mission types, 
 -- 							fix distorted menu page for different screen aspect ratios,
 -- 							show fruit type to harvest in contracts list 
+--  v.1.2.4.1 	05.09.2022	indicate leased equipment for active missions
+--							allow clear/new contracts button only for master user
+-- 							lazyNPC / maxActive contracts now configurable
 --=======================================================================================================
-InitRoyalUtility(Utils.getFilename("lib/utility/", g_currentModDirectory))
-InitRoyalMod(Utils.getFilename("lib/rmod/", g_currentModDirectory))
 SC = {
 	FERTILIZER = 1, -- prices index
 	LIQUIDFERT = 2,
@@ -35,7 +36,7 @@ SC = {
 	BALING = 4,
 	TRANSP = 5,
 	SUPPLY = 6,
-	OTHER = 7,
+    OTHER = 7,
 	-- Gui controls:
 	CONTROLS = {
 		npcbox = "npcbox",
@@ -64,23 +65,21 @@ SC = {
 		helpsort = "helpsort"
 	}
 }
----@class BetterContracts : RoyalMod
-BetterContracts = RoyalMod.new(false, false)     --params bool debug, bool sync
-
 function debugPrint(text, ...)
 	if BetterContracts.debug then
 		Logging.info(text,...)
 	end
 end
+source(Utils.getFilename("RoyalMod.lua", g_currentModDirectory.."scripts/")) 	-- RoyalMod support functions
+source(Utils.getFilename("Utility.lua", g_currentModDirectory.."scripts/")) 	-- RoyalMod utility functions
+source(Utils.getFilename("TableUtility.lua", g_currentModDirectory.."scripts/"))-- RoyalMod table utility functions
+---@class BetterContracts : RoyalMod
+BetterContracts = RoyalMod.new(false, true)     --params bool debug, bool sync
+
 function BetterContracts:initialize()
 	debugPrint("[%s] initialize(): %s", self.name,self.initialized)
 	if self.initialized ~= nil then return end -- run only once
-	-- check for debug switch in modSettings/
 	self.modSettings= getUserProfileAppPath().."modSettings/"
-	if not self.debug and      
-		fileExists(self.modSettings.."BetterContracts.debug") then
-		self.debug = true 
-	end
 	g_missionManager.missionMapNumChannels = 6
 	self.missionUpdTimeout = 15000
 	self.missionUpdTimer = 0 -- will also update on frame open of contracts page
@@ -105,32 +104,32 @@ function BetterContracts:initialize()
 	]]
 	-- mission.type to BC category: harvest, spread, simple, mow, transp, supply
 	-- self.typeToCat = {4, 3, 3, 2, 1, 3, 2, 2, 5, 6} 
-	self.typeToCat = {}
-	local function addMapping(name, category)
-		local missionType = g_missionManager:getMissionType(name)
-		if missionType ~= nil then
-			self.typeToCat[missionType.typeId] = category
-		end
-	end
-	addMapping("mow_bale", SC.BALING)
-	addMapping("plow", SC.SIMPLE)
-	addMapping("cultivate", SC.SIMPLE)
-	addMapping("sow", SC.SPREAD)
-	addMapping("harvest", SC.HARVEST)
-	addMapping("weed", SC.SIMPLE)
-	addMapping("spray", SC.SPREAD)
-	addMapping("fertilize", SC.SPREAD)
-	addMapping("transport", SC.TRANSP)
-	addMapping("supplyTransport", SC.SUPPLY)
-	addMapping("deadwood", SC.OTHER)
-	addMapping("treeTransport", SC.OTHER)
+    self.typeToCat = {}
+    local function addMapping(name, category)
+        local missionType = g_missionManager:getMissionType(name)
+        if missionType ~= nil then
+            self.typeToCat[missionType.typeId] = category
+        end
+    end
+    addMapping("mow_bale", SC.BALING)
+    addMapping("plow", SC.SIMPLE)
+    addMapping("cultivate", SC.SIMPLE)
+    addMapping("sow", SC.SPREAD)
+    addMapping("harvest", SC.HARVEST)
+    addMapping("weed", SC.SIMPLE)
+    addMapping("spray", SC.SPREAD)
+    addMapping("fertilize", SC.SPREAD)
+    addMapping("transport", SC.TRANSP)
+    addMapping("supplyTransport", SC.SUPPLY)
+    addMapping("deadwood", SC.OTHER)
+    addMapping("treeTransport", SC.OTHER)
 	self.harvest = {} -- harvest missions       	1
 	self.spread = {} -- sow, spray, fertilize   	2
 	self.simple = {} -- plow, cultivate, weed   	3
 	self.mow_bale = {} -- mow/ bale             	4
 	self.transp = {} -- transport   				5
 	self.supply = {} -- supplyTransport mod 		6
-	self.other = {} -- deadwood, treeTrans			7
+    self.other = {} -- deadwood, treeTrans			7
 	self.IdToCont = {} -- to find a contract from its mission id
 	self.fieldToMission = {} -- to find a contract from its field number
 	self.catHarvest = "BEETHARVESTING BEETVEHICLES CORNHEADERS COTTONVEHICLES CUTTERS POTATOHARVESTING POTATOVEHICLES SUGARCANEHARVESTING SUGARCANEVEHICLES"
@@ -147,6 +146,27 @@ function BetterContracts:initialize()
 		{"sortprof", g_i18n:getText("SC_sortProf")},
 		{"sortpmin", g_i18n:getText("SC_sortpMin")}
 	}
+	self.npcProb = {
+		harvest = 1.0,
+		plowCultivate = 0.3,
+		sow = 0.3,
+		fertilize = 0.3
+	}
+	self.npcType = {}
+	self.lazyNPC = false 	-- adjust NPC field work activity
+	self.maxActive = 3 		-- max active contracts
+
+	if g_server ~= nil then
+		readconfig(self)
+		debugPrint("%s read config: maxActive %d, lazyNPC %s",self.name, self.maxActive, self.lazyNPC)
+		-- to allow multiple missions:
+		if self.maxActive > 0 then 
+			MissionManager.ACTIVE_CONTRACT_LIMIT = self.maxActive
+		else -- allow unlimited active missions
+			MissionManager.hasFarmReachedMissionLimit =
+				Utils.overwrittenFunction(nil, function() return false end)
+		end
+	end
 	local mods = {"FS22_RefreshContracts","FS22_Contracts_Plus"}
 	if g_modIsLoaded["FS22_RefreshContracts"] then
 		self.needsRefreshContractsConflictsPrevention = true
@@ -157,14 +177,16 @@ function BetterContracts:initialize()
 	if g_modIsLoaded["FS22_SupplyTransportContracts"] then
 		self.supplyTransport = true
 	end
+
 	-- to load own mission vehicles:
 	Utility.overwrittenFunction(MissionManager, "loadMissionVehicles", BetterContracts.loadMissionVehicles)
 	-- fix AbstractMission: 
 	Utility.overwrittenFunction(AbstractMission, "new", abstractMissionNew)
 
-	-- fix Harvest NPC Mission: 
-	Utility.overwrittenFunction(FieldManager, "updateNPCField", NPCHarvest)
-
+	-- adjust NPC activity for missions: 
+	if self.lazyNPC then -- always false on an MP client
+		Utility.overwrittenFunction(FieldManager, "updateNPCField", NPCHarvest)
+	end
 	-- get addtnl mission values from server:
 	Utility.appendedFunction(HarvestMission, "writeStream", BetterContracts.writeStream)
 	Utility.appendedFunction(HarvestMission, "readStream", BetterContracts.readStream)
@@ -173,17 +195,14 @@ function BetterContracts:initialize()
 	Utility.appendedFunction(AbstractMission, "writeUpdateStream", BetterContracts.writeUpdateStream)
 	Utility.appendedFunction(AbstractMission, "readUpdateStream", BetterContracts.readUpdateStream)
 	-- functions for ingame menu contracts frame:
-	InGameMenuContractsFrame.onFrameOpen = Utils.overwrittenFunction(InGameMenuContractsFrame.onFrameOpen, onFrameOpen)
-	InGameMenuContractsFrame.onFrameClose = Utils.appendedFunction(InGameMenuContractsFrame.onFrameClose, onFrameClose)
-	InGameMenuContractsFrame.updateFarmersBox = Utils.appendedFunction(InGameMenuContractsFrame.updateFarmersBox, updateFarmersBox)
-	InGameMenuContractsFrame.populateCellForItemInSection = Utils.appendedFunction(InGameMenuContractsFrame.populateCellForItemInSection, populateCell)
-	InGameMenuContractsFrame.updateList = Utils.overwrittenFunction(InGameMenuContractsFrame.updateList, updateList)
-	InGameMenuContractsFrame.sortList = Utils.overwrittenFunction(InGameMenuContractsFrame.sortList, sortList)
-	-- to allow multiple missions:
-	MissionManager.hasFarmReachedMissionLimit =
-		Utils.overwrittenFunction(nil,
-			function() return false end
-			)
+	Utility.overwrittenFunction(InGameMenuContractsFrame, "onFrameOpen", onFrameOpen)
+	Utility.appendedFunction(InGameMenuContractsFrame, "onFrameClose", onFrameClose)
+	Utility.appendedFunction(InGameMenuContractsFrame, "updateFarmersBox", updateFarmersBox)
+	Utility.appendedFunction(InGameMenuContractsFrame, "populateCellForItemInSection", populateCell)
+	Utility.overwrittenFunction(InGameMenuContractsFrame, "updateList", updateList)
+	Utility.overwrittenFunction(InGameMenuContractsFrame, "sortList", sortList)
+	Utility.appendedFunction(InGameMenuContractsFrame, "startContract", startContract)
+	Utility.appendedFunction(InGameMenu, "updateButtonsPanel", updateButtonsPanel)
 	if self.debug then
 		addConsoleCommand("printBetterContracts", "Print detail stats for all available missions.", "consoleCommandPrint", self)
 		addConsoleCommand("gsFieldGenerateMission", "Force generating a new mission for given field", "consoleGenerateFieldMission", g_missionManager)
@@ -191,6 +210,31 @@ function BetterContracts:initialize()
 		addConsoleCommand("gsMissionHarvestField", "Harvest a field and print the liters", "consoleHarvestField", g_missionManager)
 		addConsoleCommand("gsMissionTestHarvests", "Run an expansive tests for harvest missions", "consoleHarvestTests", g_missionManager)
 	end
+end
+
+function readconfig(self)
+	-- check for config file in modSettings/
+	self.configFile = self.modSettings .. self.name..'.xml'
+	if not fileExists(self.configFile) then 	-- copy initial config file to /modSettings
+		copyFile(self.directory.."config.xml", self.configFile, true)
+		Logging.info("[%s] wrote initial config file %s", self.name, self.configFile)
+	end
+	-- read config parms:
+	local xmlFile = loadXMLFile("conf", self.configFile)
+	local key = self.name
+	if not self.debug then 			
+		self.debug =	Utils.getNoNil(getXMLBool(xmlFile, key.."#debug"), false)			
+	end
+	self.maxActive = Utils.getNoNil(getXMLInt(xmlFile, key.."#maxActive"), 3)
+	self.lazyNPC = Utils.getNoNil(getXMLBool(xmlFile, key.."#lazyNPC"), false)
+	if self.lazyNPC then
+	key = key..".lazyNPC"
+		self.npcType.harvest = 		Utils.getNoNil(getXMLBool(xmlFile, key.."#harvest"), false)			
+		self.npcType.plowCultivate =Utils.getNoNil(getXMLBool(xmlFile, key.."#plowCultivate"), false)		
+		self.npcType.sow = 			Utils.getNoNil(getXMLBool(xmlFile, key.."#sow"), false)		
+		self.npcType.fertilize = 	Utils.getNoNil(getXMLBool(xmlFile, key.."#fertilize"), false)
+	end
+	delete(xmlFile)
 end
 
 function BetterContracts:onMissionInitialize(baseDirectory, missionCollaborators)
@@ -265,7 +309,7 @@ function BetterContracts:onPostLoadMap(mapNode, mapFile)
 	local rewd = self.frCon.contractsList.cellDatabase.autoCell1:getDescendantByName("reward")
 	local profit = rewd:clone(self.frCon.contractsList.cellDatabase.autoCell1)
 	profit.name = "profit"
-	profit:setPosition(-110/1920, -12/1080 *g_aspectScaleY) 	-- 
+	profit:setPosition(-110/1920 *g_aspectScaleX, -12/1080 *g_aspectScaleY) 	-- 
 	--profit:setTextColor(1, 1, 1, 1)
 	profit.textBold = false
 	profit:setVisible(false)
@@ -335,6 +379,26 @@ function BetterContracts:onPostLoadMap(mapNode, mapFile)
 	self.initialized = true
 end
 
+function BetterContracts:onWriteStream(streamId)
+	-- write to a client when it joins
+	local num = g_missionManager.numTransportTriggers
+	debugPrint("** writing maxActive %d ", self.maxActive)
+	streamWriteUInt8(streamId, self.maxActive)
+	streamWriteBool(streamId, self.debug)
+end
+function BetterContracts:onReadStream(streamId)
+	-- client reads our config when it joins
+	self.maxActive = streamReadUInt8(streamId)
+	self.debug = streamReadBool(streamId)
+	debugPrint("** read maxActive %d, debug %s", self.maxActive, self.debug)
+	-- to allow multiple missions:
+	if self.maxActive > 0 then 
+		MissionManager.ACTIVE_CONTRACT_LIMIT = self.maxActive
+	else -- allow unlimited active missions
+		MissionManager.hasFarmReachedMissionLimit =
+			Utils.overwrittenFunction(nil, function() return false end)
+	end
+end
 function BetterContracts:onUpdate(dt)
 	local self = BetterContracts
 	self.missionUpdTimer = self.missionUpdTimer + dt
@@ -482,18 +546,18 @@ function BetterContracts:addMission(m)
 			reward = rew
 		}
 		table.insert(self.transp, cont)
-	elseif cat == SC.OTHER then
-		cont = {
-			miss = m,
-			worktime = 0,
-			profit = rew,
-			permin = 0,
-			reward = rew
-		}
-		table.insert(self.other, cont)
+    elseif cat == SC.OTHER then
+        cont = {
+            miss = m,
+            worktime = 0,
+            profit = rew,
+            permin = 0,
+            reward = rew
+        }
+        table.insert(self.other, cont)
 	else 	
 		Logging.warning("[%s]: Unknown cat %s in addMission(m)", self.name, cat)
-	end
+    end
 	return {cat, cont}
 end
 function getPalletType(m)
@@ -514,6 +578,9 @@ function BetterContracts.readStream(self, streamId, connection)
 	self.depositedLiters = streamReadFloat32(streamId)
 end
 function BetterContracts.writeUpdateStream(self, streamId, connection, dirtyMask)
+	if self.status == AbstractMission.STATUS_RUNNING then
+		streamWriteBool(streamId, self.spawnedVehicles)
+	end
 	local fieldPercent, depo = 0., 0.
 	if self.fieldPercentageDone then fieldPercent = self.fieldPercentageDone end
 	if self.depositedLiters then depo = self.depositedLiters end
@@ -521,6 +588,9 @@ function BetterContracts.writeUpdateStream(self, streamId, connection, dirtyMask
 	streamWriteFloat32(streamId, depo)
 end
 function BetterContracts.readUpdateStream(self, streamId, timestamp, connection)
+	if self.status == AbstractMission.STATUS_RUNNING then
+		self.spawnedVehicles = streamReadBool(streamId)
+	end
 	self.fieldPercentageDone = streamReadFloat32(streamId)
 	self.depositedLiters = streamReadFloat32(streamId)
 end
@@ -535,32 +605,65 @@ function NPCHarvest(self, superf, field, allowUpdates)
 		superf(self, field, allowUpdates)
 		return
 	end
+	local npc = BetterContracts.npcType
+	local prob= BetterContracts.npcProb
 	local fruitDesc, harvestReadyState, maxHarvestState, area, total
 	local x, z = FieldUtil.getMeasurementPositionOfField(field)
 	if field.fruitType ~= nil then
 
-		-- leave a withered field for plow/ grubber missions
 		fruitDesc = g_fruitTypeManager:getFruitTypeByIndex(field.fruitType)
+		-- leave a withered field for plow/ grubber missions
+		--[[
 		local withered = fruitDesc.witheredState
 		if withered ~= nil then
 			area, total = FieldUtil.getFruitArea(x - 1, z - 1, x + 1, z - 1, x - 1, z + 1, FieldUtil.FILTER_EMPTY, FieldUtil.FILTER_EMPTY, field.fruitType, withered, withered, 0, 0, 0, false)
-			if area > 0.5*total and math.random() < 0.5 then return end
+			if area > 0.5*total and math.random() < 0.3 then return end
+		end
+		]]
+		if npc.harvest then
+			-- don't let NPCs harvest
+			harvestReadyState = fruitDesc.maxHarvestingGrowthState
+			if fruitDesc.maxPreparingGrowthState > -1 then
+				harvestReadyState = fruitDesc.maxPreparingGrowthState
+			end
+			maxHarvestState = FieldUtil.getMaxHarvestState(field, field.fruitType)
+			if maxHarvestState == harvestReadyState then return end
 		end
 
-		-- don't let NPCs harvest
-		harvestReadyState = fruitDesc.maxHarvestingGrowthState
-		if fruitDesc.maxPreparingGrowthState > -1 then
-			harvestReadyState = fruitDesc.maxPreparingGrowthState
+		if npc.plowCultivate then
+			-- leave a cut field for plow/ grubber mission
+			area, total = FieldUtil.getFruitArea(x - 1, z - 1, x + 1, z - 1, x - 1, z + 1, FieldUtil.FILTER_EMPTY, FieldUtil.FILTER_EMPTY, field.fruitType, fruitDesc.cutState, fruitDesc.cutState, 0, 0, 0, false)
+			if area > 0.5 * total and 
+				g_currentMission.snowSystem.height < SnowSystem.MIN_LAYER_HEIGHT and 
+				math.random() < prob.plowCultivate then return end 
 		end
-		maxHarvestState = FieldUtil.getMaxHarvestState(field, field.fruitType)
-		if maxHarvestState == harvestReadyState then return end
-
-		-- leave a cut field for plow/ grubber mission
-		area, total = FieldUtil.getFruitArea(x - 1, z - 1, x + 1, z - 1, x - 1, z + 1, FieldUtil.FILTER_EMPTY, FieldUtil.FILTER_EMPTY, field.fruitType, fruitDesc.cutState, fruitDesc.cutState, 0, 0, 0, false)
-		if area > 0.5 * total and g_currentMission.snowSystem.height < SnowSystem.MIN_LAYER_HEIGHT and math.random() < 0.3 then return end 
-	else
+	elseif npc.sow then
 		-- leave empty (plowed/grubbered) field for sow mission
-		if self:getFruitIndexForField(field) ~= nil and math.random() < 0.5 then return end
+		if self:getFruitIndexForField(field) ~= nil and 
+			math.random() < prob.sow then return end
 	end
 	superf(self, field, allowUpdates)
+end
+function updateButtonsPanel(menu, page)
+	-- called by TabbedMenu.onPageChange(), after page:onFrameOpen()
+	local inGameMenu = BetterContracts.gameMenu
+	if page.id == "pageContracts" and inGameMenu.newButton ~= nil then
+		local disable = g_currentMission.missionDynamicInfo.isMultiplayer and 
+			not g_currentMission.isMasterUser
+		-- disable if MP and not masterUser:
+		inGameMenu.newButton:setDisabled(disable)
+		inGameMenu.clearButton:setDisabled(disable)
+	end
+end
+function startContract()
+	-- overwrite dialog info box
+	local farmId = g_currentMission:getFarmId()
+	if g_missionManager:hasFarmReachedMissionLimit(farmId) 
+		and BetterContracts.maxActive ~= 3 then
+		g_gui:showInfoDialog({
+			visible = true,
+			text = g_i18n:getText("bc_enoughMissions"),
+			dialogType = DialogElement.TYPE_INFO
+		})
+	end
 end

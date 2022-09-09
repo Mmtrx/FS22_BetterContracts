@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <modDesc descVersion="67">
 	<author>Mmtrx</author>
-	<version>1.2.4.0</version>
+	<version>1.2.4.1</version>
 	<title>
 		<en>Better Contracts</en>
 	</title>
@@ -23,6 +23,12 @@
 - With the "Details" button you can toggle on/ off the display of additional contract information. Like cost estimates for usage material as fertilizer, herbicide, or seeds. For harvest and baling contracts, it shows the minimum amount to be delivered, and the amount that you can keep (and sell). From this it calculates the total profit value for a contract, i.e. reward minus cost for fertilize/ spray/ sow contracts, and reward plus value of kept harvest for harvest/ baling contracts. It even estimates the time you will probably need for total completion of the job, by taking into account the work speed and work width of the appropriate leasing vehicles/ tools that are offered with the contract.
 
 Disclaimer: All values shown in details display are ESTIMATES. You should not take them absolutely, but rather as an indication of what contracts to prefer among others.
+
+Changelog v1.2.4.1:
+- "lazy NPCs" (leave more work for contracts) can be configured on/ off
+- maximum number of active contracts configurable
+- indicator for active contracts with borrowed equipment 
+- clear / new contracts buttons in MP games only work for master user
 
 Changelog v1.2.4.0:
 - Added (interim) fix for "lazy NPCs": leave more work for contracts
@@ -134,8 +140,6 @@ Changelog v1.2.2.0:
 	<iconFilename>icon.dds</iconFilename>
 	<multiplayer supported="true" />
 	<extraSourceFiles>
-		<sourceFile filename="lib/utility/Main.lua" />
-		<sourceFile filename="lib/rmod/Main.lua" />
 		<sourceFile filename="betterContracts.lua" />
 		<sourceFile filename="scripts/betterContractsNewEvent.lua" />
 		<sourceFile filename="scripts/betterContractsClearEvent.lua" />
