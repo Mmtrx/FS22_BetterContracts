@@ -72,7 +72,6 @@ function debugPrint(text, ...)
 end
 source(Utils.getFilename("RoyalMod.lua", g_currentModDirectory.."scripts/")) 	-- RoyalMod support functions
 source(Utils.getFilename("Utility.lua", g_currentModDirectory.."scripts/")) 	-- RoyalMod utility functions
-source(Utils.getFilename("TableUtility.lua", g_currentModDirectory.."scripts/"))-- RoyalMod table utility functions
 ---@class BetterContracts : RoyalMod
 BetterContracts = RoyalMod.new(false, true)     --params bool debug, bool sync
 
@@ -579,7 +578,7 @@ function BetterContracts.readStream(self, streamId, connection)
 end
 function BetterContracts.writeUpdateStream(self, streamId, connection, dirtyMask)
 	if self.status == AbstractMission.STATUS_RUNNING then
-		streamWriteBool(streamId, self.spawnedVehicles)
+		streamWriteBool(streamId, self.spawnedVehicles or false)
 	end
 	local fieldPercent, depo = 0., 0.
 	if self.fieldPercentageDone then fieldPercent = self.fieldPercentageDone end
@@ -643,27 +642,4 @@ function NPCHarvest(self, superf, field, allowUpdates)
 			math.random() < prob.sow then return end
 	end
 	superf(self, field, allowUpdates)
-end
-function updateButtonsPanel(menu, page)
-	-- called by TabbedMenu.onPageChange(), after page:onFrameOpen()
-	local inGameMenu = BetterContracts.gameMenu
-	if page.id == "pageContracts" and inGameMenu.newButton ~= nil then
-		local disable = g_currentMission.missionDynamicInfo.isMultiplayer and 
-			not g_currentMission.isMasterUser
-		-- disable if MP and not masterUser:
-		inGameMenu.newButton:setDisabled(disable)
-		inGameMenu.clearButton:setDisabled(disable)
-	end
-end
-function startContract()
-	-- overwrite dialog info box
-	local farmId = g_currentMission:getFarmId()
-	if g_missionManager:hasFarmReachedMissionLimit(farmId) 
-		and BetterContracts.maxActive ~= 3 then
-		g_gui:showInfoDialog({
-			visible = true,
-			text = g_i18n:getText("bc_enoughMissions"),
-			dialogType = DialogElement.TYPE_INFO
-		})
-	end
 end

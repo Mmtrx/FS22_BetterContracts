@@ -559,7 +559,29 @@ function updateFarmersBox(frCon, field, npc)
 		self.my.valu6:setText("")
 	end
 end
-function BetterContracts:radioButton(st)
+function updateButtonsPanel(menu, page)
+	-- called by TabbedMenu.onPageChange(), after page:onFrameOpen()
+	local inGameMenu = BetterContracts.gameMenu
+	if page.id == "pageContracts" and inGameMenu.newButton ~= nil then
+		local disable = g_currentMission.missionDynamicInfo.isMultiplayer and 
+			not g_currentMission.isMasterUser
+		-- disable if MP and not masterUser:
+		inGameMenu.newButton:setDisabled(disable)
+		inGameMenu.clearButton:setDisabled(disable)
+	end
+end
+function startContract()
+	-- overwrite dialog info box
+	local farmId = g_currentMission:getFarmId()
+	if g_missionManager:hasFarmReachedMissionLimit(farmId) 
+		and BetterContracts.maxActive ~= 3 then
+		g_gui:showInfoDialog({
+			visible = true,
+			text = g_i18n:getText("bc_enoughMissions"),
+			dialogType = DialogElement.TYPE_INFO
+		})
+	end
+endfunction BetterContracts:radioButton(st)
 	-- implement radiobutton behaviour: max. one sort button can be active
 	self.lastSort = self.sort
 	self.sort = st
