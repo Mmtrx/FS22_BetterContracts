@@ -581,7 +581,8 @@ function startContract()
 			dialogType = DialogElement.TYPE_INFO
 		})
 	end
-endfunction BetterContracts:radioButton(st)
+end
+function BetterContracts:radioButton(st)
 	-- implement radiobutton behaviour: max. one sort button can be active
 	self.lastSort = self.sort
 	self.sort = st
