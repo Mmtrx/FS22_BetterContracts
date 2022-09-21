@@ -23,6 +23,7 @@
 --  v.1.2.4.1 	05.09.2022	indicate leased equipment for active missions
 --							allow clear/new contracts button only for master user
 -- 							lazyNPC / maxActive contracts now configurable
+--  v.1.2.4.2 	19.09.2022	[ModHub] recognize FS22_DynamicMissionVehicles
 --=======================================================================================================
 SC = {
 	FERTILIZER = 1, -- prices index
@@ -166,16 +167,7 @@ function BetterContracts:initialize()
 				Utils.overwrittenFunction(nil, function() return false end)
 		end
 	end
-	local mods = {"FS22_RefreshContracts","FS22_Contracts_Plus"}
-	if g_modIsLoaded["FS22_RefreshContracts"] then
-		self.needsRefreshContractsConflictsPrevention = true
-	end
-	if g_modIsLoaded["FS22_Contracts_Plus"] then
-		self.preventContractsPlus = true
-	end
-	if g_modIsLoaded["FS22_SupplyTransportContracts"] then
-		self.supplyTransport = true
-	end
+	checkOtherMods(self)
 
 	-- to load own mission vehicles:
 	Utility.overwrittenFunction(MissionManager, "loadMissionVehicles", BetterContracts.loadMissionVehicles)
@@ -208,6 +200,19 @@ function BetterContracts:initialize()
 		addConsoleCommand("gsMissionLoadAllVehicles", "Loading and unloading all field mission vehicles", "consoleLoadAllFieldMissionVehicles", g_missionManager)
 		addConsoleCommand("gsMissionHarvestField", "Harvest a field and print the liters", "consoleHarvestField", g_missionManager)
 		addConsoleCommand("gsMissionTestHarvests", "Run an expansive tests for harvest missions", "consoleHarvestTests", g_missionManager)
+	end
+end
+function checkOtherMods(self)
+	local mods = {	
+		FS22_RefreshContracts = "needsRefreshContractsConflictsPrevention",
+		FS22_Contracts_Plus = "preventContractsPlus",
+		FS22_SupplyTransportContracts = "supplyTransport",
+		FS22_DynamicMissionVehicles = "dynamicVehicles"
+		}
+	for mod, switch in pairs(mods) do
+		if g_modIsLoaded[mod] then
+			self[switch] = true
+		end
 	end
 end
 

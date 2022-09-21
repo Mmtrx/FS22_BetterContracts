@@ -1,8 +1,3 @@
----${title}
----@author ${author}
----@version r_version_r
----@date 18/01/2022
-
 --=======================================================================================================
 -- BetterContracts SCRIPT
 --
@@ -14,6 +9,7 @@
 --  v1.1.0.3    24.04.2021  (Mmtrx) gui enhancements: addtl details, sort buttons
 --  v1.1.0.4    07.07.2021  (Mmtrx) add user-defined missionVehicles.xml, allow missions with no vehicles
 --  v1.2.0.0    30.11.2021  (Mmtrx) adapt for FS22
+--  v.1.2.4.2   19.09.2022  [ModHub] recognize FS22_DynamicMissionVehicles
 --=======================================================================================================
 
 ---------------------- mission vehicle enhancement functions --------------------------------------------
@@ -22,6 +18,7 @@
 ---@return boolean
 function BetterContracts.loadMissionVehicles(missionManager, superFunc, ...)
     local self = BetterContracts
+    debugPrint("* %s loadMissionVehicles()", self.name)
     if superFunc(missionManager, ...) then
         if g_modIsLoaded["FS19_ThueringerHoehe_BG_Edition"] then
             debugPrint("[%s] %s map detected, loading mission vehicles created by %s", self.name, "FS19_ThueringerHoehe", "Lahmi")
@@ -36,7 +33,13 @@ function BetterContracts.loadMissionVehicles(missionManager, superFunc, ...)
         end
         local userdef = self.directory .. "missionVehicles/userDefined.xml"
         if fileExists(userdef) and self:checkExtraMissionVehicles(userdef) then 
-            self:loadExtraMissionVehicles(userdef)
+            -- check for other mod:
+            if g_modIsLoaded.FS22_DynamicMissionVehicles then
+                Logging.warning("[%s] userDefined.xml not loaded. Incompatible with FS22_DynamicMissionVehicles",
+                    self.name)
+            else
+                self:loadExtraMissionVehicles(userdef)
+            end
         end    
         self:validateMissionVehicles()
         return true

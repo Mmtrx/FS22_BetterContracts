@@ -13,6 +13,8 @@
 
 		<!-- Display texts -->
 		<text name="bc_harvest" text="Harv. " />
+		<text name="bc_leased" text="/ Leased " />
+		<text name="bc_enoughMissions" text="Your farm already has the maximum number of contracts." />
 
 		<text name="SC_widhei" text="ほ場 横幅 / 縦幅:" />
 		<text name="SC_worktim" text="作業時間:" />

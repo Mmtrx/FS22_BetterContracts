@@ -13,6 +13,8 @@
 
 		<!-- Display texts -->
 		<text name="bc_harvest" text="Собр. " />
+		<text name="bc_leased" text="/ Leased " />
+		<text name="bc_enoughMissions" text="Your farm already has the maximum number of contracts." />
 
 		<text name="SC_widhei" text="Макс. ширина/длина:" />
 		<text name="SC_worktim" text="Расчётное время:" />

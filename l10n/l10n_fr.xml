@@ -13,6 +13,8 @@
 
 		<!-- Display texts -->
 		<text name="bc_harvest" text="Réco. " />
+		<text name="bc_leased" text="/ Leased " />
+		<text name="bc_enoughMissions" text="Votre ferme a déjà maximum des contrats actifs." />
 
 		<text name="SC_widhei" text="Largeur,Longueur (max):" />
 		<text name="SC_worktim" text="Temps estimé:" />

@@ -12,6 +12,8 @@
 		<text name="bc_detailsOn" text="Szczegóły wł." />
 
 		<text name="bc_harvest" text="Harv. " />
+		<text name="bc_leased" text="/ Leased " />
+		<text name="bc_enoughMissions" text="Your farm already has the maximum number of contracts." />
 
 		<!-- Display texts -->
 		<text name="SC_widhei" text="Max. szerokość/wysokość:" />

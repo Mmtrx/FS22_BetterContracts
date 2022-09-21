@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <modDesc descVersion="67">
 	<author>Mmtrx</author>
-	<version>1.2.4.1</version>
+	<version>1.2.4.2</version>
 	<title>
 		<en>Better Contracts</en>
 	</title>
@@ -24,11 +24,12 @@
 
 Disclaimer: All values shown in details display are ESTIMATES. You should not take them absolutely, but rather as an indication of what contracts to prefer among others.
 
-Changelog v1.2.4.1:
+Changelog v1.2.4.2:
 - "lazy NPCs" (leave more work for contracts) can be configured on/ off
-- maximum number of active contracts configurable
+- maximum number of active contracts configurable (in modSettings/FS22_BetterContracts.xml)
 - indicator for active contracts with borrowed equipment 
 - clear / new contracts buttons in MP games only work for master user
+- recognize FS22_DynamicMissionVehicles
 
 Changelog v1.2.4.0:
 - Added (interim) fix for "lazy NPCs": leave more work for contracts
@@ -61,6 +62,13 @@ Changelog v1.2.2.0:
 - Mit dem "Details" Button kann die Anzeige der zusätzlichen Vertragsdetails ein- und ausgeschaltet werden. Z.B. die geschätzten Kosten des Verbrauchsmaterials (Dünger, Pflanzenschutzmittel, Saatgut). Bei Ernte- und Gras-Missionen wird die abzuliefernde Mindestmenge angezeigt, sowie die Erntemenge, die Sie behalten (und verkaufen) können. Daraus ermittelt der Mod den Gesamtertrag der Mission, also Belohnung minus Kosten für Dünge-, Spritz-, und Sähen-Verträge; und Belohnung plus Wert der behaltenen Erntemenge bei den Ernte- und Gras-Verträgen. Er schätzt sogar die Gesamtzeit, die Sie für die Erledigung des Auftrags benötigen werden, und berücksichtigt dafür Arbeitsgeschwindigkeit und Arbeitsbreite der entsprechenden Leasing-Geräte, die für den Vertrag angeboten werden.
 
 Warnung: Alle in der Detailanzeige angegebenen Werte sind GESCHÄTZT. Sie sollten sie also nicht als absolute Zahlen verstehen, sondern als Hinweis, welche Verträge vielleicht anderen vorzuziehen sind.
+
+Changelog v1.2.4.2:
+- "Faule NPCs" (mehr Feldarbeit für Verträge) kann konfiguriert werden
+- Maximalzahl gleichzeitig aktiver Verträge kann konfiguriert werden (in modSettings/FS22_BetterContracts.xml)
+- Kennzeichnung aktiver Verträge mit Leihgeräten 
+- In Multiplayer-Spielen sind die Buttons "Neue Verträge" und "Liste löschen" nur für Administratoren aktiv
+- Mod-Erkennung FS22_DynamicMissionVehicles
 
 Changelog v1.2.4.0:
 - Temporärer Fix "Faule NPCs": Mehr (Ernte-)Verträge verfügbar
@@ -95,7 +103,14 @@ Ce mod permet d'améliorer le système de contrat, à la fois en solo et multijo
 
 Avertissement: toutes les valeurs indiquées dans l'affichage détaillé sont des ESTIMATIONS. Il ne faut donc pas les considérer comme des chiffres absolus, mais plutôt comme une indication des contrats qui pourraient être préférés à d'autres.
 
-Changelog v1.2.4.0:
+Changelog v1.2.4.2 :
+- "NPCs paresseux" (plus de travail pour les contrats) peut être configuré
+- Le nombre maximum de contrats actifs en même temps peut être configuré (dans modSettings/FS22_BetterContracts.xml)
+- Marquage des contrats actifs avec des appareils de prêt 
+- Dans les jeux multi-joueurs, les boutons "Rafraîchir" et "Purger" ne sont actifs que pour les administrateurs.
+- Reconnaissance du mod FS22_DynamicMissionVehicles
+
+Traduit avec www.DeepL.com/Translator (version gratuite)Changelog v1.2.4.0:
 - Ajout d'un correctif (provisoire) "NPC paresseux": laisser plus de travail aux contrats
 - Permettre (à l'avenir) d'autres types de contrats 
 - Correction des problèmes de résolution d'écran
@@ -109,33 +124,6 @@ Changelog v1.2.2.0:
 - Ajout de support pour FS22_SupplyTransportContracts, FS22_TransportMissions
 ]]>
 		</fr>
-		<ru>
-			<![CDATA[
-Этот мод помогает улучшить контрактную систему как в одиночной, так и в многопользовательской игре.
-
-- Максимальное количество и количество генерируемых миссий теперь автоматически настраиваются в зависимости количества полей на карте.
- 
-- Теперь вы можете генерировать новые миссии кнопкой «Новые контракты» и даже очистить их все на экране управления контрактами.
-
-- Контракты теперь отсортированы по номеру поля и типу работы, чтобы облегчить найти то, что вы хотите.
- 
-- Вы можете активировать более одного контракта одновременно.
- 
-- Индикатор поля (на мини-карте), на которые вы взяли контракты, начнут мигать, чтобы помочь вам понять, куда вам необходимо двигаться.
-
-- Добавлено много новых комбинаций техники для контрактов
-
-Внимание: Все значения, указанные на подробном дисплее, являются ИСКЛЮЧИТЕЛЬНЫМИ. Поэтому не следует воспринимать их как абсолютные цифры, а как указание на то, какие контракты могут быть предпочтительнее других.
-
-Changelog v1.2.3.0:
-- Added display filter function for contracts list 
-
-Changelog v1.2.2.0:
-- Adjusted calculation of keep / deliver values for harvest / baling contracts
-- Added conflicts prevention with other mods
-- Added support for FS22_SupplyTransportContracts, FS22_TransportMissions
-]]>
-		</ru>
 	</description>
 	<iconFilename>icon.dds</iconFilename>
 	<multiplayer supported="true" />
