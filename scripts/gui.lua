@@ -58,6 +58,9 @@ function BetterContracts:loadGUI(canLoad, guiPath)
 			layout:applyScreenAlignment()
 			layout:updateAbsolutePosition()
 			layout:invalidateLayout(true) -- adjust filter buttons
+			local hidden = cont:getDescendantById("hidden")
+			hidden:applyScreenAlignment()
+			hidden:updateAbsolutePosition()
 			delete(xmlFile)
 		else
 			canLoad = false
@@ -247,21 +250,16 @@ function filterList(typeId, show)
 	--  contracts list is already there. Needs some adjustments only 
 	local self = BetterContracts
 	local frCon = self.frCon
-	local mycats = {"harvest", "spread", "simple","mow_bale","transp", "supply"}
-	local mycat = mycats[self.typeToCat[typeId]]
 	local type = g_missionManager:getMissionTypeById(typeId)
-	local nofilter, multi  
-	debugPrint("*filterList - show: %s, mycat: %s, type.name %s",
-		show, mycat, type.name)
+	local nofilter 
+	debugPrint("*filterList - show %s: %s", type.name, show)
 	if show then
 		-- re-insert filtered contracts:
-		for _, c in ipairs(self[mycat]) do
-			nofilter = c.miss.status == AbstractMission.STATUS_RUNNING or 
-						c.miss.status == AbstractMission.STATUS_FINISHED
-			-- harvest/mow/transp lists contain only one fieldjob type:
-			multi = mycat=="simple" or mycat=="spread"
-			if not nofilter and (not multi or c.miss.type == type) then 
-				table.insert(frCon.contracts, makeCon(c.miss))
+		for _, m in ipairs(g_missionManager:getMissionsList(g_currentMission:getFarmId())) do
+			nofilter = m.status == AbstractMission.STATUS_RUNNING or 
+						m.status == AbstractMission.STATUS_FINISHED
+			if not nofilter and m.type == type then 
+				table.insert(frCon.contracts, makeCon(m))
 				self.numHidden = self.numHidden -1
 			end
 		end
@@ -620,17 +618,20 @@ function onClickFilterButton(frCon, button)
 	debugPrint("*** Filter button %s: state %s, type %d %s", button.id, 
 		button.pressed, typeId, type)
 	button.pressed = not button.pressed 
-	self.filterState[type] = button.pressed
 
 	local prof = "myFilterDynamicTextInactive"
 	if button.pressed then prof = "myFilterDynamicText" end
 	button.elements[1]:applyProfile(prof)
 
+	self.filterState[type] = button.pressed
 	filterList(typeId, button.pressed)
 	-- if button "Other" clicked:
-	if self.supplyTransport and typeId == 9 then -- also handle type 10 supplyTransport:
-		self.filterState.supplyTransport = button.pressed
-		filterList(10, button.pressed)
+	if typeId == 9 then -- also handle all other mission types:
+		for i = 10, TableUtility.count(self.filterState) do 
+			local name = g_missionManager:getMissionTypeById(i).name
+			self.filterState[name] = button.pressed
+			filterList(i, button.pressed)
+		end
 	end		
 end
 function onClickSortButton(frCon, button)

@@ -24,6 +24,8 @@
 --							allow clear/new contracts button only for master user
 -- 							lazyNPC / maxActive contracts now configurable
 --  v.1.2.4.2 	19.09.2022	[ModHub] recognize FS22_DynamicMissionVehicles
+--  v.1.2.4.3 	10.10.2022	recognize FS22_LimeMission, RollerMission. Add lazyNPC switch for weed
+-- 							delete config.xml file template from mod directory
 --=======================================================================================================
 SC = {
 	FERTILIZER = 1, -- prices index
@@ -120,11 +122,14 @@ function BetterContracts:initialize()
     addMapping("spray", SC.SPREAD)
     addMapping("fertilize", SC.SPREAD)
     addMapping("transport", SC.TRANSP)
-    addMapping("supplyTransport", SC.SUPPLY)
-    addMapping("deadwood", SC.OTHER)
-    addMapping("treeTransport", SC.OTHER)
+    addMapping("supplyTransport", SC.SUPPLY) 	-- mod by GtX
+    addMapping("deadwood", SC.OTHER) 			-- Platinum DLC mission by Giants
+    addMapping("treeTransport", SC.OTHER) 		-- Platinum DLC mission by Giants
+    addMapping("roll", SC.SIMPLE) 				-- roller mission by tn4799
+    addMapping("lime", SC.SPREAD) 				-- lime mission by Mmtrx
+
 	self.harvest = {} -- harvest missions       	1
-	self.spread = {} -- sow, spray, fertilize   	2
+	self.spread = {} -- sow, spray, fertilize, lime 2
 	self.simple = {} -- plow, cultivate, weed   	3
 	self.mow_bale = {} -- mow/ bale             	4
 	self.transp = {} -- transport   				5
@@ -134,7 +139,7 @@ function BetterContracts:initialize()
 	self.fieldToMission = {} -- to find a contract from its field number
 	self.catHarvest = "BEETHARVESTING BEETVEHICLES CORNHEADERS COTTONVEHICLES CUTTERS POTATOHARVESTING POTATOVEHICLES SUGARCANEHARVESTING SUGARCANEVEHICLES"
 	self.catSpread = "fertilizerspreaders seeders planters sprayers sprayervehicles slurrytanks manurespreaders"
-	self.catSimple = "CULTIVATORS DISCHARROWS PLOWS POWERHARROWS SUBSOILERS WEEDERS"
+	self.catSimple = "CULTIVATORS DISCHARROWS PLOWS POWERHARROWS SUBSOILERS WEEDERS ROLLERS"
 	self.isOn = false
 	self.numCont = 0 	-- # of contracts in our tables
 	self.numHidden = 0 	-- # of hidden (filtered) contracts 
@@ -148,9 +153,11 @@ function BetterContracts:initialize()
 	}
 	self.npcProb = {
 		harvest = 1.0,
-		plowCultivate = 0.3,
-		sow = 0.3,
-		fertilize = 0.3
+		plowCultivate = 0.5,
+		sow = 0.5,
+		fertilize = 0.9,
+		weed = 0.9,
+		lime = 0.9
 	}
 	self.npcType = {}
 	self.lazyNPC = false 	-- adjust NPC field work activity
@@ -195,8 +202,8 @@ function BetterContracts:initialize()
 	Utility.appendedFunction(InGameMenuContractsFrame, "startContract", startContract)
 	Utility.appendedFunction(InGameMenu, "updateButtonsPanel", updateButtonsPanel)
 	if self.debug then
-		addConsoleCommand("printBetterContracts", "Print detail stats for all available missions.", "consoleCommandPrint", self)
-		addConsoleCommand("gsFieldGenerateMission", "Force generating a new mission for given field", "consoleGenerateFieldMission", g_missionManager)
+		addConsoleCommand("bcprint", "Print detail stats for all available missions.", "consoleCommandPrint", self)
+		addConsoleCommand("bcFieldGenerateMission", "Force generating a new mission for given field", "consoleGenerateFieldMission", g_missionManager)
 		addConsoleCommand("gsMissionLoadAllVehicles", "Loading and unloading all field mission vehicles", "consoleLoadAllFieldMissionVehicles", g_missionManager)
 		addConsoleCommand("gsMissionHarvestField", "Harvest a field and print the liters", "consoleHarvestField", g_missionManager)
 		addConsoleCommand("gsMissionTestHarvests", "Run an expansive tests for harvest missions", "consoleHarvestTests", g_missionManager)
@@ -207,7 +214,8 @@ function checkOtherMods(self)
 		FS22_RefreshContracts = "needsRefreshContractsConflictsPrevention",
 		FS22_Contracts_Plus = "preventContractsPlus",
 		FS22_SupplyTransportContracts = "supplyTransport",
-		FS22_DynamicMissionVehicles = "dynamicVehicles"
+		FS22_DynamicMissionVehicles = "dynamicVehicles",
+		FS22_LimeMission = "limeMission"
 		}
 	for mod, switch in pairs(mods) do
 		if g_modIsLoaded[mod] then
@@ -219,8 +227,22 @@ end
 function readconfig(self)
 	-- check for config file in modSettings/
 	self.configFile = self.modSettings .. self.name..'.xml'
-	if not fileExists(self.configFile) then 	-- copy initial config file to /modSettings
-		copyFile(self.directory.."config.xml", self.configFile, true)
+	if not fileExists(self.configFile) then 	
+		-- create initial config file in /modSettings
+		local config = {
+	'<?xml version="1.0" encoding="utf-8" standalone="no"?>',
+	'<FS22_BetterContracts debug="false" maxActive="0" lazyNPC="false">',
+	'<!-- maxActive: is nbr of concurrently active contracts per player, value < 1 means unlimited',
+	'  - 	lazyNPC: if NPC farmers should leave more work for contracts -->',
+	'	<lazyNPC harvest="true" plowCultivate="true" sow="true" weed="true" fertilize="true"/>',
+	'	<!-- contract types that will be affected -->',
+	'</FS22_BetterContracts>',
+		}
+		local f = createFile(self.configFile, FileAccess.WRITE)
+		for _, line in ipairs(config) do
+			fileWrite(f, line.."\n")
+		end
+		delete(f)
 		Logging.info("[%s] wrote initial config file %s", self.name, self.configFile)
 	end
 	-- read config parms:
@@ -237,6 +259,7 @@ function readconfig(self)
 		self.npcType.plowCultivate =Utils.getNoNil(getXMLBool(xmlFile, key.."#plowCultivate"), false)		
 		self.npcType.sow = 			Utils.getNoNil(getXMLBool(xmlFile, key.."#sow"), false)		
 		self.npcType.fertilize = 	Utils.getNoNil(getXMLBool(xmlFile, key.."#fertilize"), false)
+		self.npcType.weed = 		Utils.getNoNil(getXMLBool(xmlFile, key.."#weed"), false)
 	end
 	delete(xmlFile)
 end
@@ -249,6 +272,11 @@ end
 function BetterContracts:onSetMissionInfo(missionInfo, missionDynamicInfo)
 	Utility.overwrittenFunction(g_currentMission.inGameMenu, "onClickMenuExtra1", onClickMenuExtra1)
 	Utility.overwrittenFunction(g_currentMission.inGameMenu, "onClickMenuExtra2", onClickMenuExtra2)
+end
+
+function BetterContracts:onStartMission()
+	-- check mission vehicles
+	BetterContracts:validateMissionVehicles()
 end
 
 function BetterContracts:onPostLoadMap(mapNode, mapFile)
@@ -293,6 +321,7 @@ function BetterContracts:onPostLoadMap(mapNode, mapFile)
 		Logging.warning("[%s] ignoring new mission type %s (id %s)", self.name, 
 				g_missionManager.missionTypes[i].name, i)
 	end
+
 	-- load my gui xmls
 	if not self:loadGUI(true, self.directory .. "gui/") then
 		Logging.warning("'%s.Gui' failed to load! Supporting files are missing.", self.name)
@@ -314,7 +343,6 @@ function BetterContracts:onPostLoadMap(mapNode, mapFile)
 	local profit = rewd:clone(self.frCon.contractsList.cellDatabase.autoCell1)
 	profit.name = "profit"
 	profit:setPosition(-110/1920 *g_aspectScaleX, -12/1080 *g_aspectScaleY) 	-- 
-	--profit:setTextColor(1, 1, 1, 1)
 	profit.textBold = false
 	profit:setVisible(false)
 	-- set controls for npcbox, sortbox and their elements:
@@ -342,19 +370,12 @@ function BetterContracts:onPostLoadMap(mapNode, mapFile)
 				return a[3] < b[3]
 				end)
 	self.fieldjobs[9] = {9,"transport", g_i18n:getText("bc_other")}
+
+	self.filterState = {}
 	-- initial state: show all types
-	self.filterState = {
-		mow_bale	= true,
-		cultivate 	= true,
-		fertilize 	= true,
-		harvest 	= true,
-		plow   		= true,
-		sow     	= true,
-		spray   	= true,
-		weed    	= true,
-		transport 	= true,
-		supplyTransport = true
-	}
+	for i, type in ipairs(g_missionManager.missionTypes) do
+		self.filterState[type.name] = true
+	end
 	-- set controls for filterbox:
 	self.my.filterlayout = self.frCon.contractsContainer:getDescendantById("filterlayout")
 	self.my.hidden = self.frCon.contractsContainer:getDescendantById("hidden")
@@ -605,25 +626,25 @@ function abstractMissionNew(isServer, superf, isClient, customMt )
 	return self
 end
 function NPCHarvest(self, superf, field, allowUpdates)
-	if not allowUpdates then 
+	if not allowUpdates or BetterContracts.fieldToMission[field.fieldId] == nil then 
 		superf(self, field, allowUpdates)
 		return
 	end
-	local npc = BetterContracts.npcType
-	local prob= BetterContracts.npcProb
-	local fruitDesc, harvestReadyState, maxHarvestState, area, total
+	-- there is a mission offered for this field, and 
+	local npc 		= BetterContracts.npcType
+	local prob 		= BetterContracts.npcProb
+	local limeMiss 	= BetterContracts.limeMission
+	local fruitDesc, harvestReadyState, maxHarvestState, area, total, withered
 	local x, z = FieldUtil.getMeasurementPositionOfField(field)
 	if field.fruitType ~= nil then
-
+		-- not an empty field
 		fruitDesc = g_fruitTypeManager:getFruitTypeByIndex(field.fruitType)
-		-- leave a withered field for plow/ grubber missions
-		--[[
-		local withered = fruitDesc.witheredState
-		if withered ~= nil then
-			area, total = FieldUtil.getFruitArea(x - 1, z - 1, x + 1, z - 1, x - 1, z + 1, FieldUtil.FILTER_EMPTY, FieldUtil.FILTER_EMPTY, field.fruitType, withered, withered, 0, 0, 0, false)
-			if area > 0.5*total and math.random() < 0.3 then return end
+
+		local witheredState = fruitDesc.witheredState
+		if witheredState ~= nil then
+			area, total = FieldUtil.getFruitArea(x - 1, z - 1, x + 1, z - 1, x - 1, z + 1, FieldUtil.FILTER_EMPTY, FieldUtil.FILTER_EMPTY, field.fruitType, witheredState, witheredState, 0, 0, 0, false)
+			withered = area > 0.5 * total 
 		end
-		]]
 		if npc.harvest then
 			-- don't let NPCs harvest
 			harvestReadyState = fruitDesc.maxHarvestingGrowthState
@@ -633,18 +654,35 @@ function NPCHarvest(self, superf, field, allowUpdates)
 			maxHarvestState = FieldUtil.getMaxHarvestState(field, field.fruitType)
 			if maxHarvestState == harvestReadyState then return end
 		end
-
+		if npc.weed and not withered then 
+			-- leave field with weeds for weeding/ spraying
+			local maxWeedState = FieldUtil.getMaxWeedState(field)
+			if maxWeedState >= 3 and math.random() < prob.weed then return 
+			end
+		end
 		if npc.plowCultivate then
-			-- leave a cut field for plow/ grubber mission
+			-- leave a cut field for plow/ grubber/ lime mission
 			area, total = FieldUtil.getFruitArea(x - 1, z - 1, x + 1, z - 1, x - 1, z + 1, FieldUtil.FILTER_EMPTY, FieldUtil.FILTER_EMPTY, field.fruitType, fruitDesc.cutState, fruitDesc.cutState, 0, 0, 0, false)
 			if area > 0.5 * total and 
-				g_currentMission.snowSystem.height < SnowSystem.MIN_LAYER_HEIGHT and 
-				math.random() < prob.plowCultivate then return end 
+				g_currentMission.snowSystem.height < SnowSystem.MIN_LAYER_HEIGHT then
+				local limeFactor = FieldUtil.getLimeFactor(field)
+				if limeMiss and limeFactor == 0 and math.random() < prob.lime then return
+				elseif math.random() < prob.plowCultivate then return 
+				end 
+			end
+		end
+		if npc.fertilize and not withered then 
+			local sprayFactor = FieldUtil.getSprayFactor(field)
+			if sprayFactor < 1 and math.random() < prob.fertilize then return
+			end
 		end
 	elseif npc.sow then
-		-- leave empty (plowed/grubbered) field for sow mission
-		if self:getFruitIndexForField(field) ~= nil and 
-			math.random() < prob.sow then return end
+		-- leave empty (plowed/grubbered) field for sow/ lime mission
+		local limeFactor = FieldUtil.getLimeFactor(field)
+		if limeMiss and limeFactor == 0 and math.random() < prob.lime then return
+		elseif self:getFruitIndexForField(field) ~= nil and 
+			math.random() < prob.sow then return 
+		end
 	end
 	superf(self, field, allowUpdates)
 end

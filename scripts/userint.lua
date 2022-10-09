@@ -95,7 +95,7 @@ function BetterContracts:getFromVehicle(cat, m)
 			self.name, m.type.name, m.field.fieldId)
 		return false 
 	end
-	if cat == 4 then wwidth = 0 end -- init for search for biggest wwidth
+	if cat == SC.BALING then wwidth = 0 end -- init for search for biggest wwidth
 	for _, v in ipairs(m.vehiclesToLoad) do	-- main loop over vehicles to load
 		vec = g_storeManager.xmlFilenameToItem[string.lower(v.filename)]
 		con = v.configurations
@@ -108,23 +108,25 @@ function BetterContracts:getFromVehicle(cat, m)
 		spr = string.sub(vec.xmlFilename, 15)
 
 	--- if grass mission, scan for mower with largest workwidth
-		if cat == 4 then
+		if cat == SC.BALING then
 			if self:isMower(vtype) and tonumber(vec.specs.workingWidth) > wwidth then
 				wwidth = tonumber(vec.specs.workingWidth)
 				speed = vec.specs.speedLimit
 			end
-		elseif cat == 2 and vtype == "SLURRYTANKS" 
+		elseif cat == SC.SPREAD and vtype == "SLURRYTANKS" 
 			and vec.functions[1] == g_i18n:getText("function_slurrySpreaderWithoutTool")
 			then  -- skip this, it's a slurry barrel w/o spreader
 
-		elseif cat == 1 and vtype == "BEETVEHICLES" then  
+		elseif cat == SC.HARVEST and vtype == "BEETVEHICLES" then  
 			if vec.name == "Rexor 6300 Platinum" then 
 				wwidth, speed = 2.8, 10.
 				break 
 			end
 			-- else skip this, it's a beet harvester that needs a header
 
-		elseif cat == 1 and self:isHarvester(vtype) or cat == 2 and self:isSpreader(vtype) or cat == 3 and self:isSimple(vtype) then
+		elseif cat == SC.HARVEST and self:isHarvester(vtype) 
+				or cat == SC.SPREAD and self:isSpreader(vtype) 
+				or cat == SC.SIMPLE and self:isSimple(vtype) then
 			speed = vec.specs.speedLimit
 			wwidth = vec.specs.workingWidth
 			if wwidth == nil then
@@ -145,7 +147,7 @@ function BetterContracts:getFromVehicle(cat, m)
 	-- if no spreader / sprayer in a spreadmission (e.g. a manure vehicle offered)
 	if wwidth == nil then
 		speed, wwidth = 0, 0
-		if cat ~= 2 then
+		if cat ~= SC.SPREAD then
 			Logging.warning("[%s]:getFromVehicle() could not find appropriate vehicle in mission %s. Last vehicle: %s %s", 
 				self.name, m.id, vtype, spr)
 		end

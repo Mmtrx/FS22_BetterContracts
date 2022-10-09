@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<FS22_BetterContracts debug="false" maxActive="0" lazyNPC="false">
-	<!-- maxActive: is nbr of concurrently active contracts per player, value < 1 means unlimited 
-	 - 	 lazyNPC: if NPC farmers should leave more work for contracts -->
-
-	<lazyNPC harvest="true" plowCultivate="false" sow="false" fertilize="false"/> 
-	<!-- contract types that will be affected -->
-</FS22_BetterContracts>
