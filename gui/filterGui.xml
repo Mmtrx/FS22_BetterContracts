@@ -39,5 +39,5 @@
 		</GuiElement>
 	</GuiElement>
 	<!-- number hidden contracts (anchor middleLeft)-->
-	<GuiElement type="text" profile="myFilterDynamicTextInactive" id="hidden" size="140px 40px" position="0px -398px" anchors="0 0 0.5 0.5" textAlignment="left" debugEnabled="false"/>
+	<GuiElement type="text" profile="myFilterDynamicTextInactive" id="hidden" size="200px 40px" position="0px -398px" anchors="0 0 0.5 0.5" textAlignment="left" debugEnabled="false"/>
 </GUI>

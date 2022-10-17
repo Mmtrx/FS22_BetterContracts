@@ -20,18 +20,20 @@
 --  v1.2.4.0    26.08.2022  allow for other (future) mission types, 
 -- 							fix distorted menu page for different screen aspect ratios,
 -- 							show fruit type to harvest in contracts list 
---  v.1.2.4.1 	05.09.2022	indicate leased equipment for active missions
+--  v1.2.4.1 	05.09.2022	indicate leased equipment for active missions
 --							allow clear/new contracts button only for master user
 -- 							lazyNPC / maxActive contracts now configurable
---  v.1.2.4.2 	19.09.2022	[ModHub] recognize FS22_DynamicMissionVehicles
---  v.1.2.4.3 	10.10.2022	recognize FS22_LimeMission, RollerMission. Add lazyNPC switch for weed
+--  v1.2.4.2 	19.09.2022	[ModHub] recognize FS22_DynamicMissionVehicles
+--  v1.2.4.3 	10.10.2022	recognize FS22_LimeMission, RollerMission. Add lazyNPC switch for weed
 -- 							delete config.xml file template from mod directory
+--  v1.2.4.4 	16.10.2022	fix FS22_LimeMission details, filter buttons. Add timeLeft to MP sync
 --=======================================================================================================
 SC = {
 	FERTILIZER = 1, -- prices index
 	LIQUIDFERT = 2,
 	HERBICIDE = 3,
 	SEEDS = 4,
+	LIME = 5,
 	-- my mission cats:
 	HARVEST = 1,
 	SPREAD = 2,
@@ -89,9 +91,9 @@ function BetterContracts:initialize()
 	self.events = {}
 	self.initialized = false
 	--  Amazon ZA-TS3200,   Hardi Mega, Pöttr TerraC6F, Lemken Azur 9,  mission, Lemken Titan18
-	--  default:spreader,   sprayer,    sower,          planter,        empty, harvest,   plow,  mow
-	self.SPEEDLIMS = {15,   12,         15,             15,             0,      10,         12,   20} 
-	self.WORKWIDTH = {42,   24,          6,              6,             0,       9,         4.9,   9} 
+	--  default:spreader,   sprayer,    sower,          planter,        empty, harvest,   plow,  mow,lime
+	self.SPEEDLIMS = {15,   12,         15,             15,             0,      10,         12,   20,  18}
+	self.WORKWIDTH = {42,   24,          6,              6,             0,       9,         4.9,   9,  18} 
 	--[[  contract types:
 		1 mow_bale
 		2 plow
@@ -190,6 +192,8 @@ function BetterContracts:initialize()
 	Utility.appendedFunction(HarvestMission, "readStream", BetterContracts.readStream)
 	Utility.appendedFunction(BaleMission, "writeStream", BetterContracts.writeStream)
 	Utility.appendedFunction(BaleMission, "readStream", BetterContracts.readStream)
+	Utility.appendedFunction(TransportMission, "writeStream", BetterContracts.writeTransport)
+	Utility.appendedFunction(TransportMission, "readStream", BetterContracts.readTransport)
 	Utility.appendedFunction(AbstractMission, "writeUpdateStream", BetterContracts.writeUpdateStream)
 	Utility.appendedFunction(AbstractMission, "readUpdateStream", BetterContracts.readUpdateStream)
 	-- functions for ingame menu contracts frame:
@@ -215,7 +219,8 @@ function checkOtherMods(self)
 		FS22_Contracts_Plus = "preventContractsPlus",
 		FS22_SupplyTransportContracts = "supplyTransport",
 		FS22_DynamicMissionVehicles = "dynamicVehicles",
-		FS22_LimeMission = "limeMission"
+		FS22_TransportMissions = "transportMission",
+		FS22_LimeMission = "limeMission",
 		}
 	for mod, switch in pairs(mods) do
 		if g_modIsLoaded[mod] then
@@ -301,17 +306,21 @@ function BetterContracts:onPostLoadMap(mapNode, mapFile)
 		g_storeManager.xmlFilenameToItem["data/objects/bigbagpallet/fertilizer/bigbagpallet_fertilizer.xml"].price,
 		g_storeManager.xmlFilenameToItem["data/objects/pallets/liquidtank/fertilizertank.xml"].price / 2,
 		g_storeManager.xmlFilenameToItem["data/objects/pallets/liquidtank/herbicidetank.xml"].price / 2,
-		g_storeManager.xmlFilenameToItem["data/objects/bigbagpallet/seeds/bigbagpallet_seeds.xml"].price
+		g_storeManager.xmlFilenameToItem["data/objects/bigbagpallet/seeds/bigbagpallet_seeds.xml"].price,
+		g_storeManager.xmlFilenameToItem["data/objects/bigbagpallet/lime/bigbagpallet_lime.xml"].price / 2
 	}
 	self.sprUse = {
 		g_sprayTypeManager.sprayTypes[SprayType.FERTILIZER].litersPerSecond,
 		g_sprayTypeManager.sprayTypes[SprayType.LIQUIDFERTILIZER].litersPerSecond,
-		g_sprayTypeManager.sprayTypes[SprayType.HERBICIDE].litersPerSecond
+		g_sprayTypeManager.sprayTypes[SprayType.HERBICIDE].litersPerSecond,
+		0, -- seeds are measured per sqm, not per second
+		g_sprayTypeManager.sprayTypes[SprayType.LIME].litersPerSecond
 	}
 	self.mtype = {
 		FERTILIZE = g_missionManager:getMissionType("fertilize").typeId,
 		SOW = g_missionManager:getMissionType("sow").typeId,
-		SPRAY = g_missionManager:getMissionType("spray").typeId
+		SPRAY = g_missionManager:getMissionType("spray").typeId,
+		LIME = g_missionManager:getMissionType("lime").typeId,
 	}
 	self.gameMenu = g_currentMission.inGameMenu
 	self.frCon = self.gameMenu.pageContracts
@@ -351,7 +360,7 @@ function BetterContracts:onPostLoadMap(mapNode, mapFile)
 	end
 
 	-- setup fieldjob types:
-	local fjobs = {
+	local buttonText = {
 		mow_bale	= g_i18n:getText("fieldJob_jobType_baling"),
 		cultivate 	= g_i18n:getText("fieldJob_jobType_cultivating"),
 		fertilize 	= g_i18n:getText("fieldJob_jobType_fertilizing"),
@@ -360,22 +369,31 @@ function BetterContracts:onPostLoadMap(mapNode, mapFile)
 		sow     	= g_i18n:getText("fieldJob_jobType_sowing"),
 		spray   	= g_i18n:getText("fieldJob_jobType_spraying"),
 		weed    	= g_i18n:getText("fieldJob_jobType_weeding"),
+		-- lime is g_missionManager.missionTypes[2] !
 	}
 	self.fieldjobs = {}
-	for i = 1, 8 do 
-		local type = g_missionManager.missionTypes[i] 
-		table.insert(self.fieldjobs, {type.typeId, type.name, fjobs[type.name]})
+	self.otherTypes = {}
+	self.filterState = {}
+	for _, type in ipairs(g_missionManager.missionTypes) do
+		-- initial state: show all types
+		self.filterState[type.name] = true
+		local name = buttonText[type.name]
+		if name ~= nil then 
+			table.insert(self.fieldjobs, 
+				{type.typeId, type.name, name})
+		else
+			table.insert(self.otherTypes, 
+				{type.typeId, type.name})
+
+		end
 	end
 	table.sort(self.fieldjobs, function(a,b)
 				return a[3] < b[3]
 				end)
-	self.fieldjobs[9] = {9,"transport", g_i18n:getText("bc_other")}
+	-- this is for all other mission types:
+	table.insert(self.fieldjobs, 
+				{nil,"other", g_i18n:getText("bc_other")})
 
-	self.filterState = {}
-	-- initial state: show all types
-	for i, type in ipairs(g_missionManager.missionTypes) do
-		self.filterState[type.name] = true
-	end
 	-- set controls for filterbox:
 	self.my.filterlayout = self.frCon.contractsContainer:getDescendantById("filterlayout")
 	self.my.hidden = self.frCon.contractsContainer:getDescendantById("hidden")
@@ -406,7 +424,6 @@ end
 
 function BetterContracts:onWriteStream(streamId)
 	-- write to a client when it joins
-	local num = g_missionManager.numTransportTriggers
 	debugPrint("** writing maxActive %d ", self.maxActive)
 	streamWriteUInt8(streamId, self.maxActive)
 	streamWriteBool(streamId, self.debug)
@@ -425,10 +442,13 @@ function BetterContracts:onReadStream(streamId)
 	end
 end
 function BetterContracts:onUpdate(dt)
-	local self = BetterContracts
+	if self.transportMission and g_server == nil then 
+		updateTransportTimes(dt)
+	end 
 	self.missionUpdTimer = self.missionUpdTimer + dt
 	if self.missionUpdTimer >= self.missionUpdTimeout then
-		if self.isOn then self:refresh() end  -- only needed when GUI shown
+		if self.isOn then 
+		self:refresh() end  -- only needed when GUI shown
 		self.missionUpdTimer = 0
 	end
 end
@@ -602,22 +622,35 @@ function BetterContracts.readStream(self, streamId, connection)
 	self.expectedLiters = streamReadFloat32(streamId)
 	self.depositedLiters = streamReadFloat32(streamId)
 end
+function BetterContracts.writeTransport(self, streamId, connection)
+	-- timeleft for transport mission
+	streamWriteInt32(streamId, self.timeLeft or 0)
+end
+function BetterContracts.readTransport(self, streamId, connection)
+	self.timeLeft = streamReadInt32(streamId)
+end
+function updateTransportTimes(dt)
+	-- update timeLeft for transport missions on an MP client
+	for _,m in ipairs(g_missionManager.missions) do
+		if m.timeLeft ~= nil then 
+			m.timeLeft = m.timeLeft - dt * g_currentMission:getEffectiveTimeScale()
+		end
+	end
+end
 function BetterContracts.writeUpdateStream(self, streamId, connection, dirtyMask)
+	-- only called for active missions
 	if self.status == AbstractMission.STATUS_RUNNING then
 		streamWriteBool(streamId, self.spawnedVehicles or false)
+		streamWriteFloat32(streamId, self.fieldPercentageDone or 0.)
+		streamWriteFloat32(streamId, self.depositedLiters or 0.)
 	end
-	local fieldPercent, depo = 0., 0.
-	if self.fieldPercentageDone then fieldPercent = self.fieldPercentageDone end
-	if self.depositedLiters then depo = self.depositedLiters end
-	streamWriteFloat32(streamId, fieldPercent)
-	streamWriteFloat32(streamId, depo)
 end
 function BetterContracts.readUpdateStream(self, streamId, timestamp, connection)
 	if self.status == AbstractMission.STATUS_RUNNING then
 		self.spawnedVehicles = streamReadBool(streamId)
+		self.fieldPercentageDone = streamReadFloat32(streamId)
+		self.depositedLiters = streamReadFloat32(streamId)
 	end
-	self.fieldPercentageDone = streamReadFloat32(streamId)
-	self.depositedLiters = streamReadFloat32(streamId)
 end
 function abstractMissionNew(isServer, superf, isClient, customMt )
 	local self = superf(isServer, isClient, customMt)

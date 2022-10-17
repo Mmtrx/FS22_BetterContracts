@@ -9,6 +9,7 @@
 --  v1.1.1.0	22.04.2021  (Mmtrx) gui enhancements: addtl details, sort buttons
 --  v1.1.1.4    07.07.2021  (Mmtrx) add user-defined missionVehicles.xml, allow missions with no vehicles
 --  v1.2.0.0    18.01.2022  (Mmtrx) adapt for FS22
+--  v1.2.4.3 	10.10.2022	recognize FS22_LimeMission
 --=======================================================================================================
 
 -------------------- mission analysis functions ---------------------------------------------------
@@ -186,6 +187,13 @@ function BetterContracts:spreadMission(m, wid, hei, vWorkwidth, vSpeed)
 		maxj = 1
 		typ = 2 -- default sprayer (Hardi Mega1200)
 		price[2], usage[2], ftext[2] = price[1], usage[1], ftext[1]
+	elseif self.limeMission and mtyp == self.mtype.LIME then
+		ftext[1] = self.ft[FillType.LIME].title
+		price[1] = self.prices[SC.LIME]
+		usage[1] = self.sprUse[SC.LIME]
+		maxj = 1
+		typ = 9 -- default lime sprayer (Bredal K165)
+		price[2], usage[2], ftext[2] = price[1], usage[1], ftext[1]
 	end
 	-- set specs from mission vehicle
 	if vWorkwidth ~= nil and vWorkwidth > 0 then
@@ -198,7 +206,7 @@ function BetterContracts:spreadMission(m, wid, hei, vWorkwidth, vSpeed)
 	calculate worktime and usage (fertilizer, seeds, herbicide) cost for 2 or 3 diff vehicles:
 	- fertilize mission
 		1: default spreader, 2: default sprayer, 3: mission vehicle (if exists)
-	- spray mission 
+	- spray/ lime mission 
 		1: default sprayer, 2: mission vehicle (if exists)
 	- sow mission 
 		1: default sower, 2: mission vehicle (if exists). 

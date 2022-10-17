@@ -16,8 +16,9 @@
 --  v1.2.4.0    26.08.2022  allow for other (future) mission types, 
 -- 							fix distorted menu page for different screen aspect ratios,
 -- 							show fruit type to harvest in contracts list 
---  v.1.2.4.1 	05.09.2022	indicate leased equipment for active missions
+--  v1.2.4.1 	05.09.2022	indicate leased equipment for active missions
 --							allow clear/new contracts button only for master user
+--  v1.2.4.3 	10.10.2022	recognize FS22_LimeMission
 --=======================================================================================================
 
 function BetterContracts:loadGUI(canLoad, guiPath)
@@ -252,7 +253,7 @@ function filterList(typeId, show)
 	local frCon = self.frCon
 	local type = g_missionManager:getMissionTypeById(typeId)
 	local nofilter 
-	debugPrint("*filterList - show %s: %s", type.name, show)
+	debugPrint("  *filterList - show %s: %s", type.name, show)
 	if show then
 		-- re-insert filtered contracts:
 		for _, m in ipairs(g_missionManager:getMissionsList(g_currentMission:getFarmId())) do
@@ -447,7 +448,8 @@ function updateFarmersBox(frCon, field, npc)
 		else
 			self.my.valu4a:setText(string.format("%d Pal.",m.numObjects))
 			self.my.ppmin:setText(g_i18n:getText("SC_timeleft"))
-			local secLeft =  m.timeLeft / 1000 
+			local timeleft = m.timeLeft or 60000  -- just precaution
+			local secLeft =  timeleft / 1000 
 			local hh = math.floor(secLeft / 3600)
 			local mm = (secLeft - 3600*hh) / 60
 			local ss = (mm - math.floor(mm)) *60
@@ -466,7 +468,7 @@ function updateFarmersBox(frCon, field, npc)
 		self.my.line5:setText(g_i18n:getText("SC_price")) 
 		self.my.price:setText(g_i18n:formatMoney(c.price))
         return
-    elseif cat == SC.OTHER then
+    elseif cat == SC.OTHER then  -- platinum mission types
         self.my.field:setText("")
 		self.my.line5:setText("")
 		self.my.price:setText("")
@@ -613,25 +615,24 @@ end
 function onClickFilterButton(frCon, button)
 	local self = BetterContracts
 	local index = tonumber(button.id:sub(-1))
-	local typeId = self.fieldjobs[index][1]
-	local type   = self.fieldjobs[index][2]
-	debugPrint("*** Filter button %s: state %s, type %d %s", button.id, 
-		button.pressed, typeId, type)
+	debugPrint("*** Filter button %s: oldState %s", button.id, button.pressed)
 	button.pressed = not button.pressed 
 
 	local prof = "myFilterDynamicTextInactive"
 	if button.pressed then prof = "myFilterDynamicText" end
 	button.elements[1]:applyProfile(prof)
 
-	self.filterState[type] = button.pressed
-	filterList(typeId, button.pressed)
 	-- if button "Other" clicked:
-	if typeId == 9 then -- also handle all other mission types:
-		for i = 10, TableUtility.count(self.filterState) do 
-			local name = g_missionManager:getMissionTypeById(i).name
-			self.filterState[name] = button.pressed
-			filterList(i, button.pressed)
+	if index == 9 then -- also handle all other mission types:
+		for _, other in ipairs(self.otherTypes) do 
+			self.filterState[other[2]] = button.pressed
+			filterList(other[1], button.pressed)
 		end
+	else
+		local typeId = self.fieldjobs[index][1]
+		local typeName = self.fieldjobs[index][2]
+		self.filterState[typeName] = button.pressed
+		filterList(typeId, button.pressed)
 	end		
 end
 function onClickSortButton(frCon, button)
