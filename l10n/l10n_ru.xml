@@ -22,7 +22,7 @@
 		<text name="SC_sort" text="Сорт." />
 
 		<text name="SC_field" text="Поле %d / %s" />
-		<text name="SC_fillType" text="Тип культ.:" />
+		<text name="SC_fillType" text="Тип груза:" />
 		<text name="SC_worked" text="Выполнено:" />
 		<text name="SC_delivered" text="Доставлено:" />
 		<text name="SC_deliver" text="Не доставлено:" />
@@ -32,7 +32,7 @@
 		<text name="SC_usage" text="Расходовать:" />
 		<text name="SC_cost" text="Стоимость материала:" />
 		<text name="SC_togo" text="Требуется доставить:" />
-		<text name="SC_timeleft" text="Треб. время:" />
+		<text name="SC_timeleft" text="Осталось времени:" />
 
 		<!-- Sort button help text -->
 		<text name="SC_sortCat" text="Тип работ/№ поля" />
