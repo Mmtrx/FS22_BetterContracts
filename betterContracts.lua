@@ -27,6 +27,7 @@
 --  v1.2.4.3 	10.10.2022	recognize FS22_LimeMission, RollerMission. Add lazyNPC switch for weed
 -- 							delete config.xml file template from mod directory
 --  v1.2.4.4 	16.10.2022	fix FS22_LimeMission details, filter buttons. Add timeLeft to MP sync
+--  			20.10.2022	fix FS22_IBCtankfix mod compat
 --=======================================================================================================
 SC = {
 	FERTILIZER = 1, -- prices index
@@ -228,7 +229,6 @@ function checkOtherMods(self)
 		end
 	end
 end
-
 function readconfig(self)
 	-- check for config file in modSettings/
 	self.configFile = self.modSettings .. self.name..'.xml'
@@ -268,6 +268,26 @@ function readconfig(self)
 	end
 	delete(xmlFile)
 end
+function loadPrices(self)
+	local prices = {}
+	-- store prices per 1000 l
+	local items = {
+		{"data/objects/bigbagpallet/fertilizer/bigbagpallet_fertilizer.xml", 1, 1920},
+		{"data/objects/pallets/liquidtank/fertilizertank.xml", 0.5, 1600},
+		{"data/objects/pallets/liquidtank/herbicidetank.xml", 0.5, 1200},
+		{"data/objects/bigbagpallet/seeds/bigbagpallet_seeds.xml", 1, 900},
+		{"data/objects/bigbagpallet/lime/bigbagpallet_lime.xml", 0.5, 225}
+	}
+	for _, item in ipairs(items) do
+		local storeItem = g_storeManager.xmlFilenameToItem[item[1]]
+		local price = item[3]
+		if storeItem ~= nil then 
+			price = storeItem.price * item[2]
+		end
+		table.insert(prices, price)
+	end
+	return prices
+end
 
 function BetterContracts:onMissionInitialize(baseDirectory, missionCollaborators)
 	MissionManager.AI_PRICE_MULTIPLIER = 1.5
@@ -301,14 +321,7 @@ function BetterContracts:onPostLoadMap(mapNode, mapFile)
 
 	-- initialize constants depending on game manager instances
 	self.ft = g_fillTypeManager.fillTypes
-	self.prices = {
-		-- storeprices per 1000 l
-		g_storeManager.xmlFilenameToItem["data/objects/bigbagpallet/fertilizer/bigbagpallet_fertilizer.xml"].price,
-		g_storeManager.xmlFilenameToItem["data/objects/pallets/liquidtank/fertilizertank.xml"].price / 2,
-		g_storeManager.xmlFilenameToItem["data/objects/pallets/liquidtank/herbicidetank.xml"].price / 2,
-		g_storeManager.xmlFilenameToItem["data/objects/bigbagpallet/seeds/bigbagpallet_seeds.xml"].price,
-		g_storeManager.xmlFilenameToItem["data/objects/bigbagpallet/lime/bigbagpallet_lime.xml"].price / 2
-	}
+	self.prices = loadPrices()
 	self.sprUse = {
 		g_sprayTypeManager.sprayTypes[SprayType.FERTILIZER].litersPerSecond,
 		g_sprayTypeManager.sprayTypes[SprayType.LIQUIDFERTILIZER].litersPerSecond,
