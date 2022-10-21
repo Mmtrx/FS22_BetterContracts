@@ -2,7 +2,7 @@
 <!--=====================================================================================================
     BetterContracts mission vehicles additions
     Purpose:    Enhance ingame contracts with extra loan vehicle sets
-    Author:     Mmtrx       
+    Author:     Mmtrx
     Limitation: no entries for cotton/ sugarcane harvest, sugarBeet/ cotton/ sugarcane
                 sowing, and mow-bale for small/ medium fields
     Changelog:
@@ -12,7 +12,8 @@
 
 ======================================================================================================-->
 <missionVehicles overwrite="false">
- 
+    <variants/>
+
     <mission type="harvest" >
         <!-- grainMission -->
         <group fieldSize="small" variant="GRAIN" rewardScale="1.2">
@@ -490,7 +491,7 @@
                 <configuration name="wheel" id="4" />
             </vehicle>
             <vehicle filename="$data/vehicles/amazone/zgts10001/zgts10001.xml"/> <!-- spreader -->
-            <vehicle filename="$data/vehicles/agco/weight1100/weight1100.xml" /> 
+            <vehicle filename="$data/vehicles/agco/weight1100/weight1100.xml" />
         </group>
         <group fieldSize="medium" rewardScale="1.5">
             <vehicle filename="$data/vehicles/deutzFahr/series8/series8.xml">
@@ -549,7 +550,7 @@
         </group>
         <group fieldSize="large">
             <vehicle filename="$data/vehicles/newHolland/t9/t9.xml" /> <!-- tractor -->
-            <vehicle filename="$data/vehicles/vaderstad/nzExtreme1425/nzExtreme1425.xml" /> 
+            <vehicle filename="$data/vehicles/vaderstad/nzExtreme1425/nzExtreme1425.xml" />
         </group>
     </mission>
 
