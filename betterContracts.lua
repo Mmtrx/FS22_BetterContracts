@@ -28,6 +28,7 @@
 -- 							delete config.xml file template from mod directory
 --  v1.2.4.4 	16.10.2022	fix FS22_LimeMission details, filter buttons. Add timeLeft to MP sync
 --  			20.10.2022	fix FS22_IBCtankfix mod compat
+--  			21.10.2022	fix mtype.LIME
 --=======================================================================================================
 SC = {
 	FERTILIZER = 1, -- prices index
@@ -333,8 +334,10 @@ function BetterContracts:onPostLoadMap(mapNode, mapFile)
 		FERTILIZE = g_missionManager:getMissionType("fertilize").typeId,
 		SOW = g_missionManager:getMissionType("sow").typeId,
 		SPRAY = g_missionManager:getMissionType("spray").typeId,
-		LIME = g_missionManager:getMissionType("lime").typeId,
 	}
+	if self.limeMission then 
+		self.mtype.LIME = g_missionManager:getMissionType("lime").typeId
+	end
 	self.gameMenu = g_currentMission.inGameMenu
 	self.frCon = self.gameMenu.pageContracts
 
