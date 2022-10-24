@@ -132,6 +132,12 @@ function BetterContracts:initialize()
     addMapping("roll", SC.SIMPLE) 				-- roller mission by tn4799
     addMapping("lime", SC.SPREAD) 				-- lime mission by Mmtrx
 
+	for _, missionType in pairs(g_missionManager.missionTypes) do
+		if self.typeToCat[missionType.type] == nil then
+			addMapping(missionType.name, SC.OTHER) -- default category for not registered mission types
+		end
+	end
+
 	self.harvest = {} -- harvest missions       	1
 	self.spread = {} -- sow, spray, fertilize, lime 2
 	self.simple = {} -- plow, cultivate, weed   	3
