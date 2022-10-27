@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<l10n>
+	<texts>
+		<!-- Keys -->
+		<text name = "input_MENU_EXTRA_3" text = "Vylepšené zakázky: Detaily zap/vyp"/>
+		<!-- Gui Buttons -->
+		<text name="bc_hidden" text="Skryté: %d" />
+		<text name="bc_other" text="Další" />
+		<text name="bc_new_contracts" text="Nové zakázky" />
+		<text name="bc_clear_contracts" text="Smazat zakázky" />
+		<text name="bc_detailsOff" text="Detaily vyp." />
+		<text name="bc_detailsOn" text="Detaily zap." />
+
+		<!-- Display texts -->
+		<text name="bc_harvest" text="Skliz. " />
+		<text name="bc_leased" text="/ Nájem " />
+		<text name="bc_enoughMissions" text="Vaše farma již má maximální počet zakázek." />
+		
+		<text name="SC_widhei" text="Max šířka/délka:" />
+		<text name="SC_worktim" text="Předpokládaný čas:" />
+		<text name="SC_price" text="Cena:" />
+		<text name="SC_profpmin" text="Zisk/min:" />
+		<text name="SC_sort" text="Řazení" />
+
+		<text name="SC_field" text="Pole %d / %s" />
+		<text name="SC_fillType" text="Typ zboží:" />
+		<text name="SC_worked" text="Obdělaná oblast:" />
+		<text name="SC_delivered" text="Doručeno:" />
+		<text name="SC_deliver" text="Třeba doručit:" />
+		<text name="SC_keep" text="Lze ponechat:" />
+		<text name="SC_profit" text="Zisk ze sklizně:" />
+		<text name="SC_profitSupply" text="Zisk:" />
+		<text name="SC_usage" text="Využití:" />
+		<text name="SC_cost" text="Náklady na materiál:" />
+		<text name="SC_togo" text="Zbývá:" />
+		<text name="SC_timeleft" text="Zvývající čas:" />
+
+		<!-- Sort button help text -->
+		<text name="SC_sortCat" text="Typ mise" />
+		<text name="SC_sortProf" text="Čistý zisk" />
+		<text name="SC_sortpMin" text="Zisk za minutu" />
+	</texts>
+</l10n>
