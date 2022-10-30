@@ -25,13 +25,13 @@
 		<text name="SC_fillType" text="Тип груза:" />
 		<text name="SC_worked" text="Выполнено:" />
 		<text name="SC_delivered" text="Доставлено:" />
-		<text name="SC_deliver" text="Не доставлено:" />
+		<text name="SC_deliver" text="Требуется доставить:" />
 		<text name="SC_keep" text="Можно оставить:" />
 		<text name="SC_profit" text="Прибыль от урожая:" />
 		<text name="SC_profitSupply" text="Прибыль:" />
 		<text name="SC_usage" text="Расходовать:" />
 		<text name="SC_cost" text="Стоимость материала:" />
-		<text name="SC_togo" text="Требуется доставить:" />
+		<text name="SC_togo" text="Не доставлено:" />
 		<text name="SC_timeleft" text="Осталось времени:" />
 
 		<!-- Sort button help text -->
