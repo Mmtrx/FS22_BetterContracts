@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<modDesc descVersion="67">
+<modDesc descVersion="71">
 	<author>Mmtrx</author>
-	<version>1.2.4.4</version>
+	<version>1.2.5.0</version>
 	<title>
 		<en>Better Contracts</en>
 	</title>
@@ -23,6 +23,11 @@
 - With the "Details" button you can toggle on/ off the display of additional contract information. Like cost estimates for usage material as fertilizer, herbicide, or seeds. For harvest and baling contracts, it shows the minimum amount to be delivered, and the amount that you can keep (and sell). From this it calculates the total profit value for a contract, i.e. reward minus cost for fertilize/ spray/ sow contracts, and reward plus value of kept harvest for harvest/ baling contracts. It even estimates the time you will probably need for total completion of the job, by taking into account the work speed and work width of the appropriate leasing vehicles/ tools that are offered with the contract.
 
 Disclaimer: All values shown in details display are ESTIMATES. You should not take them absolutely, but rather as an indication of what contracts to prefer among others.
+
+Changelog v1.2.5.0:
+- hard mode: active contracts time out at midnght, Penalty for cancelling
+- discount mode: get discounted field price, based on number of missions
+- fewer warnings on missing mission vehicles 
 
 Changelog v1.2.4.4:
 - fixed filter buttons to show other mission types, if available
@@ -68,6 +73,11 @@ Changelog v1.2.2.0:
 - Mit dem "Details" Button kann die Anzeige der zusätzlichen Vertragsdetails ein- und ausgeschaltet werden. Z.B. die geschätzten Kosten des Verbrauchsmaterials (Dünger, Pflanzenschutzmittel, Saatgut). Bei Ernte- und Gras-Missionen wird die abzuliefernde Mindestmenge angezeigt, sowie die Erntemenge, die Sie behalten (und verkaufen) können. Daraus ermittelt der Mod den Gesamtertrag der Mission, also Belohnung minus Kosten für Dünge-, Spritz-, und Sähen-Verträge; und Belohnung plus Wert der behaltenen Erntemenge bei den Ernte- und Gras-Verträgen. Er schätzt sogar die Gesamtzeit, die Sie für die Erledigung des Auftrags benötigen werden, und berücksichtigt dafür Arbeitsgeschwindigkeit und Arbeitsbreite der entsprechenden Leasing-Geräte, die für den Vertrag angeboten werden.
 
 Warnung: Alle in der Detailanzeige angegebenen Werte sind GESCHÄTZT. Sie sollten sie also nicht als absolute Zahlen verstehen, sondern als Hinweis, welche Verträge vielleicht anderen vorzuziehen sind.
+
+Changelog v1.2.5.0:
+- Hard mode: Aktive Verträge müssen vor Mitternacht beendet sein, Vertragsstrafe für abgebrochene Verträge
+- Discount mode: Feldpreise verringern sich mit der Anzahl erfolgreicher Verträge
+- Weniger Warnungen bei fehlenden Vertragsfahrzeugen 
 
 Changelog v1.2.4.4:
 - Anzeigefilter-Buttons berücksichtigen nun auch andere Vertragstypen, wenn vorhanden
@@ -153,6 +163,7 @@ Changelog v1.2.2.0:
 		<sourceFile filename="scripts/debug.lua" />
 		<sourceFile filename="scripts/gui.lua" />
 		<sourceFile filename="scripts/userint.lua" />
+		<sourceFile filename="scripts/options.lua" />
 	</extraSourceFiles>
 	<l10n filenamePrefix="l10n/l10n" />
 	<actions>

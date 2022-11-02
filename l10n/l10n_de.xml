@@ -16,6 +16,17 @@
 		<text name="bc_leased" text="/ Leased " />
 		<text name="bc_enoughMissions" text="Deine Farm hat bereits die maximale Zahl aktiver Lohnaufträge." />
 
+		<!-- Hard mode -->
+		<text name="bc_penalty" text="Vertragsstrafe" />
+		<text name="bc_warnTimeout" text="Bitte beenden Sie Ihre %d Aufträge innerhalb einer Stunde, um Vertragsstrafen zu vermeiden." />
+		<text name="bc_warnCancel" text=" Die fällige Vertragsstrafe beträgt mindestens " />
+
+		<!-- discount mode -->
+		<text name="bc_maxJobs" text="Du hast den maximalen Rabatt für %s erreicht." />
+		<text name="bc_discount" text=" (%d%% Rabatt)" />
+		<text name="bc_discValue" text="%s gibt dir %d %% Rabatt für zukünftige Felderkäufe." />
+
+		<!-- npc details box -->
 		<text name="SC_widhei" text="Max Breite/ Länge:" />
 		<text name="SC_worktim" text="Zeitschätzung:" />
 		<text name="SC_price" text="Preis:" />

@@ -11,6 +11,16 @@
 		<text name="bc_detailsOff" text="詳細非表示" />
 		<text name="bc_detailsOn" text="詳細表示" />
 
+		<!-- Hard mode -->
+		<text name="bc_penalty" text="Penalty" />
+		<text name="bc_warnTimeout" text="Please complete your %d contract(s) within next hour, to prevent contract penalties." />
+		<text name="bc_warnCancel" text=" Contract penalty will be at least " />
+
+		<!-- discount mode -->
+		<text name="bc_maxJobs" text="You have reached the maximum discount for %s." />
+		<text name="bc_discount" text=" (%d%% discount)" />
+		<text name="bc_discValue" text="%s grants you %d %% discount for future field purchases." />
+
 		<!-- Display texts -->
 		<text name="bc_harvest" text="Harv. " />
 		<text name="bc_leased" text="/ Leased " />

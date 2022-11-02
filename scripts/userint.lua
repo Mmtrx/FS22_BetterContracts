@@ -10,9 +10,18 @@
 --  v1.1.1.4    07.07.2021  (Mmtrx) add user-defined missionVehicles.xml, allow missions with no vehicles
 --  v1.2.0.0    18.01.2022  (Mmtrx) adapt for FS22
 --  v1.2.4.3 	10.10.2022	recognize FS22_LimeMission
+--  v1.2.5.0 	31.10.2022	fewer mission vehicle warnings
 --=======================================================================================================
 
 -------------------- mission analysis functions ---------------------------------------------------
+warnText = {
+	"**[%s] - contract '%s field %s' has no vehicles",
+	"**[%s] - could not get store item for '%s'",
+	"**[%s]:getFromVehicle() - could not get workingWidth for '%s'",
+	"**[%s]:getFromVehicle() could not find appropriate vehicle in mission %s on field %s",
+	"[%s]:addMission(): problem with vehicles for contract '%s field %s'."
+}
+warnings = { {},{},{},{},{}, }
 function BetterContracts:getDimensions(field, verbose)
 	local numd = getNumOfChildren(field.fieldDimensions)
 	local dim, x0, x1, x2, z0, z1, z2, widthX, widthZ, heightX, heightZ, widthLength, heightLength, area
@@ -79,7 +88,15 @@ end
 function BetterContracts:isFruitPlanter(ft)
 	-- check if ft is in fruittype categoy PLANTER
 	local list = g_fruitTypeManager.categoryToFruitTypes[g_fruitTypeManager.categories.PLANTER]
-	return ListUtil.hasListElement(list, ft)
+	return TableUtility.contains(list, ft)
+end
+function BetterContracts:warning(id, p1, p2)
+	-- display the same warning only once
+	p2 = p2 or ""
+	local count = warnings[id][p1..p2] or 0
+	if count >= 1 then return end 
+	Logging.warning(warnText[id],self.name,p1,p2)
+	warnings[id][p1..p2] = count +1
 end
 function BetterContracts:getFromVehicle(cat, m)
 	-- return workwidth, speedLimit for the appropriate mission vehicle:
@@ -92,8 +109,7 @@ function BetterContracts:getFromVehicle(cat, m)
 	local spr = "n/a" -- sprayer name
 
 	if m.vehiclesToLoad == nil then 
-		Logging.warning("**[%s] - contract '%s field %s' has no vehicles", 
-			self.name, m.type.name, m.field.fieldId)
+		self:warning(1, m.type.name, m.field.fieldId)
 		return false 
 	end
 	if cat == SC.BALING then wwidth = 0 end -- init for search for biggest wwidth
@@ -101,7 +117,7 @@ function BetterContracts:getFromVehicle(cat, m)
 		vec = g_storeManager.xmlFilenameToItem[string.lower(v.filename)]
 		con = v.configurations
 		if vec == nil then
-			Logging.warning("**[%s] - could not get store item for '%s'",self.name,v.filename)
+			self:warning(2, v.filename)
 			return false 
 		end
 		StoreItemUtil.loadSpecsFromXML(vec)
@@ -138,7 +154,7 @@ function BetterContracts:getFromVehicle(cat, m)
 					if vec.name == "Ventor 4150" then wwidth = 3.3 end
 				end
 				if wwidth == nil then
-					Logging.warning("**[%s]:getFromVehicle() - could not get workingWidth for '%s'", self.name,spr)
+					self:warning(3, spr)
 					DebugUtil.printTableRecursively(vec," ",0,0)
 				end
 			end
@@ -146,11 +162,11 @@ function BetterContracts:getFromVehicle(cat, m)
 		end
 	end
 	-- if no spreader / sprayer in a spreadmission (e.g. a manure vehicle offered)
+	-- or custom (harvest) vehicle --> use default speed, wwidth
 	if wwidth == nil then
 		speed, wwidth = 0, 0
-		if cat ~= SC.SPREAD then
-			Logging.warning("[%s]:getFromVehicle() could not find appropriate vehicle in mission %s. Last vehicle: %s %s", 
-				self.name, m.id, vtype, spr)
+		if cat ~= SC.SPREAD and self.debug then
+			self:warning(4, m.id, m.field.fieldId)
 		end
 	end
 	--debugPrint("%s %s - speed %.1f, width %.1f", vtype, spr,speed,wwidth)
