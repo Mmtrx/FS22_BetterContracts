@@ -260,6 +260,8 @@ function BetterContracts:onFarmlandStateChanged(landId, farmId)
 	-- reset npcJobs to 0 for npc seller of farmland
 	local farm =  g_farmManager:getFarmById(farmId)
 	local npcIndex = g_farmlandManager:getFarmlandById(landId).npcIndex
+	if farm == nil or npcIndex == nil then return end 
+	
 	if farm.stats.npcJobs == nil then 
 		farm.stats.npcJobs = {}
 	end
