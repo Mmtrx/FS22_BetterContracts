@@ -81,11 +81,6 @@ function RoyalMod.new(debug, mpSync)
 	mod.modEnv = getfenv()
 	mod.super = {}
 	mod.debug = debug
-	function debugPrint(text, ...)
-		if mod.debug then
-			Logging.info(text,...)
-		end
-	end
 
 	if mod.debug then
 		g_showDevelopmentWarnings = true

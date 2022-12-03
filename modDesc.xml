@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <modDesc descVersion="71">
 	<author>Mmtrx</author>
-	<version>1.2.5.0</version>
+	<version>1.2.6.0</version>
 	<title>
 		<en>Better Contracts</en>
 	</title>
@@ -152,18 +152,68 @@ Changelog v1.2.2.0:
 - Ajout de support pour FS22_SupplyTransportContracts, FS22_TransportMissions
 ]]>
 		</fr>
+		<br>
+			<![CDATA[
+"Devo aceitar essas três missões de fertilizantes, ou melhor, o contrato de colheita de batata de 2,3 ha?" "Quanto fertilizante líquido vou precisar para este trabalho?" Se você já se fez perguntas como essas, este mod ajudará a encontrar as respostas. Melhora o sistema de contratos, tanto no modo singleplayer quanto no multiplayer.
+
+- O número máximo de contratos e o valor gerado por ciclo são ajustados automaticamente ao número de campos do mapa.
+ 
+- Você pode gerar novos contratos imediatamente através do botão "Novos contratos" ou excluir todos eles com o botão "Limpar contratos".
+
+- Você pode classificar os contratos disponíveis por tipo e número de campo, por lucro total ou por lucro por minuto, para facilitar a localização do que você deseja.
+ 
+- Você pode ativar mais de três contratos por vez.
+ 
+- O mod adiciona novos combos de veículos para contratos, para o gerador de missão escolher.
+
+- Com o botão "Detalhes" você pode ativar/desativar a exibição de informações adicionais do contrato. Como estimativas de custo para material de uso como fertilizante, herbicida ou sementes. Para contratos de colheita e enfardamento, mostra a quantidade mínima a ser entregue, e a quantidade que você pode manter (e vender). A partir disso, ele calcula o valor total do lucro para um contrato, ou seja, recompensa menos custo para contratos de fertilizar/pulverizar/semear e recompensa mais valor da colheita mantida para contratos de colheita/enfardamento. Ele ainda estima o tempo que você provavelmente precisará para a conclusão total do trabalho, levando em consideração a velocidade de trabalho e a largura de trabalho dos veículos/ferramentas de locação apropriados que são oferecidos no contrato.
+
+Isenção de responsabilidade: Todos os valores mostrados na exibição de detalhes são ESTIMATIVAS. Você não deve tomá-los absolutamente, mas sim como uma indicação de quais contratos preferir entre outros.
+
+Registro de alterações v1.2.5.0:
+- modo difícil: contratos ativos expiram no meio da noite, penalidade por cancelamento
+- modo de desconto: obtenha desconto no preço do campo, com base no número de missões
+- menos avisos sobre veículos de missão desaparecidos
+
+Registro de alterações v1.2.4.4:
+- botões de filtro fixos para mostrar outros tipos de missão, se disponíveis
+- exibição fixa de "tempo restante" para contratos de transporte no jogo MP
+- contratos de ervas daninhas e fertilizantes agora também podem ser configurados para lazyNPC
+- compatibilidade com outros mods de contrato
+
+Registro de alterações v1.2.4.2:
+- "NPCs preguiçosos" (deixe mais trabalho para contratos) pode ser configurado para ligar/desligar
+- número máximo de contratos ativos configuráveis ​​(em modSettings/FS22_BetterContracts.xml)
+- indicador de contratos ativos com equipamentos emprestados
+- botões de limpar / novos contratos em jogos MP funcionam apenas para o usuário mestre
+- reconhecer FS22_DynamicMissionVehicles
+
+Registro de alterações v1.2.4.0:
+- Adicionado correção (interina) para "NPCs preguiçosos": deixe mais trabalho para contratos
+- Permitir (futuros) outros tipos de contrato
+- Corrigidos problemas de resolução de tela
+
+Registro de alterações v1.2.3.0:
+- Adicionado função de filtro de exibição para lista de contratos
+
+Registro de alterações v1.2.2.0:
+- Cálculo ajustado de manter/entregar valores para contratos de colheita/enfardamento
+- Adicionado prevenção de conflitos com outros mods
+- Adicionado suporte para FS22_SupplyTransportContracts, FS22_TransportMissions
+]]>
+		</br>
 	</description>
 	<iconFilename>icon.dds</iconFilename>
 	<multiplayer supported="true" />
 	<extraSourceFiles>
 		<sourceFile filename="betterContracts.lua" />
-		<sourceFile filename="scripts/betterContractsNewEvent.lua" />
-		<sourceFile filename="scripts/betterContractsClearEvent.lua" />
-		<sourceFile filename="scripts/missionVehicles.lua" />
 		<sourceFile filename="scripts/debug.lua" />
+		<sourceFile filename="scripts/events.lua" />
 		<sourceFile filename="scripts/gui.lua" />
-		<sourceFile filename="scripts/userint.lua" />
+		<sourceFile filename="scripts/missionVehicles.lua" />
 		<sourceFile filename="scripts/options.lua" />
+		<sourceFile filename="scripts/settings.lua" />
+		<sourceFile filename="scripts/userint.lua" />
 	</extraSourceFiles>
 	<l10n filenamePrefix="l10n/l10n" />
 	<actions>

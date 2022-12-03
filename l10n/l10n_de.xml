@@ -15,15 +15,18 @@
 		<text name="bc_harvest" text="Ernte " />
 		<text name="bc_leased" text="/ Leased " />
 		<text name="bc_enoughMissions" text="Deine Farm hat bereits die maximale Zahl aktiver Lohnaufträge." />
+		<text name="bc_jobsCompleted" text="Anzahl erfolgreicher Jobs: %d" />
 
 		<!-- Hard mode -->
 		<text name="bc_penalty" text="Vertragsstrafe" />
-		<text name="bc_warnTimeout" text="Bitte beenden Sie Ihre %d Aufträge innerhalb einer Stunde, um Vertragsstrafen zu vermeiden." />
+		<text name="bc_warnTimeout" text="Bitte beenden Sie Ihre %d Aufträge vor 24:00 Uhr, um Vertragsstrafen zu vermeiden." />
 		<text name="bc_warnCancel" text=" Die fällige Vertragsstrafe beträgt mindestens " />
+		<text name="bc_leaseNotEnough" text="Sie müssen noch %d Aufträge für %s mit eigenen Geräten erfüllen, bevor Sie Geräte leihen können." />
 
 		<!-- discount mode -->
 		<text name="bc_maxJobs" text="Du hast den maximalen Rabatt für %s erreicht." />
 		<text name="bc_discount" text=" (%d%% Rabatt)" />
+		<text name="bc_owner" text="Besitzer:" />
 		<text name="bc_discValue" text="%s gibt dir %d %% Rabatt für zukünftige Felderkäufe." />
 
 		<!-- npc details box -->
@@ -50,5 +53,48 @@
 		<text name="SC_sortCat" text="Missionstyp" />
 		<text name="SC_sortProf" text="Nettoprofit" />
 		<text name="SC_sortpMin" text="Profit pro Minute" />
+
+		<!-- Settings Page -->
+		<text name="bc_settingsPage_title" text="BetterContracts Einstellungen" />
+
+		<text name="bc_baseSettings" text="Grundeinstellungen" />
+		<text name="bc_rewardMultiplier" text="Basislohn" />
+		<text name="bc_rewardMultiplier_tooltip" text="Passt die Lohnhöhe für die angebotenen Verträge an." />
+		<text name="bc_leaseMultiplier" text="Kosten Leihgeräte" />
+		<text name="bc_leaseMultiplier_tooltip" text="Passt die Kosten für bei Verträgen angebotene Leihgeräte an." />
+		<text name="bc_maxActive" text="Gleichzeitig aktive Verträge" />
+		<text name="bc_maxActive_tooltip" text="Maximalzahl der gleichzeitig erlaubten aktiven Verträge" />
+		<text name="bc_refreshMP" text="Berechtigung Vertragsliste" />
+		<text name="bc_refreshMP_tooltip" text="Wer in einem MP-Spiel Verträge löschen/ erzeugen darf" />
+		<text name="bc_debug" text="Debug Modus" />
+		<text name="bc_debug_tooltip" text="Wenn aktiviert, werden Info Meldungen in die Log-Datei geschrieben. Kann bei der Fehlersuche helfen." />
+
+		<text name="bc_lazyNPC" text="Faule Farmer" />
+
+		<text name="bc_mainSwitch" text="Aktiviert" />
+		<text name="bc_active" text="Aktiviert" />
+		<text name="bc_lazyNPC_tooltip" text="Wenn aktiviert, unterlassen NPC-Farmer häufiger die Arbeit auf ihren Feldern, so dass mehr Verträge angeboten werden können." />
+		<text name="bc_lazyNPCHarvest_tooltip" text="Wenn aktiv, werden die NPC-Farmer gar nicht mehr zum Ernten fahren. Könnte also eine Menge Arbeit für dich werden." />
+		<text name="bc_lazyNPCSow_tooltip" text="Wenn aktiv, werden die NPC-Farmer seltener Säh-Arbeiten selbst ausführen, und sie dafür als Lohnarbeit anbieten." />
+		<text name="bc_lazyNPCPlow" text="Pflügen und Grubbern" />
+		<text name="bc_lazyNPCPlow_tooltip" text="Wenn aktiv, werden die NPC-Farmer seltener selbst pflügen und grubbern." />
+		<text name="bc_lazyNPCFertilize_tooltip" text="Wenn aktiv, werden die NPC-Farmer seltener Dünge-Arbeiten selbst ausführen, und sie dafür als Lohnarbeit anbieten." />
+		<text name="bc_lazyNPCWeed_tooltip" text="Wenn aktiv, werden die NPC-Farmer seltener das Unkraut auf ihren Feldern selbst bekämpfen, sondern Jät- und Sprüh-Aufträge als Lohnarbeit anbieten." />
+
+		<text name="bc_hardMode" text="Erhöhte Schwierigkeit" />
+		<text name="bc_hardMode_tooltip" text="Wenn aktiviert, müssen aktive Verträge bis spätestens zum Monatsende erfüllt werden. Einen laufenden Vertrag abzubrechen kostet eine Konventionalstrafe." />
+		<text name="bc_hardPenalty" text="Vertragsstrafe" />
+		<text name="bc_hardPenalty_tooltip" text="Höhe der Vertragsstrafe für abgebrochene Verträge (in % vom Vertragswert)." />
+		<text name="bc_hardLease" text="Leihgeräte freigeschaltet" />
+		<text name="bc_hardLease_tooltip" text="Anzahl der zu erfüllenden Verträge pro NPC-Farmer, bevor von diesem Farmer Geräte ausgeliehen werden können." />
+		<text name="bc_hardExpire" text="Zeitfenster" />
+		<text name="bc_hardExpire_tooltip" text="Am Ende welcher Periode ein laufender Vertrag spätestens beendet sein muss." />
+
+		<text name="bc_discountMode" text="Nachlass bei Feldkäufen" />
+		<text name="bc_discountMode_tooltip" text="Wenn aktiviert, gewährt ein NPC Farmer einen Nachlass auf von ihm gekaufte Farmlands, der mit der Anzahl der erfolgreich für ihn erfüllten Verträge steigt." />
+		<text name="bc_discPerJob" text="Nachlass pro erfülltem Vertrag" />
+		<text name="bc_discPerJob_tooltip" text="Pro erfülltem Vertrag erhöht der NPC-Farmer seinen Nachlass für Feldkäufe um diesen Prozentwert. Der maximale Rabatt wird aber 50% nicht übersteigen." />
+		<text name="bc_discMaxJobs" text="Anzahl nachlasswirksamer Jobs" />
+		<text name="bc_discMaxJobs_tooltip" text="Kann den Maximalrabatt verringern, z.B. Nachlass pro Vertrag = 11%, Job-Anzahl = 3 -> Maximalrabatt 33%. Achtung: Bei Feldkauf vermindert sich die aktuelle Zahl nachlasswirksamer Jobs um den hier definierten Wert. " />
 	</texts>
 </l10n>

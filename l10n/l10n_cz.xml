@@ -49,5 +49,51 @@
 		<text name="SC_sortCat" text="Typ mise" />
 		<text name="SC_sortProf" text="Čistý zisk" />
 		<text name="SC_sortpMin" text="Zisk za minutu" />
+
+		<!-- Settings Page (and v1.2.6.0 additions) -->
+		<text name="bc_jobsCompleted" text="Jobs completed: %d" />
+		<text name="bc_leaseNotEnough" text="You need to complete %d more jobs for %s with own equipment, before you can borrow machines." />
+		<text name="bc_owner" text="Owner:" />
+
+		<text name="bc_settingsPage_title" text="Contract Settings" />
+
+		<text name="bc_baseSettings" text="Base Settings" />
+		<text name="bc_rewardMultiplier" text="Reward" />
+		<text name="bc_rewardMultiplier_tooltip" text="Adjust the rewards for contracts offered." />
+		<text name="bc_leaseMultiplier" text="Lease Cost" />
+		<text name="bc_leaseMultiplier_tooltip" text="Adjust the cost for borrowing equipment for contracts." />
+		<text name="bc_maxActive" text="Concurrently active contracts" />
+		<text name="bc_maxActive_tooltip" text="Max number of concurrently active contracts." />
+		<text name="bc_refreshMP" text="Permission contracts list" />
+		<text name="bc_refreshMP_tooltip" text="Who can delete / refresh contracts in an MP game." />
+		<text name="bc_debug" text="Debug Modus" />
+		<text name="bc_debug_tooltip" text="Prints info messages to the log if active. Can help to find bugs." />
+
+		<text name="bc_lazyNPC" text="Lazy Farmers" />
+		<text name="bc_mainSwitch" text="Activated" />
+		<text name="bc_active" text="Activated" />
+		<text name="bc_lazyNPC_tooltip" text="If active, NPC farmers more often skip work on their fields. So more contracts can be offered." />
+		<text name="bc_lazyNPCHarvest_tooltip" text="If active, NPC farmers do not harvest at all. Could result in a lot of work for you." />
+		<text name="bc_lazyNPCSow_tooltip" text="If active, NPC farmers perform sowing work more rarely and offer it as contracts instead." />
+		<text name="bc_lazyNPCPlow" text="Plow and Cultivate" />
+		<text name="bc_lazyNPCPlow_tooltip" text="If active, NPC farmers less often plow or cultivate on their own." />
+		<text name="bc_lazyNPCFertilize_tooltip" text="If active, NPC farmer perform fertilizing work more rarely and offer it as contracts instead." />
+		<text name="bc_lazyNPCWeed_tooltip" text="If active, NPC farmers fight weeds on thier fields more rarely, and instead offer spray and weeding contracts." />
+
+		<text name="bc_hardMode" text="Higher difficulty" />
+		<text name="bc_hardMode_tooltip" text="If active, all active contracts must be completed by end of month at the latest. Cancelling a contract will cost a penalty. Borrowing contract equipment is only unlocked after completing some jobs." />
+		<text name="bc_hardPenalty" text="Penalty" />
+		<text name="bc_hardPenalty_tooltip" text="Penalty amount for cancelled contract (in % of contract reward)." />
+		<text name="bc_hardLease" text="Unlock borrowing equipment" />
+		<text name="bc_hardLease_tooltip" text="Number of successful jobs for an NPC farmer, before they lend you their equipment." />
+		<text name="bc_hardExpire" text="Deadline" />
+		<text name="bc_hardExpire_tooltip" text="At the end of what time period all active contracts must be completed." />
+
+		<text name="bc_discountMode" text="Field purchase discount" />
+		<text name="bc_discountMode_tooltip" text="If active, an NPC farmer give a discount on farmland purchases. Discount increases with the number of competed jobs for this farmer." />
+		<text name="bc_discPerJob" text="Discount per completed contract" />
+		<text name="bc_discPerJob_tooltip" text="An NPC farmer increases their discount by this amount per job completed. Maximum discount cannot rise above 50%." />
+		<text name="bc_discMaxJobs" text="Number of discount-effective jobs" />
+		<text name="bc_discMaxJobs_tooltip" text="Can reduce the max discount, e.g. discount per contract = 11%, number of jobs = 3 -> max discount = 33%. Caution: Current number of jobs complete will decrease by this value on a farmland purchase." />
 	</texts>
 </l10n>

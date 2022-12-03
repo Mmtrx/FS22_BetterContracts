@@ -11,6 +11,7 @@
 --  v1.2.0.0    18.01.2022  (Mmtrx) adapt for FS22
 --  v1.2.4.3 	10.10.2022	recognize FS22_LimeMission
 --  v1.2.5.0 	31.10.2022	fewer mission vehicle warnings
+--  v1.2.5.1 	02.11.2022	check estWorktime() parms if nil
 --=======================================================================================================
 
 -------------------- mission analysis functions ---------------------------------------------------
@@ -208,7 +209,7 @@ function BetterContracts:spreadMission(m, wid, hei, vWorkwidth, vSpeed)
 		price[1] = self.prices[SC.LIME]
 		usage[1] = self.sprUse[SC.LIME]
 		maxj = 1
-		typ = 9 -- default lime sprayer (Bredal K165)
+		typ = 10 -- default lime sprayer (Bredal K165)
 		price[2], usage[2], ftext[2] = price[1], usage[1], ftext[1]
 	end
 	-- set specs from mission vehicle
@@ -280,6 +281,12 @@ end
 function BetterContracts:estWorktime(wid, hei, wwid, speed)
 	-- estimate time to work a rectangle field (wid x hei) with a tool
 	-- of working width wwid at given speed
+	if wwid == nil or wwid == 0 or speed == nil or speed == 0 then 
+		Logging.warning("[%s] estWorktime invalid parms: %.1f, %.1f, %s, %s",
+			self.name, wid, hei, wwid, speed)
+		printCallstack()
+		return nil, 36000
+	end 
 	local nlanes = math.ceil(wid / wwid) -- how many passes
 	local workL = nlanes * hei + wid -- length of working path
 	local netT = workL / speed * 3.6 -- net working time in sec

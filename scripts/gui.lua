@@ -1,4 +1,3 @@
----@diagnostic disable: lowercase-global
 --=======================================================================================================
 -- BetterContracts SCRIPT
 --
@@ -19,56 +18,139 @@
 --  v1.2.4.1 	05.09.2022	indicate leased equipment for active missions
 --							allow clear/new contracts button only for master user
 --  v1.2.4.3 	10.10.2022	recognize FS22_LimeMission
+--  v1.2.6.0 	30.11.2022	UI for all settings
 --=======================================================================================================
 
-function BetterContracts:loadGUI(canLoad, guiPath)
-	if canLoad then
-		local fname
-		-- load my gui profiles
-		fname = guiPath .. "guiProfiles.xml"
-		if fileExists(fname) then
-			g_gui:loadProfiles(fname)
-		else
-			canLoad = false
-		end
-		local xmlFile, layout 
-		-- load "SCGui.xml"
-		fname = guiPath .. "SCGui.xml"
-		if canLoad and fileExists(fname) then
-			xmlFile = loadXMLFile("Temp", fname)
-			local fbox = self.frCon.farmerBox
-			-- load our "npcbox" as child of farmerBox:
-			g_gui:loadGuiRec(xmlFile, "GUI", fbox, self.frCon)
-			local npcbox = fbox:getDescendantById("npcbox")
-			npcbox:applyScreenAlignment()
-			npcbox:updateAbsolutePosition()
-			layout = fbox:getDescendantById("layout")
-			layout:invalidateLayout(true) -- adjust sort buttons
-			delete(xmlFile)
-		else
-			canLoad = false
-			Logging.error("[GuiLoader %s]  Required file '%s' could not be found!", self.name, fname)
-		end
-		-- load "filterGui.xml"
-		fname = guiPath .. "filterGui.xml"
-		if canLoad and fileExists(fname) then
-			xmlFile = loadXMLFile("Temp", fname)
-			local cont = self.frCon.contractsContainer
-			g_gui:loadGuiRec(xmlFile, "GUI", cont, self.frCon)
-			layout = cont:getDescendantById("filterlayout")
-			layout:applyScreenAlignment()
-			layout:updateAbsolutePosition()
-			layout:invalidateLayout(true) -- adjust filter buttons
-			local hidden = cont:getDescendantById("hidden")
-			hidden:applyScreenAlignment()
-			hidden:updateAbsolutePosition()
-			delete(xmlFile)
-		else
-			canLoad = false
-			Logging.error("[GuiLoader %s]  Required file '%s' could not be found!", self.name, fname)
+--- Adds a new page to the in game menu.
+function BetterContracts:fixInGameMenuPage(frame, pageName, iconFile, uvs, sizeFile, 
+	position, predicateFunc)
+	local inGameMenu = g_gui.screenControllers[InGameMenu]
+
+	-- remove all to avoid warnings
+	for k, v in pairs({pageName}) do
+		inGameMenu.controlIDs[v] = nil
+	end
+	inGameMenu:registerControls({pageName})
+	inGameMenu[pageName] = frame
+	inGameMenu.pagingElement:addElement(inGameMenu[pageName])
+	inGameMenu:exposeControlsAsFields(pageName)
+
+	if position == nil then 	-- should insert before contractsPage
+		for i = 1, #inGameMenu.pagingElement.elements do
+			local child = inGameMenu.pagingElement.elements[i]
+			if child == inGameMenu.pageContracts then
+				position = i
+				break
+			end
 		end
 	end
-	return canLoad
+	for i = 1, #inGameMenu.pagingElement.elements do
+		local child = inGameMenu.pagingElement.elements[i]
+		if child == inGameMenu[pageName] then
+			table.remove(inGameMenu.pagingElement.elements, i)
+			table.insert(inGameMenu.pagingElement.elements, position, child)
+			break
+		end
+	end
+	for i = 1, #inGameMenu.pagingElement.pages do
+		local child = inGameMenu.pagingElement.pages[i]
+		if child.element == inGameMenu[pageName] then
+			table.remove(inGameMenu.pagingElement.pages, i)
+			table.insert(inGameMenu.pagingElement.pages, position, child)
+			break
+		end
+	end
+
+	inGameMenu.pagingElement:updateAbsolutePosition()
+	inGameMenu.pagingElement:updatePageMapping()
+	
+	inGameMenu:registerPage(inGameMenu[pageName], position, predicateFunc)
+	local iconFileName = Utils.getFilename(iconFile, self.directory)
+	inGameMenu:addPageTab(inGameMenu[pageName],iconFileName,GuiUtils.getUVs(uvs, sizeFile))
+	inGameMenu[pageName]:applyScreenAlignment()
+	inGameMenu[pageName]:updateAbsolutePosition()
+
+	for i = 1, #inGameMenu.pageFrames do
+		local child = inGameMenu.pageFrames[i]
+		if child == inGameMenu[pageName] then
+			table.remove(inGameMenu.pageFrames, i)
+			table.insert(inGameMenu.pageFrames, position, child)
+			break
+		end
+	end
+	inGameMenu:rebuildTabList()
+end
+function BetterContracts:loadGUI(guiPath)
+	local canLoad = true
+	local fname
+	-- load my gui profiles
+	fname = guiPath .. "guiProfiles.xml"
+	if fileExists(fname) then
+		g_gui:loadProfiles(fname)
+	else
+		Logging.error("[GuiLoader %s]  Required file '%s' could not be found!", self.name, fname)
+		return false
+	end
+	local xmlFile, layout 
+	-- load "SCGui.xml"
+	fname = guiPath .. "SCGui.xml"
+	if fileExists(fname) then
+		xmlFile = loadXMLFile("Temp", fname)
+		local fbox = self.frCon.farmerBox
+		-- load our "npcbox" as child of farmerBox:
+		g_gui:loadGuiRec(xmlFile, "GUI", fbox, self.frCon)
+		local npcbox = fbox:getDescendantById("npcbox")
+		npcbox:applyScreenAlignment()
+		npcbox:updateAbsolutePosition()
+		layout = fbox:getDescendantById("layout")
+		layout:invalidateLayout(true) -- adjust sort buttons
+		delete(xmlFile)
+	else
+		Logging.error("[GuiLoader %s]  Required file '%s' could not be found!", self.name, fname)
+		return false
+	end
+	-- load "filterGui.xml"
+	fname = guiPath .. "filterGui.xml"
+	if fileExists(fname) then
+		xmlFile = loadXMLFile("Temp", fname)
+		local cont = self.frCon.contractsContainer
+		g_gui:loadGuiRec(xmlFile, "GUI", cont, self.frCon)
+		layout = cont:getDescendantById("filterlayout")
+		layout:applyScreenAlignment()
+		layout:updateAbsolutePosition()
+		layout:invalidateLayout(true) -- adjust filter buttons
+		local hidden = cont:getDescendantById("hidden")
+		hidden:applyScreenAlignment()
+		hidden:updateAbsolutePosition()
+		delete(xmlFile)
+	else
+		Logging.error("[GuiLoader %s]  Required file '%s' could not be found!", self.name, fname)
+		return false
+	end
+
+	-- load "BCsettingsPage.lua"
+	if g_gui ~= nil and g_gui.guis.BCSettingsFrame == nil then
+		local luaPath = guiPath .. "BCsettingsPage.lua"
+		if fileExists(luaPath) then
+			source(luaPath)
+		else
+			Logging.error("[GuiLoader %s]  Required file '%s' could not be found!", self.name, luaPath)
+			return false
+		end
+	end
+	-- load "settingsPage.xml"
+	fname = guiPath .. "settingsPage.xml"
+	if fileExists(fname) then
+		self.settingsPage = BCSettingsPage:new()
+		if g_gui:loadGui(fname, "BCSettingsFrame", self.settingsPage, true) == nil then
+			Logging.error("[GuiLoader %s]  Error loading SettingsPage", self.name)
+			return false
+		end
+	else
+		Logging.error("[GuiLoader %s]  Required file '%s' could not be found!", self.name, fname)
+		return false
+	end
+	return true
 end
 function onFrameOpen(superself, superFunc, ...)
 	local self = BetterContracts
@@ -397,10 +479,9 @@ end
 function updateFarmersBox(frCon, field, npc)
 	-- set the text values in our npcbox
 	local self = BetterContracts
-	if not self.isOn then
-		return
-	end
- 
+	if not self.isOn then return end
+
+	-- find the current contract
 	local section, ix = frCon.contractsList:getSelectedPath()
 	local cont, m, con = nil, nil, nil
 	local secCons = frCon.sectionContracts[section]
@@ -414,12 +495,26 @@ function updateFarmersBox(frCon, field, npc)
 		con = self.IdToCont[m.id]
 	end
 	if con == nil then
-		print("**Error BetterContracts:updateFarmersBox() - no contract found for mission id " .. tostring(m.id))
+		Logging.error("**BetterContracts:updateFarmersBox() - no contract found for mission id " .. tostring(m.id))
 		return
 	end
 	local cat = con[1]
 	local c = con[2]
 	self.my.npcbox:setVisible(true)
+
+	-- show # of completed jobs
+	if field ~= nil and npc ~= nil then 
+		local farm =  g_farmManager:getFarmById(g_currentMission.player.farmId)
+		if farm.stats.npcJobs == nil then 
+			farm.stats.npcJobs = {}
+		end
+		local jobs = farm.stats.npcJobs
+		if jobs[npc.index] == nil then 
+			jobs[npc.index] = 0
+		end 
+		local txt = string.format(g_i18n:getText("bc_jobsCompleted"), jobs[npc.index])
+		frCon.farmerText:setText(txt)
+	end	
 
 	-- handle non-field missions
 	self.my.field:setText(g_i18n:getText("SC_fillType")) 	-- line 1
@@ -562,25 +657,16 @@ end
 function updateButtonsPanel(menu, page)
 	-- called by TabbedMenu.onPageChange(), after page:onFrameOpen()
 	local inGameMenu = BetterContracts.gameMenu
-	if page.id == "pageContracts" and inGameMenu.newButton ~= nil then
-		local disable = g_currentMission.missionDynamicInfo.isMultiplayer and 
-			not g_currentMission.isMasterUser
-		-- disable if MP and not masterUser:
-		inGameMenu.newButton:setDisabled(disable)
-		inGameMenu.clearButton:setDisabled(disable)
-	end
-end
-function startContract()
-	-- overwrite dialog info box
-	local farmId = g_currentMission:getFarmId()
-	if g_missionManager:hasFarmReachedMissionLimit(farmId) 
-		and BetterContracts.maxActive ~= 3 then
-		g_gui:showInfoDialog({
-			visible = true,
-			text = g_i18n:getText("bc_enoughMissions"),
-			dialogType = DialogElement.TYPE_INFO
-		})
-	end
+	if page.id ~= "pageContracts" or inGameMenu.newButton == nil 
+		or not g_currentMission.missionDynamicInfo.isMultiplayer then
+		return end 
+	-- disable buttons accorcing to setting refreshMP
+	local refresh = BetterContracts.config.refreshMP
+	local enable = g_currentMission.isMasterUser or refresh == SC.PLAYER  
+		or refresh == SC.FARMMANAGER and g_currentMission:getHasPlayerPermission("farmManager")  
+
+	inGameMenu.newButton:setDisabled(not enable)
+	inGameMenu.clearButton:setDisabled(not enable)
 end
 function BetterContracts:radioButton(st)
 	-- implement radiobutton behaviour: max. one sort button can be active
