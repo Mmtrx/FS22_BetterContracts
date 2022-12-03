@@ -16,7 +16,16 @@ Farming Simulator mod to enhance contracts handling
 
 Disclaimer: All values shown in details display are ESTIMATES. You should not take them absolutely, but rather as an indication of what contracts to prefer among others.
 
-Changelog v1.2.4.2:
+**Changelog**:
+Version | Date | Description
+---|---|---
+v1.2.6.0 |30.11.2022|UI for all settings
+v1.2.5.0 |31.10.2022|Hard mode: active missions time out at month end. Penalty for mission cancel. Discount mode: get discounted field price, based on # of missions. Mission vehicle warnings: only if no vehicles or debug="true"
+v1.2.4.4 |16.10.2022|fix FS22_LimeMission details, filter buttons. Add timeLeft to MP sync
+|        |21.10.2022|fix mtype.LIME, FS22_IBCtankfix mod compat
+v1.2.4.3 |10.10.2022|recognize FS22_LimeMission, RollerMission. Add lazyNPC switch for weed. Delete config.xml file template from mod directory
+
+ v1.2.4.2:
 - "lazy NPCs" (leave more work for contracts) can be configured on/ off
 - maximum number of active contracts configurable (in modSettings/FS22_BetterContracts.xml)
 - indicator for active contracts with borrowed equipment 
