@@ -91,7 +91,7 @@
 		<text name="bc_hardExpire_tooltip" text="At the end of what time period all active contracts must be completed." />
 
 		<text name="bc_discountMode" text="Field purchase discount" />
-		<text name="bc_discountMode_tooltip" text="If active, an NPC farmer give a discount on farmland purchases. Discount increases with the number of competed jobs for this farmer." />
+		<text name="bc_discountMode_tooltip" text="If active, an NPC farmer give a discount on farmland purchases. Discount increases with the number of completed jobs for this farmer." />
 		<text name="bc_discPerJob" text="Discount per completed contract" />
 		<text name="bc_discPerJob_tooltip" text="An NPC farmer increases their discount by this amount per job completed. Maximum discount cannot rise above 50%." />
 		<text name="bc_discMaxJobs" text="Number of discount-effective jobs" />
