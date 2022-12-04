@@ -331,7 +331,7 @@ function initGui(self)
 	local box = self.frMap.farmlandValueBox
 	local labelFarmland = box:getFirstDescendant(
 		function(e) return e.sourceText and 
-		e.sourceText == g_i18n:getText("ui_farmlandScreen"):upper()..":"
+		e.sourceText == utf8ToUpper(g_i18n:getText("ui_farmlandScreen"))..":"
 		end )
 	local label = labelFarmland:clone(box)
 	label:setText(g_i18n:getText("bc_owner"))
