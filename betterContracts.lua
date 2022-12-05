@@ -32,6 +32,7 @@
 --							discount mode: get discounted field price, based on # of missions
 --							mission vehicle warnings: only if no vehicles or debug="true"
 --  v1.2.6.0 	30.11.2022	UI for all settings
+--  v1.2.6.1 	05.12.2022	initGui(): utf8ToUpper(). Addtnl l10n translations from github
 --=======================================================================================================
 SC = {
 	FERTILIZER = 1, -- prices index

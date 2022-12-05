@@ -36,7 +36,7 @@
 		<text name="SC_worked" text="Campo trabalhado:" />
 		<text name="SC_delivered" text="Entregue:" />
 		<text name="SC_deliver" text="Deve entregar:" />
-		<text name="SC_keep" text="Pode manter:" />
+		<text name="SC_keep" text="Para seu uso:" />
 		<text name="SC_profit" text="Lucro da colheita:" />
 		<text name="SC_profitSupply" text="Lucro:" />
 		<text name="SC_usage" text="Utilização:" />
@@ -50,49 +50,49 @@
 		<text name="SC_sortpMin" text="Lucro por minuto" />
 
 		<!-- Settings Page (and v1.2.6.0 additions) -->
-		<text name="bc_jobsCompleted" text="Jobs completed: %d" />
-		<text name="bc_leaseNotEnough" text="You need to complete %d more jobs for %s with own equipment, before you can borrow machines." />
-		<text name="bc_owner" text="Owner:" />
+		<text name="bc_jobsCompleted" text="Trabalhos concluídos: %d" />
+		<text name="bc_leaseNotEnough" text="Você precisa concluir mais %d trabalhos para %s com equipamento próprio antes de poder emprestar máquinas." />
+		<text name="bc_owner" text="Proprietário:" />
 
-		<text name="bc_settingsPage_title" text="Contract Settings" />
+		<text name="bc_settingsPage_title" text="Configurações do contrato" />
 
-		<text name="bc_baseSettings" text="Base Settings" />
-		<text name="bc_rewardMultiplier" text="Reward" />
-		<text name="bc_rewardMultiplier_tooltip" text="Adjust the rewards for contracts offered." />
-		<text name="bc_leaseMultiplier" text="Lease Cost" />
-		<text name="bc_leaseMultiplier_tooltip" text="Adjust the cost for borrowing equipment for contracts." />
-		<text name="bc_maxActive" text="Concurrently active contracts" />
-		<text name="bc_maxActive_tooltip" text="Max number of concurrently active contracts." />
-		<text name="bc_refreshMP" text="Permission contracts list" />
-		<text name="bc_refreshMP_tooltip" text="Who can delete / refresh contracts in an MP game." />
-		<text name="bc_debug" text="Debug Modus" />
-		<text name="bc_debug_tooltip" text="Prints info messages to the log if active. Can help to find bugs." />
+		<text name="bc_baseSettings" text="Configurações básicas" />
+		<text name="bc_rewardMultiplier" text="Recompensa" />
+		<text name="bc_rewardMultiplier_tooltip" text="Ajustar as recompensas dos contratos oferecidos." />
+		<text name="bc_leaseMultiplier" text="Custo do aluguel" />
+		<text name="bc_leaseMultiplier_tooltip" text="Ajustar o custo de empréstimo de equipamentos para contratos." />
+		<text name="bc_maxActive" text="Contratos simultaneamente ativos" />
+		<text name="bc_maxActive_tooltip" text="Número máximo de contratos ativos simultaneamente." />
+		<text name="bc_refreshMP" text="Lista de contratos de permissões" />
+		<text name="bc_refreshMP_tooltip" text="Quem pode deletar/atualizar contratos em um jogo MP." />
+		<text name="bc_debug" text="Depurar Modus" />
+		<text name="bc_debug_tooltip" text="Imprime mensagens informativas no log, se ativo. Pode ajudar a encontrar bugs." />
 
-		<text name="bc_lazyNPC" text="Lazy Farmers" />
-		<text name="bc_mainSwitch" text="Activated" />
-		<text name="bc_active" text="Activated" />
-		<text name="bc_lazyNPC_tooltip" text="If active, NPC farmers more often skip work on their fields. So more contracts can be offered." />
-		<text name="bc_lazyNPCHarvest_tooltip" text="If active, NPC farmers do not harvest at all. Could result in a lot of work for you." />
-		<text name="bc_lazyNPCSow_tooltip" text="If active, NPC farmers perform sowing work more rarely and offer it as contracts instead." />
-		<text name="bc_lazyNPCPlow" text="Plow and Cultivate" />
-		<text name="bc_lazyNPCPlow_tooltip" text="If active, NPC farmers less often plow or cultivate on their own." />
-		<text name="bc_lazyNPCFertilize_tooltip" text="If active, NPC farmer perform fertilizing work more rarely and offer it as contracts instead." />
-		<text name="bc_lazyNPCWeed_tooltip" text="If active, NPC farmers fight weeds on thier fields more rarely, and instead offer spray and weeding contracts." />
+		<text name="bc_lazyNPC" text="Fazendeiros preguiçosos" />
+		<text name="bc_mainSwitch" text="Ativado" />
+		<text name="bc_active" text="Ativado" />
+		<text name="bc_lazyNPC_tooltip" text="Se ativos, os agricultores NPC frequentemente faltam ao trabalho em seus campos. Portanto, mais contratos podem ser oferecidos." />
+		<text name="bc_lazyNPCHarvest_tooltip" text="Se ativo, os agricultores NPC não colhem nada. Pode resultar em muito trabalho para você." />
+		<text name="bc_lazyNPCSow_tooltip" text="Se ativos, os agricultores NPC realizam o trabalho de semeadura mais raramente e o oferecem como contratos." />
+		<text name="bc_lazyNPCPlow" text="Arar e cultivar" />
+		<text name="bc_lazyNPCPlow_tooltip" text="Se ativos, os agricultores NPC com menor freqüencia aram ou cultivam por conta própria." />
+		<text name="bc_lazyNPCFertilize_tooltip" text="Se ativo, o fazendeiro NPC executa o trabalho de fertilização raramente e o oferece como contrato." />
+		<text name="bc_lazyNPCWeed_tooltip" text="Se ativos, os agricultores NPC combatem ervas daninhas em seus campos com mais frequência e, em vez disso, oferecem contratos de capinação e pulverização." />
 
-		<text name="bc_hardMode" text="Higher difficulty" />
-		<text name="bc_hardMode_tooltip" text="If active, all active contracts must be completed by end of month at the latest. Cancelling a contract will cost a penalty. Borrowing contract equipment is only unlocked after completing some jobs." />
-		<text name="bc_hardPenalty" text="Penalty" />
-		<text name="bc_hardPenalty_tooltip" text="Penalty amount for cancelled contract (in % of contract reward)." />
-		<text name="bc_hardLease" text="Unlock borrowing equipment" />
-		<text name="bc_hardLease_tooltip" text="Number of successful jobs for an NPC farmer, before they lend you their equipment." />
-		<text name="bc_hardExpire" text="Deadline" />
-		<text name="bc_hardExpire_tooltip" text="At the end of what time period all active contracts must be completed." />
+		<text name="bc_hardMode" text="Maior dificuldade" />
+		<text name="bc_hardMode_tooltip" text="Se ativo, todos os contratos ativos devem ser concluídos até o final do mês. O cancelamento de um contrato implicará uma penalização. O empréstimo de equipamento contratado só é desbloqueado depois de concluir alguns trabalhos." />
+		<text name="bc_hardPenalty" text="Multa" />
+		<text name="bc_hardPenalty_tooltip" text="Valor da multa por contrato cancelado (em % da recompensa do contrato)." />
+		<text name="bc_hardLease" text="Desbloqueie o empréstimo de equipamentos" />
+		<text name="bc_hardLease_tooltip" text="Número de trabalhos bem-sucedidos para um fazendeiro NPC, antes que eles emprestem o equipamento a você." />
+		<text name="bc_hardExpire" text="Prazo de entrega" />
+		<text name="bc_hardExpire_tooltip" text="Ao final de qual período de tempo, todos os contratos ativos devem ser concluídos." />
 
-		<text name="bc_discountMode" text="Field purchase discount" />
-		<text name="bc_discountMode_tooltip" text="If active, an NPC farmer give a discount on farmland purchases. Discount increases with the number of competed jobs for this farmer." />
-		<text name="bc_discPerJob" text="Discount per completed contract" />
-		<text name="bc_discPerJob_tooltip" text="An NPC farmer increases their discount by this amount per job completed. Maximum discount cannot rise above 50%." />
-		<text name="bc_discMaxJobs" text="Number of discount-effective jobs" />
-		<text name="bc_discMaxJobs_tooltip" text="Can reduce the max discount, e.g. discount per contract = 11%, number of jobs = 3 -> max discount = 33%. Caution: Current number of jobs complete will decrease by this value on a farmland purchase." />
+		<text name="bc_discountMode" text="Desconto de compra de campo" />
+		<text name="bc_discountMode_tooltip" text="Se ativo, um fazendeiro NPC dá um desconto na compra de terras agrícolas. O desconto aumenta com o número de trabalho concluídos para este agricultor." />
+		<text name="bc_discPerJob" text="Desconto por contrato concluído" />
+		<text name="bc_discPerJob_tooltip" text="Um fazendeiro NPC aumenta seu desconto por esse valor por trabalho concluído. O desconto máximo não pode ultrapassar 50%." />
+		<text name="bc_discMaxJobs" text="Número de trabalhos efetivos com desconto" />
+		<text name="bc_discMaxJobs_tooltip" text="Pode reduzir o desconto máximo, por ex. desconto por contrato = 11%, número de trabalhos = 3 -> desconto máximo = 33%. Cuidado: o número atual de trabalhos concluídos diminuirá neste valor na compra de terras agrícolas." />
 	</texts>
 </l10n>

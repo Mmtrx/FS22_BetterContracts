@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <modDesc descVersion="71">
 	<author>Mmtrx</author>
-	<version>1.2.6.0</version>
+	<version>1.2.6.1</version>
 	<title>
 		<en>Better Contracts</en>
 	</title>
@@ -23,6 +23,11 @@
 - With the "Details" button you can toggle on/ off the display of additional contract information. Like cost estimates for usage material as fertilizer, herbicide, or seeds. For harvest and baling contracts, it shows the minimum amount to be delivered, and the amount that you can keep (and sell). From this it calculates the total profit value for a contract, i.e. reward minus cost for fertilize/ spray/ sow contracts, and reward plus value of kept harvest for harvest/ baling contracts. It even estimates the time you will probably need for total completion of the job, by taking into account the work speed and work width of the appropriate leasing vehicles/ tools that are offered with the contract.
 
 Disclaimer: All values shown in details display are ESTIMATES. You should not take them absolutely, but rather as an indication of what contracts to prefer among others.
+
+Changelog v1.2.6.1:
+- UI settings page in main menu
+- display farmland owner in farmland buy/sell view of ingame menu map
+- display number of completed jobs under farmers image (if details on) 
 
 Changelog v1.2.5.0:
 - hard mode: active contracts time out at midnght, Penalty for cancelling
@@ -74,6 +79,11 @@ Changelog v1.2.2.0:
 
 Warnung: Alle in der Detailanzeige angegebenen Werte sind GESCHÄTZT. Sie sollten sie also nicht als absolute Zahlen verstehen, sondern als Hinweis, welche Verträge vielleicht anderen vorzuziehen sind.
 
+Changelog v1.2.6.1:
+- UI Einstellungs-Seite im Hauptmenu
+- Anzeige der Farmland-Besitzer im Felder-kaufen/verkaufen Modus der Kartenansicht
+- Anzeige der Anzahl abgeschlossener Verträge unter dem Bild des Farmers (wenn Details an) 
+
 Changelog v1.2.5.0:
 - Hard mode: Aktive Verträge müssen vor Mitternacht beendet sein, Vertragsstrafe für abgebrochene Verträge
 - Discount mode: Feldpreise verringern sich mit der Anzahl erfolgreicher Verträge
@@ -124,6 +134,16 @@ Ce mod permet d'améliorer le système de contrat, à la fois en solo et multijo
 - Affichage des détails supplémentaires des contrats directement à l'aide d'un raccourci clavier depuis le menu des contrats. En plus du type de contrat et du numéro+taille du champ, vous trouverez maintenant les coûts estimés du contrat (engrais, herbicide, semence), le surplus de récolte ou de pressage, le calcul automatique du profit net généré. Il y a même l'affichage du temps que vous passerez à réaliser le contrat avec le matériel proposé en location avec celui-ci.
 
 Avertissement: toutes les valeurs indiquées dans l'affichage détaillé sont des ESTIMATIONS. Il ne faut donc pas les considérer comme des chiffres absolus, mais plutôt comme une indication des contrats qui pourraient être préférés à d'autres.
+
+Changelog v1.2.6.1 :
+- page des paramètres dans le menu principal
+- affichage du propriétaire de la terre agricole dans la vue achat/vente de la carte du menu du jeu
+- affichage du nombre de travaux terminés sous l'image des fermiers (si détails) 
+
+Changelog v1.2.5.0 :
+- mode difficile : les contrats actifs se terminent à minuit, pénalité pour annulation.
+- mode discount : obtention d'une réduction sur le prix du champ, en fonction du nombre de missions
+- moins d'avertissements sur les véhicules de mission manquants 
 
 Changelog v1.2.4.4:
 - correction des boutons de filtrage pour afficher les autres types de mission, si disponibles
