@@ -63,7 +63,7 @@
 		<text name="bc_leaseMultiplier_tooltip" text="Скорректируйте стоимость аренды оборудования для контрактов." />
 		<text name="bc_maxActive" text="Одновременно активные контракты" />
 		<text name="bc_maxActive_tooltip" text="Максимальное количество одновременно активных контрактов." />
-		<text name="bc_refreshMP" text="Список разрешений на получение контрактов" />
+		<text name="bc_refreshMP" text="Управляющий контрактами в МП" />
 		<text name="bc_refreshMP_tooltip" text="Кто может удалять/обновлять контракты в сетевой игре." />
 		<text name="bc_debug" text="Режим отладки" />
 		<text name="bc_debug_tooltip" text="Информационные сообщения в журнале, если активировано. Может помочь найти ошибки." />
