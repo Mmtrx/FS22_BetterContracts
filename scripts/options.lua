@@ -410,7 +410,7 @@ function BetterContracts:onFarmlandStateChanged(landId, farmId)
 	-- if client buys/sells farmland, FarmlandStateEvent is sent to server, then broadcast to all clients
 	-- so we only change npcJobs on server and on the client who bought the farmland
 	if farmId == FarmlandManager.NO_OWNER_FARM_ID 
-		or not self.config.discountMode
+		or not self.config.discountMode or not g_currentMission.isMissionStarted
 		then return end 
 	if not (g_server or g_currentMission:getFarmId() == farmId)
 		then return end 

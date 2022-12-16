@@ -12,14 +12,14 @@
 		<text name="bc_detailsOn" text="Detaily zap." />
 
 		<!-- Hard mode -->
-		<text name="bc_penalty" text="Pokuta" />
-		<text name="bc_warnTimeout" text="Dokončete prosím své %d zakázky během příští hodiny, abyste předešli smluvním pokutám." />
-		<text name="bc_warnCancel" text=" Smluvní pokuta bude minimálně " />
+		<text name="bc_penalty" text="Penalty" />
+		<text name="bc_warnTimeout" text="Please complete your %d contract(s) within next hour, to prevent contract penalties." />
+		<text name="bc_warnCancel" text=" Contract penalty will be at least " />
 
 		<!-- discount mode -->
-		<text name="bc_maxJobs" text="Dosáhli jste maximální slevy pro %s." />
-		<text name="bc_discount" text=" (%d%% sleva)" />
-		<text name="bc_discValue" text="%s vám poskytne %d %% slevu na budoucí nákupy polí." />
+		<text name="bc_maxJobs" text="You have reached the maximum discount for %s." />
+		<text name="bc_discount" text=" (%d%% discount)" />
+		<text name="bc_discValue" text="%s grants you %d %% discount for future field purchases." />
 
 		<!-- Display texts -->
 		<text name="bc_harvest" text="Skliz. " />
@@ -51,49 +51,49 @@
 		<text name="SC_sortpMin" text="Zisk za minutu" />
 
 		<!-- Settings Page (and v1.2.6.0 additions) -->
-		<text name="bc_jobsCompleted" text="Dokončené zakázky: %d" />
-		<text name="bc_leaseNotEnough" text="Než si budete moci půjčit stroje, musíte dokončit %d dalších úloh za %s s vlastním vybavením." />
-		<text name="bc_owner" text="Vlastník:" />
+		<text name="bc_jobsCompleted" text="Jobs completed: %d" />
+		<text name="bc_leaseNotEnough" text="You need to complete %d more jobs for %s with own equipment, before you can borrow machines." />
+		<text name="bc_owner" text="Owner:" />
 
-		<text name="bc_settingsPage_title" text="Nastavení zakázek" />
+		<text name="bc_settingsPage_title" text="Contract Settings" />
 
-		<text name="bc_baseSettings" text="Základní nastavení" />
-		<text name="bc_rewardMultiplier" text="Odměna" />
-		<text name="bc_rewardMultiplier_tooltip" text="Upravte odměny za nabízené zakázky." />
-		<text name="bc_leaseMultiplier" text="Náklady na pronájem" />
-		<text name="bc_leaseMultiplier_tooltip" text="Upravte náklady na zapůjčení vybavení pro zakázky." />
-		<text name="bc_maxActive" text="Souběžně aktivní zakázky" />
-		<text name="bc_maxActive_tooltip" text="Maximální počet současně aktivních zakázek." />
-		<text name="bc_refreshMP" text="Seznam práv pro zakázky" />
-		<text name="bc_refreshMP_tooltip" text="Kdo může mazat/obnovovat smlouvy ve hře MP." />
-		<text name="bc_debug" text="Vývojářský mód" />
-		<text name="bc_debug_tooltip" text="Vytiskne informační zprávy do protokolu, pokud je aktivní. Může pomoci najít chyby." />
+		<text name="bc_baseSettings" text="Base Settings" />
+		<text name="bc_rewardMultiplier" text="Reward" />
+		<text name="bc_rewardMultiplier_tooltip" text="Adjust the rewards for contracts offered." />
+		<text name="bc_leaseMultiplier" text="Lease Cost" />
+		<text name="bc_leaseMultiplier_tooltip" text="Adjust the cost for borrowing equipment for contracts." />
+		<text name="bc_maxActive" text="Concurrently active contracts" />
+		<text name="bc_maxActive_tooltip" text="Max number of concurrently active contracts." />
+		<text name="bc_refreshMP" text="Permission contracts list" />
+		<text name="bc_refreshMP_tooltip" text="Who can delete / refresh contracts in an MP game." />
+		<text name="bc_debug" text="Debug Modus" />
+		<text name="bc_debug_tooltip" text="Prints info messages to the log if active. Can help to find bugs." />
 
-		<text name="bc_lazyNPC" text="Líní farmáři" />
-		<text name="bc_mainSwitch" text="Aktivováno" />
-		<text name="bc_active" text="Aktivováno" />
-		<text name="bc_lazyNPC_tooltip" text="Pokud je aktivní, farmáři NPC častěji přeskakují práci na svých polích. Lze tedy nabídnout více zakázek." />
-		<text name="bc_lazyNPCHarvest_tooltip" text="Pokud jsou aktivní, NPC farmáři vůbec nesklízejí. Mohlo by to pro vás znamenat spoustu práce." />
-		<text name="bc_lazyNPCSow_tooltip" text="Pokud je aktivní, zemědělci NPC provádějí secí práce méně často a místo toho je nabízejí jako zakázky." />
-		<text name="bc_lazyNPCPlow" text="Orba a kultivace" />
-		<text name="bc_lazyNPCPlow_tooltip" text="Pokud je aktivní, zemědělci NPC méně často orají nebo kultivují sami." />
-		<text name="bc_lazyNPCFertilize_tooltip" text="Pokud je aktivní, NPC farmář provádí hnojení méně často a místo toho je nabízí jako zakázky." />
-		<text name="bc_lazyNPCWeed_tooltip" text="Pokud je aktivní, farmáři NPC bojují s plevelem na svých polích méně často a místo toho nabízejí postřikové a plecí zakázky." />
+		<text name="bc_lazyNPC" text="Lazy Farmers" />
+		<text name="bc_mainSwitch" text="Activated" />
+		<text name="bc_active" text="Activated" />
+		<text name="bc_lazyNPC_tooltip" text="If active, NPC farmers more often skip work on their fields. So more contracts can be offered." />
+		<text name="bc_lazyNPCHarvest_tooltip" text="If active, NPC farmers do not harvest at all. Could result in a lot of work for you." />
+		<text name="bc_lazyNPCSow_tooltip" text="If active, NPC farmers perform sowing work more rarely and offer it as contracts instead." />
+		<text name="bc_lazyNPCPlow" text="Plow and Cultivate" />
+		<text name="bc_lazyNPCPlow_tooltip" text="If active, NPC farmers less often plow or cultivate on their own." />
+		<text name="bc_lazyNPCFertilize_tooltip" text="If active, NPC farmer perform fertilizing work more rarely and offer it as contracts instead." />
+		<text name="bc_lazyNPCWeed_tooltip" text="If active, NPC farmers fight weeds on thier fields more rarely, and instead offer spray and weeding contracts." />
 
-		<text name="bc_hardMode" text="Vysoká obtížnost" />
-		<text name="bc_hardMode_tooltip" text="Pokud je aktivní, všechny aktivní smlouvy musí být dokončeny nejpozději do konce měsíce. Zrušení smlouvy bude stát pokutu. Vypůjčení smluvního vybavení se odemkne až po dokončení některých úloh." />
-		<text name="bc_hardPenalty" text="Pokuta" />
-		<text name="bc_hardPenalty_tooltip" text="Výše pokuty za zrušenou smlouvu (v % smluvní odměny)." />
-		<text name="bc_hardLease" text="Odemknout zapůjčení vybavení" />
-		<text name="bc_hardLease_tooltip" text="Počet úspěšných prací pro NPC farmáře, než vám půjčí své vybavení." />
-		<text name="bc_hardExpire" text="Uzávěrka" />
-		<text name="bc_hardExpire_tooltip" text="Na konci kterého časového období musí být dokončeny všechny aktivní zakázky." />
+		<text name="bc_hardMode" text="Higher difficulty" />
+		<text name="bc_hardMode_tooltip" text="If active, all active contracts must be completed by end of month at the latest. Cancelling a contract will cost a penalty. Borrowing contract equipment is only unlocked after completing some jobs." />
+		<text name="bc_hardPenalty" text="Penalty" />
+		<text name="bc_hardPenalty_tooltip" text="Penalty amount for cancelled contract (in % of contract reward)." />
+		<text name="bc_hardLease" text="Unlock borrowing equipment" />
+		<text name="bc_hardLease_tooltip" text="Number of successful jobs for an NPC farmer, before they lend you their equipment." />
+		<text name="bc_hardExpire" text="Deadline" />
+		<text name="bc_hardExpire_tooltip" text="At the end of what time period all active contracts must be completed." />
 
-		<text name="bc_discountMode" text="Sleva na nákup polí" />
-		<text name="bc_discountMode_tooltip" text="Pokud je aktivní, NPC farmář poskytuje slevu na nákupy zemědělské půdy. Sleva se zvyšuje s počtem dokončených zakázek pro tohoto farmáře." />
-		<text name="bc_discPerJob" text="Sleva za dokončenou zakázku" />
-		<text name="bc_discPerJob_tooltip" text="NPC farmář zvyšuje svou slevu o tuto částku za dokončenou práci. Maximální sleva nesmí přesáhnout 50 %." />
-		<text name="bc_discMaxJobs" text="Počet zakázek se slevou" />
-		<text name="bc_discMaxJobs_tooltip" text="Může snížit maximální slevu, např. sleva na smlouvu = 11 %, počet pracovních míst = 3 -> max. sleva = 33 %. Upozornění: Aktuální počet dokončených úloh se při nákupu zemědělské půdy sníží o tuto hodnotu." />
+		<text name="bc_discountMode" text="Field purchase discount" />
+		<text name="bc_discountMode_tooltip" text="If active, an NPC farmer give a discount on farmland purchases. Discount increases with the number of competed jobs for this farmer." />
+		<text name="bc_discPerJob" text="Discount per completed contract" />
+		<text name="bc_discPerJob_tooltip" text="An NPC farmer increases their discount by this amount per job completed. Maximum discount cannot rise above 50%." />
+		<text name="bc_discMaxJobs" text="Number of discount-effective jobs" />
+		<text name="bc_discMaxJobs_tooltip" text="Can reduce the max discount, e.g. discount per contract = 11%, number of jobs = 3 -> max discount = 33%. Caution: Current number of jobs complete will decrease by this value on a farmland purchase." />
 	</texts>
 </l10n>

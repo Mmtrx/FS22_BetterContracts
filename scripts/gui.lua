@@ -19,6 +19,7 @@
 --							allow clear/new contracts button only for master user
 --  v1.2.4.3 	10.10.2022	recognize FS22_LimeMission
 --  v1.2.6.0 	30.11.2022	UI for all settings
+--  v1.2.6.2 	16.12.2022	don't act onFarmlandStateChanged() before mission started. Smaller menu icon 
 --=======================================================================================================
 
 --- Adds a new page to the in game menu.

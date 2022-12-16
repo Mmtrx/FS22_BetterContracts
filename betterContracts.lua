@@ -3,6 +3,8 @@
 --
 -- Purpose:     Enhance ingame contracts menu.
 -- Author:      Royal-Modding / Mmtrx
+-- Copyright:	Mmtrx
+-- License:		GNU GPL v3.0
 -- Changelog:
 --  v1.0.0.0    19.10.2020  initial by Royal-Modding
 --  v1.1.0.0    12.04.2021  (Mmtrx) release candidate RC-2
@@ -33,6 +35,7 @@
 --							mission vehicle warnings: only if no vehicles or debug="true"
 --  v1.2.6.0 	30.11.2022	UI for all settings
 --  v1.2.6.1 	05.12.2022	initGui(): utf8ToUpper(). Addtnl l10n translations from github
+--  v1.2.6.2 	16.12.2022	don't act onFarmlandStateChanged() before mission started. Smaller menu icon 
 --=======================================================================================================
 SC = {
 	FERTILIZER = 1, -- prices index
@@ -303,8 +306,8 @@ function initGui(self)
 	else
 		debugPrint("-------- gui loaded -----------")
 	end
-	self:fixInGameMenuPage(self.settingsPage, "pageBCSettings", "gui/ui_2.dds",
-			{0, 0, 128, 128}, {256,256}, nil, function () 
+	self:fixInGameMenuPage(self.settingsPage, "pageBCSettings", "gui/ui_1.dds",
+			{0, 0, 64, 64}, {256,256}, nil, function () 
 				if g_currentMission.missionDynamicInfo.isMultiplayer then
 					return g_currentMission.isMasterUser 
 				end

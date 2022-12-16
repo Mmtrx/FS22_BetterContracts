@@ -1,36 +1,36 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <modDesc descVersion="71">
 	<author>Mmtrx</author>
-	<version>1.2.6.1</version>
+	<version>1.2.6.2</version>
 	<title>
 		<en>Better Contracts</en>
 	</title>
 	<description>
 		<en>
 			<![CDATA[
-"Should I take those three fertilizer missions, or rather the 2.3 ha potato harvesting contract?" "How much liquid fertilizer will I need for this job?" If you ever asked yourself questions like these, this mod will help to find the answers. It improves the contract system, both in singleplayer and multiplayer.
+"Should I take those three fertilizer missions, or rather the 2.3 ha potato harvesting contract?" "How much liquid fertilizer will I need for this job?" If you ever asked yourself questions like these, this mod will help to find the answers.
 
-- The maximum number of contracts and the amount generated per cycle is automatically adjusted to the number of fields on the map.
+The maximum number of contracts and the amount generated per cycle is automatically adjusted to the number of fields on the map.
  
-- You can immediately generate new contracts through the "New Contracts" button, or delete all of them with the "Clear Contracts" button.
+You can immediately generate new contracts through the "New Contracts" button, or delete all of them with the "Clear Contracts" button.
 
-- You can sort the available contracts by type and field number, by total profit, or by profit per minute, to make it easier to find the one you desire.
+You can sort the available contracts by type and field number, by total profit, or by profit per minute, to make it easier to find the one you desire.
  
-- You can activate more than three contracts at a time.
+You can set the allowed maximum number of concurrently avtive contracts.
  
-- The mod adds new vehicle combos for contracts, for the mission generator to chose from.
-
-- With the "Details" button you can toggle on/ off the display of additional contract information. Like cost estimates for usage material as fertilizer, herbicide, or seeds. For harvest and baling contracts, it shows the minimum amount to be delivered, and the amount that you can keep (and sell). From this it calculates the total profit value for a contract, i.e. reward minus cost for fertilize/ spray/ sow contracts, and reward plus value of kept harvest for harvest/ baling contracts. It even estimates the time you will probably need for total completion of the job, by taking into account the work speed and work width of the appropriate leasing vehicles/ tools that are offered with the contract.
+With the "Details" button you can toggle on/ off the display of additional contract information. Like cost estimates for usage material as fertilizer, herbicide, or seeds. For harvest and baling contracts, it shows the minimum amount to be delivered, and the amount that you can keep (and sell). From this it calculates the total profit value for a contract, i.e. reward minus cost for fertilize/ spray/ sow contracts, and reward plus value of kept harvest for harvest/ baling contracts. It even estimates the time you will probably need for total completion of the job, by taking into account the work speed and work width of the appropriate leasing vehicles/ tools that are offered with the contract.
 
 Disclaimer: All values shown in details display are ESTIMATES. You should not take them absolutely, but rather as an indication of what contracts to prefer among others.
 
-Changelog v1.2.6.1:
+The mod keeps track of the amount of contracts you completed for each of the NPC farmers (number of completed jobs is displayed below the farmers image, if "Details" on). If you enable the optional discount mode or hard mode options (on the mods settings page), the amount of completed jobs influence gameplay.
+
+Changelog v1.2.6.2:
 - UI settings page in main menu
 - display farmland owner in farmland buy/sell view of ingame menu map
 - display number of completed jobs under farmers image (if details on) 
 
 Changelog v1.2.5.0:
-- hard mode: active contracts time out at midnght, Penalty for cancelling
+- hard mode: active contracts time out at midnght, penalty for cancelling
 - discount mode: get discounted field price, based on number of missions
 - fewer warnings on missing mission vehicles 
 
@@ -42,7 +42,7 @@ Changelog v1.2.4.4:
 
 Changelog v1.2.4.2:
 - "lazy NPCs" (leave more work for contracts) can be configured on/ off
-- maximum number of active contracts configurable (in modSettings/FS22_BetterContracts.xml)
+- maximum number of active contracts configurable 
 - indicator for active contracts with borrowed equipment 
 - clear / new contracts buttons in MP games only work for master user
 - recognize FS22_DynamicMissionVehicles
@@ -63,23 +63,23 @@ Changelog v1.2.2.0:
 		</en>
 		<de>
 			<![CDATA[
-"Mach ich jetzt diese drei Düngemissionen, oder doch lieber den 2.3 ha Kartoffelernte-Vertrag?" "Wieviel Flüssigdünger brauche ich für diesen Auftrag?" Falls Sie sich je derartige Fragen gestellt haben, hilft Ihnen dieser Mod bei den Antworten. Er verbessert das Vertragsmanagement, sowohl im Einzelspieler- als im Multiplayer-Modus.
+"Mach ich jetzt diese drei Düngemissionen, oder doch lieber den 2.3 ha Kartoffelernte-Vertrag?" "Wieviel Flüssigdünger brauche ich für diesen Auftrag?" Falls Sie sich je derartige Fragen gestellt haben, hilft Ihnen dieser Mod bei den Antworten.
 
-- Die Maximalzahl sowie die Anzahl der jeweils neu generierten Verträge wird automatisch an die Zahl der Felder auf der Karte angepasst.
+Die Maximalzahl sowie die Anzahl der jeweils neu generierten Verträge wird automatisch an die Zahl der Felder auf der Karte angepasst.
  
-- Sie können über die Schaltfläche "Neue Verträge" sofort neue Verträge generieren oder alle mit dem Button "Liste löschen" entfernen.
+Sie können über die Schaltfläche "Neue Verträge" sofort neue Verträge generieren oder alle mit dem Button "Liste löschen" entfernen.
 
-- Sie können die Vertragsliste sortieren nach Vertragstyp/ Feldnummer, nach Gesamtprofit, und nach Profit pro Minute, um einen gewünschten Vertrag schnell zu finden.
+Sie können die Vertragsliste sortieren nach Vertragstyp/ Feldnummer, nach Gesamtprofit, und nach Profit pro Minute, um einen gewünschten Vertrag schnell zu finden.
  
-- Sie können mehr als drei Verträge gleichzeitig aktivieren.
+Sie können die erlaubte Maximalzahl gleichzeitig aktiver Verträge einstellen.
  
-- Es wurden einige neue Fahrzeugkombinationen für Verträge hinzugefügt, aus denen der Missionsgenerator wählen kann.
-
-- Mit dem "Details" Button kann die Anzeige der zusätzlichen Vertragsdetails ein- und ausgeschaltet werden. Z.B. die geschätzten Kosten des Verbrauchsmaterials (Dünger, Pflanzenschutzmittel, Saatgut). Bei Ernte- und Gras-Missionen wird die abzuliefernde Mindestmenge angezeigt, sowie die Erntemenge, die Sie behalten (und verkaufen) können. Daraus ermittelt der Mod den Gesamtertrag der Mission, also Belohnung minus Kosten für Dünge-, Spritz-, und Sähen-Verträge; und Belohnung plus Wert der behaltenen Erntemenge bei den Ernte- und Gras-Verträgen. Er schätzt sogar die Gesamtzeit, die Sie für die Erledigung des Auftrags benötigen werden, und berücksichtigt dafür Arbeitsgeschwindigkeit und Arbeitsbreite der entsprechenden Leasing-Geräte, die für den Vertrag angeboten werden.
+Mit dem "Details" Button kann die Anzeige der zusätzlichen Vertragsdetails ein- und ausgeschaltet werden. Z.B. die geschätzten Kosten des Verbrauchsmaterials (Dünger, Pflanzenschutzmittel, Saatgut). Bei Ernte- und Gras-Missionen wird die abzuliefernde Mindestmenge angezeigt, sowie die Erntemenge, die Sie behalten (und verkaufen) können. Daraus ermittelt der Mod den Gesamtertrag der Mission, also Belohnung minus Kosten für Dünge-, Spritz-, und Sähen-Verträge; und Belohnung plus Wert der behaltenen Erntemenge bei den Ernte- und Gras-Verträgen. Er schätzt sogar die Gesamtzeit, die Sie für die Erledigung des Auftrags benötigen werden, und berücksichtigt dafür Arbeitsgeschwindigkeit und Arbeitsbreite der entsprechenden Leasing-Geräte, die für den Vertrag angeboten werden.
 
 Warnung: Alle in der Detailanzeige angegebenen Werte sind GESCHÄTZT. Sie sollten sie also nicht als absolute Zahlen verstehen, sondern als Hinweis, welche Verträge vielleicht anderen vorzuziehen sind.
 
-Changelog v1.2.6.1:
+Die Mod merkt sich die Anzahl Verträge, die Sie für jeden der NPC Farmer abgeschlossen haben (die Zahl wird unter dem Bild des Farmers angezeigt, wenn "Details" an ist). Wenn der optionale Discount Modus oder der Hard Modus aktiviert wird, beeinflusst die Anzahl abgeschlossener Jobs das Spielgeschehen.
+
+Changelog v1.2.6.2:
 - UI Einstellungs-Seite im Hauptmenu
 - Anzeige der Farmland-Besitzer im Felder-kaufen/verkaufen Modus der Kartenansicht
 - Anzeige der Anzahl abgeschlossener Verträge unter dem Bild des Farmers (wenn Details an) 
@@ -97,7 +97,7 @@ Changelog v1.2.4.4:
 
 Changelog v1.2.4.2:
 - "Faule NPCs" (mehr Feldarbeit für Verträge) kann konfiguriert werden
-- Maximalzahl gleichzeitig aktiver Verträge kann konfiguriert werden (in modSettings/FS22_BetterContracts.xml)
+- Maximalzahl gleichzeitig aktiver Verträge kann konfiguriert werden 
 - Kennzeichnung aktiver Verträge mit Leihgeräten 
 - In Multiplayer-Spielen sind die Buttons "Neue Verträge" und "Liste löschen" nur für Administratoren aktiv
 - Mod-Erkennung FS22_DynamicMissionVehicles
@@ -121,21 +121,21 @@ Changelog v1.2.2.0:
 Ce mod permet d'améliorer le système de contrat, à la fois en solo et multijoueur.
 "Devrais-je accepter ces 3 missions de fertilisation ou plutôt la récolte de 2.3 ha de pommes de terre ?" "Combien d'engrais me faudra-t-il pour cette mission et à quel prix ?" Si vous vous posez toutes ces questions, ce mod vous donnera toutes les informations sur les contrats pour y répondre.
 
-- Le nombre maximum et la quantité de contrat générés sont désormais automatiquement ajustés au nombre de champs de la carte.
+Le nombre maximum et la quantité de contrat générés sont désormais automatiquement ajustés au nombre de champs de la carte.
  
-- Vous pouvez désormais générer de nouveaux contrats via le bouton "Nouveaux contrats" et même effacer ceux que vous n'avez pas activé depuis l'écran de gestion des contrats.
+Vous pouvez désormais générer de nouveaux contrats via le bouton "Nouveaux contrats" et même effacer ceux que vous n'avez pas activé depuis l'écran de gestion des contrats.
 
-- Tri des contrats par type/ champs, bénéfice attendu et profit par minute pour vous permettre de trouver plus facilement celui que vous désirez.
+Tri des contrats par type/ champs, bénéfice attendu et profit par minute pour vous permettre de trouver plus facilement celui que vous désirez.
 
-- Vous pouvez activer plusieurs contrats à la fois.
+Vous pouvez activer plusieurs contrats à la fois.
  
-- Ajout de nombreux nouveaux combos de véhicules pour les contrats
-
-- Affichage des détails supplémentaires des contrats directement à l'aide d'un raccourci clavier depuis le menu des contrats. En plus du type de contrat et du numéro+taille du champ, vous trouverez maintenant les coûts estimés du contrat (engrais, herbicide, semence), le surplus de récolte ou de pressage, le calcul automatique du profit net généré. Il y a même l'affichage du temps que vous passerez à réaliser le contrat avec le matériel proposé en location avec celui-ci.
+Affichage des détails supplémentaires des contrats directement à l'aide d'un raccourci clavier depuis le menu des contrats. En plus du type de contrat et du numéro+taille du champ, vous trouverez maintenant les coûts estimés du contrat (engrais, herbicide, semence), le surplus de récolte ou de pressage, le calcul automatique du profit net généré. Il y a même l'affichage du temps que vous passerez à réaliser le contrat avec le matériel proposé en location avec celui-ci.
 
 Avertissement: toutes les valeurs indiquées dans l'affichage détaillé sont des ESTIMATIONS. Il ne faut donc pas les considérer comme des chiffres absolus, mais plutôt comme une indication des contrats qui pourraient être préférés à d'autres.
 
-Changelog v1.2.6.1 :
+Le mod se souvient du nombre de contrats que vous avez conclus pour chacun des NPC fermiers (le nombre est affiché sous l'image du fermier lorsque "Détails" est activé). Si le mode discount ou le mode dur est activé, le nombre de jobs terminés influe sur le jeu.
+
+Changelog v1.2.6.2 :
 - page des paramètres dans le menu principal
 - affichage du propriétaire de la terre agricole dans la vue achat/vente de la carte du menu du jeu
 - affichage du nombre de travaux terminés sous l'image des fermiers (si détails) 
@@ -153,12 +153,11 @@ Changelog v1.2.4.4:
 
 Changelog v1.2.4.2 :
 - "NPCs paresseux" (plus de travail pour les contrats) peut être configuré
-- Le nombre maximum de contrats actifs en même temps peut être configuré (dans modSettings/FS22_BetterContracts.xml)
+- Le nombre maximum de contrats actifs en même temps peut être configuré 
 - Marquage des contrats actifs avec des appareils de prêt 
 - Dans les jeux multi-joueurs, les boutons "Rafraîchir" et "Purger" ne sont actifs que pour les administrateurs.
 - Reconnaissance du mod FS22_DynamicMissionVehicles
 
-Traduit avec www.DeepL.com/Translator (version gratuite)Changelog v1.2.4.0:
 - Ajout d'un correctif (provisoire) "NPC paresseux": laisser plus de travail aux contrats
 - Permettre (à l'avenir) d'autres types de contrats 
 - Correction des problèmes de résolution d'écran
@@ -174,7 +173,7 @@ Changelog v1.2.2.0:
 		</fr>
 		<br>
 			<![CDATA[
-"Devo aceitar essas três missões de fertilizantes, ou melhor, o contrato de colheita de batata de 2,3 ha?" "Quanto fertilizante líquido vou precisar para este trabalho?" Se você já se fez perguntas como essas, este mod ajudará a encontrar as respostas. Melhora o sistema de contratos, tanto no modo singleplayer quanto no multiplayer.
+"Devo aceitar essas três missões de fertilizantes, ou melhor, o contrato de colheita de batata de 2,3 ha?" "Quanto fertilizante líquido vou precisar para este trabalho?" Se você já se fez perguntas como essas, este mod ajudará a encontrar as respostas. 
 
 - O número máximo de contratos e o valor gerado por ciclo são ajustados automaticamente ao número de campos do mapa.
  
@@ -203,7 +202,7 @@ Registro de alterações v1.2.4.4:
 
 Registro de alterações v1.2.4.2:
 - "NPCs preguiçosos" (deixe mais trabalho para contratos) pode ser configurado para ligar/desligar
-- número máximo de contratos ativos configuráveis ​​(em modSettings/FS22_BetterContracts.xml)
+- número máximo de contratos ativos configuráveis 
 - indicador de contratos ativos com equipamentos emprestados
 - botões de limpar / novos contratos em jogos MP funcionam apenas para o usuário mestre
 - reconhecer FS22_DynamicMissionVehicles
