@@ -10,6 +10,7 @@
 --  v1.1.0.4    07.07.2021  (Mmtrx) add user-defined missionVehicles.xml, allow missions with no vehicles
 --  v1.2.0.0    30.11.2021  (Mmtrx) adapt for FS22
 --  v.1.2.4.2   19.09.2022  [ModHub] recognize FS22_DynamicMissionVehicles
+--  v.1.2.6.2   19.12.2022  don't add dlc vehicles to a userdefined "overwrite" setup
 --=======================================================================================================
 
 ---------------------- mission vehicle enhancement functions --------------------------------------------
@@ -20,6 +21,9 @@ function BetterContracts.loadMissionVehicles(missionManager, superFunc, xmlFilen
 	-- this could be called multiple times: by mods, dlcs
 	local self = BetterContracts
 	debugPrint("* %s loadMissionVehicles(%s, %s)", self.name, xmlFilename, baseDirectory)
+	debugPrint("* loadedVehicles %s, overwrittenVehicles %s", self.loadedVehicles, self.overwrittenVehicles)
+	if self.overwrittenVehicles then return true end -- do not add further vecs to a userdefined setup
+	
 	if superFunc(missionManager, xmlFilename, baseDirectory) then 
 		--[[
 		if g_modIsLoaded["FS19_ThueringerHoehe_BG_Edition"] then
@@ -44,7 +48,7 @@ function BetterContracts.loadMissionVehicles(missionManager, superFunc, xmlFilen
 				Logging.warning("[%s] userDefined.xml not loaded. Incompatible with FS22_DynamicMissionVehicles",
 					self.name)
 			else
-				self:loadExtraMissionVehicles(userdef)
+				self.overwrittenVehicles = self:loadExtraMissionVehicles(userdef)
 			end
 		end    
 		return true
@@ -170,6 +174,7 @@ function BetterContracts:loadExtraMissionVehicles(xmlFilename)
 		end
 	end
 	delete(xmlFile)
+	return overwriteStd
 end
 
 function BetterContracts:loadExtraMissionVehicles_groups(xmlFile, baseKey, missionType, modDirectory)

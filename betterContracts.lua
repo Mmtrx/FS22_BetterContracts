@@ -36,6 +36,7 @@
 --  v1.2.6.0 	30.11.2022	UI for all settings
 --  v1.2.6.1 	05.12.2022	initGui(): utf8ToUpper(). Addtnl l10n translations from github
 --  v1.2.6.2 	16.12.2022	don't act onFarmlandStateChanged() before mission started. Smaller menu icon 
+--  v1.2.6.3 	02.01.2023	onClickBuyFarmland, missionVehicles (userdefined) fixed 
 --=======================================================================================================
 SC = {
 	FERTILIZER = 1, -- prices index
@@ -567,6 +568,7 @@ function BetterContracts:onPostLoadMap(mapNode, mapFile)
 	self.frCon = self.gameMenu.pageContracts
 	self.frMap = self.gameMenu.pageMapOverview
 	self.frMap.ingameMap.onClickMapCallback = self.frMap.onClickMap
+	self.frMap.buttonBuyFarmland.onClickCallback = onClickBuyFarmland
 
 	initGui(self) 			-- setup my gui additions
 	self.initialized = true
