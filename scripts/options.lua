@@ -7,6 +7,7 @@
 -- Changelog:
 --  v1.2.5.0 	31.10.2022	hard mode: active miss time out at midnght. Penalty for missn cancel
 --  v1.2.6.0 	30.11.2022	UI for all settings
+--  v1.2.6.4 	17.01.2023	fix issue #88: onClickBuyFarmland() if discountMode off
 --=======================================================================================================
 
 --------------------- lazyNPC --------------------------------------------------------------------------- 
@@ -376,19 +377,31 @@ function onClickFarmland(self, elem, X, Z)
 end
 function onClickBuyFarmland(self, superf)
 	-- adjust price if player buys farmland
-	if not BetterContracts.config.discountMode then return superf(self) end
 	if self.selectedFarmland == nil then return end
 
-	local price, disct = getDiscountPrice(self.selectedFarmland)
+	local discMode = BetterContracts.config.discountMode
+	local price, disct = self.selectedFarmland.price, ""
+
+	if discMode then
+		price, disct = getDiscountPrice(self.selectedFarmland)
+	end
 	if price <= self.playerFarm:getBalance() then
-		local text = string.format(self.l10n:getText(InGameMenuMapFrame.L10N_SYMBOL.DIALOG_BUY_FARMLAND), 
-			self.l10n:formatMoney(price, 0, true, true)	.. disct)
+		local priceText = self.l10n:formatMoney(price, 0, true, true).. disct
+		local text = string.format(self.l10n:getText(InGameMenuMapFrame.L10N_SYMBOL.DIALOG_BUY_FARMLAND), priceText)
+		local callback, target, args = self.onYesNoBuyFarmland, self, nil
+
+		if discMode then  
+			callback = BetterContracts.onYesNoBuyFarmland
+			target = BetterContracts
+			args = {self.selectedFarmland.id, g_currentMission:getFarmId(), price}
+		end
+
 		g_gui:showYesNoDialog({
 			title = self.l10n:getText(InGameMenuMapFrame.L10N_SYMBOL.DIALOG_BUY_FARMLAND_TITLE),
 			text = text,
-			callback = BetterContracts.onYesNoBuyFarmland,
-			target = BetterContracts,
-			args = {self.selectedFarmland.id, g_currentMission:getFarmId(), price}
+			callback = callback,
+			target = target,
+			args = args
 		})
 	else
 		g_gui:showInfoDialog({
