@@ -96,5 +96,8 @@
 		<text name="bc_discPerJob_tooltip" text="每完成一项任务，农户NPC就会增加相应的折扣。最高折扣不能超过50%。" />
 		<text name="bc_discMaxJobs" text="影响折扣的任务数量" />
 		<text name="bc_discMaxJobs_tooltip" text="将会减少最大的折扣，例如：每个合同的折扣为11%，任务的数量为3，则最大折扣为33%。注意：在购买农田时，当前完成的工作数量将被这个值减少。" />
+		
+		<text name="bc_toDeliver" text="Delivery on harvest contracts" />
+		<text name="bc_toDeliver_tooltip" text="Percentage of the estimated total yield you must deliver to complete a harvest contract." />
 	</texts>
 </l10n>

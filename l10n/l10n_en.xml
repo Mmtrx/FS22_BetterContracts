@@ -64,6 +64,8 @@
 		<text name="bc_leaseMultiplier_tooltip" text="Adjust the cost for borrowing equipment for contracts." />
 		<text name="bc_maxActive" text="Concurrently active contracts" />
 		<text name="bc_maxActive_tooltip" text="Max number of concurrently active contracts." />
+		<text name="bc_toDeliver" text="Delivery on harvest contracts" />
+		<text name="bc_toDeliver_tooltip" text="Percentage of the estimated total yield you must deliver to complete a harvest contract." />
 		<text name="bc_refreshMP" text="Permission contracts list" />
 		<text name="bc_refreshMP_tooltip" text="Who can delete / refresh contracts in an MP game." />
 		<text name="bc_debug" text="Debug Modus" />

@@ -94,5 +94,8 @@
 		<text name="bc_discPerJob_tooltip" text="Um fazendeiro NPC aumenta seu desconto por esse valor por trabalho concluído. O desconto máximo não pode ultrapassar 50%." />
 		<text name="bc_discMaxJobs" text="Número de trabalhos efetivos com desconto" />
 		<text name="bc_discMaxJobs_tooltip" text="Pode reduzir o desconto máximo, por ex. desconto por contrato = 11%, número de trabalhos = 3 -> desconto máximo = 33%. Cuidado: o número atual de trabalhos concluídos diminuirá neste valor na compra de terras agrícolas." />
+		
+		<text name="bc_toDeliver" text="Delivery on harvest contracts" />
+		<text name="bc_toDeliver_tooltip" text="Percentage of the estimated total yield you must deliver to complete a harvest contract." />
 	</texts>
 </l10n>

@@ -37,6 +37,8 @@
 --  v1.2.6.1 	05.12.2022	initGui(): utf8ToUpper(). Addtnl l10n translations from github
 --  v1.2.6.2 	16.12.2022	don't act onFarmlandStateChanged() before mission started. Smaller menu icon 
 --  v1.2.6.3 	02.01.2023	onClickBuyFarmland, missionVehicles (userdefined) fixed 
+--  v1.2.6.4 	17.01.2023	fix issue #88: onClickBuyFarmland() if discountMode off
+--  v1.2.6.5 	18.01.2023	add setting "toDeliver": harvest contract success factor
 --=======================================================================================================
 SC = {
 	FERTILIZER = 1, -- prices index
@@ -173,6 +175,7 @@ function registerXML(self)
 	self.xmlSchema:register(XMLValueType.INT, self.baseXmlKey.."#refreshMP")
 	self.xmlSchema:register(XMLValueType.FLOAT, self.baseXmlKey.."#reward")
 	self.xmlSchema:register(XMLValueType.FLOAT, self.baseXmlKey.."#lease")
+	self.xmlSchema:register(XMLValueType.FLOAT, self.baseXmlKey.."#deliver")
 
 	local key = self.baseXmlKey..".lazyNPC"
 	self.xmlSchema:register(XMLValueType.BOOL, key.."#harvest")
@@ -204,6 +207,7 @@ function readconfig(self)
 		self.config.maxActive = xmlFile:getValue(key.."#maxActive", 3)
 		self.config.multReward= xmlFile:getValue(key.."#reward", 1.)
 		self.config.multLease = xmlFile:getValue(key.."#lease", 1.)
+		self.config.toDeliver = xmlFile:getValue(key.."#deliver", 0.93)
 		self.config.refreshMP =	xmlFile:getValue(key.."#refreshMP", 2)		
 		self.config.lazyNPC = 	xmlFile:getValue(key.."#lazyNPC", false)
 		self.config.hardMode = 	xmlFile:getValue(key.."#hard", false)
@@ -380,6 +384,7 @@ function BetterContracts:initialize()
 		maxActive = 3, 			-- max active contracts
 		multReward = 1., 		-- general reward multiplier
 		multLease = 1.,			-- general lease cost multiplier
+		toDeliver = 0.93,		-- HarvestMission.SUCCESS_FACTOR
 		refreshMP = SC.ADMIN, 	-- necessary permission to refresh contract list (MP)
 		lazyNPC = false, 		-- adjust NPC field work activity
 		hardMode = false, 		-- penalty for canceled missions
@@ -534,6 +539,9 @@ function BetterContracts:onPostLoadMap(mapNode, mapFile)
 		addConsoleCommand("gsMissionHarvestField", "Harvest a field and print the liters", "consoleHarvestField", g_missionManager)
 		addConsoleCommand("gsMissionTestHarvests", "Run an expansive tests for harvest missions", "consoleHarvestTests", g_missionManager)
 	end
+	-- init HarvestMission.SUCCESS_FACTOR
+	HarvestMission.SUCCESS_FACTOR = self.config.toDeliver
+
 	-- adjust max missions
 	local fieldsAmount = table.size(g_fieldManager.fields)
 	local adjustedFieldsAmount = math.max(fieldsAmount, 45)
@@ -587,6 +595,7 @@ function BetterContracts:onPostSaveSavegame(saveDir, savegameIndex)
 	xmlFile:setInt  ( key.."#maxActive",conf.maxActive)
 	xmlFile:setFloat( key.."#reward", 	conf.multReward)
 	xmlFile:setFloat( key.."#lease", 	conf.multLease)
+	xmlFile:setFloat( key.."#deliver", 	conf.toDeliver)
 	xmlFile:setInt  ( key.."#refreshMP",conf.refreshMP)
 	xmlFile:setBool ( key.."#lazyNPC", 	conf.lazyNPC)
 	xmlFile:setBool ( key.."#discount", conf.discountMode)

@@ -5,6 +5,7 @@
 -- Author:		Mmtrx
 -- Changelog:
 --  v1.2.6.0 	30.11.2022	UI for all settings
+--  v1.2.6.5 	18.01.2023	add setting "toDeliver": harvest contract success factor
 --=======================================================================================================
 local function lazyNPCDisabled()
 	return not BetterContracts.config.lazyNPC
@@ -39,9 +40,20 @@ BCSettingsBySubtitle = {
 		{name = "maxActive", 
 		values = {0,1,2, 3, 4, 5, 6, 7, 8, 9, 10},
 		texts = {"unlimited", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"},
-		default = 4,
+		default = 1,
 		title = "bc_maxActive",
 		tooltip = "bc_maxActive_tooltip",
+		noTranslate = true
+			},
+		{name = "toDeliver", 
+		values = {.85,.87,.89,.91,.93},
+		texts = {"85 %","87 %","89 %","91 %","standard"},
+		default = 5,
+		title = "bc_toDeliver",
+		tooltip = "bc_toDeliver_tooltip",
+		actionFunc = function(self,ix) 
+			HarvestMission.SUCCESS_FACTOR = self.values[ix]
+			end,
 		noTranslate = true
 			},
 		{name = "refreshMP", 
@@ -214,6 +226,7 @@ function BCsetting.new(data, customMt)
 	-- index of the previous value/text
 	self.previous = 1
 	self.isDisabledFunc = data.isDisabledFunc
+	self.actionFunc = data.actionFunc
 	self.guiElement = nil
 	return self
 end
@@ -225,7 +238,7 @@ function BCsetting.init(bc)
 			local setting = BCsetting.new(data)
 			setting:setValue(bc.config[setting.name])
 			table.insert(settings, setting)
-			bc.settingsByName[setting.name] = setting -- do we still need this?
+			bc.settingsByName[setting.name] = setting -- needed for SettingsEvent:readStream()
 		end
 	end
 	return settings
@@ -273,6 +286,9 @@ function BCsetting:setIx(ix)
 		self.previous = self.current
 		self.current = ix 
 		conf[self.name] = self.values[ix]
+		if self.actionFunc ~= nil then 
+			self:actionFunc(ix)
+		end
 		debugPrint("** %s set to %s **", self.name,self.values[ix])
 	end
 end

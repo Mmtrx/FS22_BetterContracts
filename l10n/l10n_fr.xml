@@ -95,5 +95,8 @@
 		<text name="bc_discPerJob_tooltip" text="An NPC farmer increases their discount by this amount per job completed. Maximum discount cannot rise above 50%." />
 		<text name="bc_discMaxJobs" text="Number of discount-effective jobs" />
 		<text name="bc_discMaxJobs_tooltip" text="Can reduce the max discount, e.g. discount per contract = 11%, number of jobs = 3 -> max discount = 33%. Caution: Current number of jobs complete will decrease by this value on a farmland purchase." />
+		
+		<text name="bc_toDeliver" text="Delivery on harvest contracts" />
+		<text name="bc_toDeliver_tooltip" text="Percentage of the estimated total yield you must deliver to complete a harvest contract." />
 	</texts>
 </l10n>
