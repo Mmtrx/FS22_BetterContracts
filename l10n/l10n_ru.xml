@@ -95,7 +95,7 @@
 		<text name="bc_discMaxJobs" text="Количество заданий с эффективными скидками" />
 		<text name="bc_discMaxJobs_tooltip" text="Можно изменить максимальную скидку: скидка за контракт = 11%, количество заданий = 3 -> максимальная скидка = 33%. Внимание: Текущее количество выполненных работ уменьшится на это значение при покупке участков." />
 
-		<text name="bc_toDeliver" text="Delivery on harvest contracts" />
-		<text name="bc_toDeliver_tooltip" text="Percentage of the estimated total yield you must deliver to complete a harvest contract." />
+		<text name="bc_toDeliver" text="Доставка по контрактам на сбор урожая" />
+		<text name="bc_toDeliver_tooltip" text="Процент от расчётного общего урожая, который вы должны доставить, чтобы выполнить контракт на сбор урожая." />
 	</texts>
 </l10n>
