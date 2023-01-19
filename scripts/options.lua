@@ -8,6 +8,8 @@
 --  v1.2.5.0 	31.10.2022	hard mode: active miss time out at midnght. Penalty for missn cancel
 --  v1.2.6.0 	30.11.2022	UI for all settings
 --  v1.2.6.4 	17.01.2023	fix issue #88: onClickBuyFarmland() if discountMode off
+--  v1.2.6.5 	18.01.2023	add setting "toDeliver": harvest contract success factor. 
+--							Improve reward multiplier getReward()
 --=======================================================================================================
 
 --------------------- lazyNPC --------------------------------------------------------------------------- 
@@ -75,7 +77,7 @@ function NPCHarvest(self, superf, field, allowUpdates)
 end
 
 --------------------- reward / lease cost ---------------------------------------------------------------
-function calcReward(self,superf)
+function getReward(self,superf)
 	return BetterContracts.config.multReward * superf(self)
 end
 function calcLeaseCost(self,superf)

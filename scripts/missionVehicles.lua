@@ -11,6 +11,7 @@
 --  v1.2.0.0    30.11.2021  (Mmtrx) adapt for FS22
 --  v.1.2.4.2   19.09.2022  [ModHub] recognize FS22_DynamicMissionVehicles
 --  v.1.2.6.2   19.12.2022  don't add dlc vehicles to a userdefined "overwrite" setup
+--  v1.2.6.5 	19.01.2023	handle zombie (pallet, bigbag) vehicles when dismissing contracts
 --=======================================================================================================
 
 ---------------------- mission vehicle enhancement functions --------------------------------------------
@@ -260,4 +261,33 @@ function BetterContracts:loadExtraMissionVehicles_configurations(xmlFile, vehicl
 		index = index + 1
 	end
 	return configurations
+end
+
+function loadNextVehicle(self, super, vehicle, vehicleLoadState, arguments)
+	-- overwritten AbstractFieldMission:loadNextVehicleCallback() to allow spawning pallets
+	if vehicle == nil then return end 
+
+	self.lastVehicleIndexToLoad = arguments[1]
+	self.vehicleLoadWaitFrameCounter = 2
+	vehicle.activeMissionId = self.activeMissionId
+	if vehicle.addWearAmount ~= nil then 
+		vehicle:addWearAmount(math.random() * 0.3 + 0.1)
+	end
+	vehicle:setOperatingTime(3600000 * (math.random() * 40 + 30))
+	table.insert(self.vehicles, vehicle)
+end
+function removeAccess(self)
+	-- prepend to AbstractFieldMission:removeAccess()
+	-- remove "zombie" pallets/ bigbags from list of leased vehicles
+	if not self.isServer then return end 
+
+	local toDelete = {}
+	for _, vehicle in ipairs(self.vehicles) do
+		if vehicle.isDeleted then 
+			table.insert(toDelete, vehicle)
+		end
+	end
+	for _, vehicle in ipairs(toDelete) do
+		table.removeElement(self.vehicles, vehicle)
+	end
 end

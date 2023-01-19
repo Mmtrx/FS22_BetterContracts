@@ -373,7 +373,8 @@ function populateCell(frCon, list, sect, index, cell)
 		profit:setVisible(false)
 		return
 	end
-	local id = frCon.sectionContracts[sect].contracts[index].mission.id
+	local m = frCon.sectionContracts[sect].contracts[index].mission
+	local id = m.id
 	local cont
 	if self.IdToCont[id] == nil or self.IdToCont[id][2] == nil then
 		debugPrint("populateCell(): empty IdToCont for id %s. sect/index: %s/%s",
@@ -386,6 +387,14 @@ function populateCell(frCon, list, sect, index, cell)
 	local showProf = false
 	if cat==SC.HARVEST or cat==SC.SPREAD or cat==SC.BALING then 
 	-- only for harvest, spread, mow contracts
+		-- update total profit
+		if cat == SC.HARVEST then 
+			_,_, prof = self:calcProfit(m, HarvestMission.SUCCESS_FACTOR)
+		elseif cat == SC.BALING then 
+			_,_, prof = self:calcProfit(m, BaleMission.FILL_SUCCESS_FACTOR)
+		end
+		--todo: update profit spread mission
+		
 		local reward = cell:getAttribute("reward")
 		local rewtext = reward:getText()
 		reward:setText(g_i18n:formatMoney(prof, 0, true, true))

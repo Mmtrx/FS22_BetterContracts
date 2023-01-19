@@ -26,6 +26,9 @@ BCSettingsBySubtitle = {
 		default = 3,
 		title = "bc_rewardMultiplier",
 		tooltip = "bc_rewardMultiplier_tooltip",
+		actionFunc = function(self,ix) 
+			BetterContracts:refresh() -- to recalc contract rewards
+			end,
 		noTranslate = true
 			},
 		{name = "multLease", 
@@ -53,6 +56,8 @@ BCSettingsBySubtitle = {
 		tooltip = "bc_toDeliver_tooltip",
 		actionFunc = function(self,ix) 
 			HarvestMission.SUCCESS_FACTOR = self.values[ix]
+			BaleMission.FILL_SUCCESS_FACTOR = self.values[ix] - 0.03
+			BetterContracts:refresh() -- to recalc deliver/keep for harvest contr
 			end,
 		noTranslate = true
 			},

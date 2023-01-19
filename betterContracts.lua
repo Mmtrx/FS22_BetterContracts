@@ -38,7 +38,9 @@
 --  v1.2.6.2 	16.12.2022	don't act onFarmlandStateChanged() before mission started. Smaller menu icon 
 --  v1.2.6.3 	02.01.2023	onClickBuyFarmland, missionVehicles (userdefined) fixed 
 --  v1.2.6.4 	17.01.2023	fix issue #88: onClickBuyFarmland() if discountMode off
---  v1.2.6.5 	18.01.2023	add setting "toDeliver": harvest contract success factor
+--  v1.2.6.5 	18.01.2023	add setting "toDeliver": harvest contract success factor. 
+--							Improve reward multiplier getReward()
+--							handle zombie (pallet, bigbag) vehicles when dismissing contracts
 --=======================================================================================================
 SC = {
 	FERTILIZER = 1, -- prices index
@@ -458,7 +460,7 @@ function BetterContracts:initialize()
 	Utility.appendedFunction(Farm,"readStream",farmRead)
 
 	-- to adjust contracts reward / vehicle lease values:
-	Utility.overwrittenFunction(AbstractFieldMission,"calculateReward",calcReward)
+	Utility.overwrittenFunction(AbstractFieldMission,"getReward",getReward)
 	Utility.overwrittenFunction(AbstractFieldMission,"calculateVehicleUseCost",calcLeaseCost)
 
 	-- adjust NPC activity for missions: 
@@ -482,6 +484,9 @@ function BetterContracts:initialize()
 
 	-- to load own mission vehicles:
 	Utility.overwrittenFunction(MissionManager, "loadMissionVehicles", BetterContracts.loadMissionVehicles)
+	Utility.overwrittenFunction(AbstractFieldMission, "loadNextVehicleCallback", loadNextVehicle)
+	Utility.prependedFunction(AbstractFieldMission, "removeAccess", removeAccess)
+
 	-- flexible mission limit: 
 	Utility.overwrittenFunction(MissionManager, "hasFarmReachedMissionLimit", hasFarmReachedMissionLimit)
 	-- fix AbstractMission: 
@@ -539,8 +544,9 @@ function BetterContracts:onPostLoadMap(mapNode, mapFile)
 		addConsoleCommand("gsMissionHarvestField", "Harvest a field and print the liters", "consoleHarvestField", g_missionManager)
 		addConsoleCommand("gsMissionTestHarvests", "Run an expansive tests for harvest missions", "consoleHarvestTests", g_missionManager)
 	end
-	-- init HarvestMission.SUCCESS_FACTOR
+	-- init Harvest SUCCESS_FACTORs (std is harv = .93, bale = .9)
 	HarvestMission.SUCCESS_FACTOR = self.config.toDeliver
+	BaleMission.FILL_SUCCESS_FACTOR = self.config.toDeliver - 0.03
 
 	-- adjust max missions
 	local fieldsAmount = table.size(g_fieldManager.fields)
@@ -677,6 +683,12 @@ function BetterContracts:getFilltypePrice(m)
 	end
 	return m.sellPoint:getEffectiveFillTypePrice(m.fillType)
 end
+function BetterContracts:calcProfit(m, successFactor)
+	-- calculate brutto income as reward + value of kept harvest
+	local keep = math.floor(m.expectedLiters *(1 - successFactor))
+	local price = self:getFilltypePrice(m)
+	return keep, price, m:getReward() + keep * price
+end
 function BetterContracts:addMission(m)
 	-- add mission m to the corresponding BetterContracts list
 	local cont = {}
@@ -720,9 +732,7 @@ function BetterContracts:addMission(m)
 		end 
 	end
 	if cat == SC.HARVEST then
-		local keep = math.floor(m.expectedLiters *(1 - HarvestMission.SUCCESS_FACTOR))
-		local price = self:getFilltypePrice(m)
-		local profit = rew + keep * price
+		local keep, price, profit = self:calcProfit(m, HarvestMission.SUCCESS_FACTOR)
 		cont = {
 			miss = m,
 			width = wid,
@@ -752,17 +762,14 @@ function BetterContracts:addMission(m)
 		}
 		table.insert(self.simple, cont)
 	elseif cat == SC.BALING then
-		local deliver = math.ceil(m.expectedLiters * BaleMission.FILL_SUCCESS_FACTOR)
-		local keep = math.floor(m.expectedLiters - deliver) --can be sold on your own
-		local price = self:getFilltypePrice(m)
-		local profit = rew + keep * price
+		local keep, price, profit = self:calcProfit(m, BaleMission.FILL_SUCCESS_FACTOR)
 		cont = {
 			miss = m,
 			width = wid,
 			height = hei,
 			worktime = dura * 3, -- dura is just the mow time, adjust for windrowing/ baling
 			ftype = self.ft[m.fillType].title,
-			deliver = deliver,
+			deliver = math.ceil(m.expectedLiters - keep),
 			keep = keep, --can be sold on your own
 			price = price * 1000,
 			profit = profit,
