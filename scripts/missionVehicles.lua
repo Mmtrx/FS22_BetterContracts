@@ -12,12 +12,11 @@
 --  v.1.2.4.2   19.09.2022  [ModHub] recognize FS22_DynamicMissionVehicles
 --  v.1.2.6.2   19.12.2022  don't add dlc vehicles to a userdefined "overwrite" setup
 --  v1.2.6.5 	19.01.2023	handle zombie (pallet, bigbag) vehicles when dismissing contracts
+--  v1.2.7.0 	29.01.2023	visual tags for mission fields and vehicles. 
+--							show leased vehicles for active contracts 
 --=======================================================================================================
 
----------------------- mission vehicle enhancement functions --------------------------------------------
----@param missionManager MissionManager
----@param superFunc function
----@return boolean
+---------------------- mission vehicle loading functions --------------------------------------------
 function BetterContracts.loadMissionVehicles(missionManager, superFunc, xmlFilename, baseDirectory)
 	-- this could be called multiple times: by mods, dlcs
 	local self = BetterContracts
@@ -263,6 +262,13 @@ function BetterContracts:loadExtraMissionVehicles_configurations(xmlFile, vehicl
 	return configurations
 end
 
+---------------------- mission vehicle enhancement functions --------------------------------------------
+function BetterContracts:vehicleTag(m, vehicle)
+	-- save txt to append to vehicle name
+	local txt =  string.format(" (%.6s %s)", self.jobText[m.type.name], m.field.fieldId)
+	self.missionVecs[vehicle] = txt 
+end
+
 function loadNextVehicle(self, super, vehicle, vehicleLoadState, arguments)
 	-- overwritten AbstractFieldMission:loadNextVehicleCallback() to allow spawning pallets
 	if vehicle == nil then return end 
@@ -275,14 +281,18 @@ function loadNextVehicle(self, super, vehicle, vehicleLoadState, arguments)
 	end
 	vehicle:setOperatingTime(3600000 * (math.random() * 40 + 30))
 	table.insert(self.vehicles, vehicle)
+
+	-- save mission type / field for vehicle name
+	BetterContracts:vehicleTag(self, vehicle)
 end
 function removeAccess(self)
 	-- prepend to AbstractFieldMission:removeAccess()
-	-- remove "zombie" pallets/ bigbags from list of leased vehicles
 	if not self.isServer then return end 
 
 	local toDelete = {}
 	for _, vehicle in ipairs(self.vehicles) do
+		BetterContracts.missionVecs[vehicle] = nil 
+		-- remove "zombie" pallets/ bigbags from list of leased vehicles:
 		if vehicle.isDeleted then 
 			table.insert(toDelete, vehicle)
 		end
@@ -290,4 +300,35 @@ function removeAccess(self)
 	for _, vehicle in ipairs(toDelete) do
 		table.removeElement(self.vehicles, vehicle)
 	end
+end
+function onVehicleReset(self, oldv, newv)
+	-- appended to AbstractFieldMission:onVehicleReset
+	if oldv.activeMissionId ~= self.activeMissionId then return end
+
+	BetterContracts:vehicleTag(self, newv)
+	BetterContracts.missionVecs[oldv] = nil  
+end
+function vehicleGetName(self, super)
+	-- overwrites Vehicle:getName()
+	local name = super(self)
+	local info = BetterContracts.missionVecs[self] or ""
+	if BetterContracts.isOn then 
+		name = name..info
+	end
+	return name
+end
+function missionManagerLoadFromXMLFile(self,xmlFilename)
+	-- appended to MissionManager:loadFromXMLFile()
+	local bc = BetterContracts
+	if #self.missions > 0 then
+		for _, vehicle in pairs(g_currentMission.vehicles) do
+			if vehicle.activeMissionId ~= nil then
+				local mission = self:getMissionForActiveMissionId(vehicle.activeMissionId)
+				if mission ~= nil and mission.vehicles ~= nil then
+					bc:vehicleTag(mission, vehicle)
+				end
+			end
+		end
+	end
+	return xmlFilename ~= nil
 end

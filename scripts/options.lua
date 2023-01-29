@@ -10,6 +10,8 @@
 --  v1.2.6.4 	17.01.2023	fix issue #88: onClickBuyFarmland() if discountMode off
 --  v1.2.6.5 	18.01.2023	add setting "toDeliver": harvest contract success factor. 
 --							Improve reward multiplier getReward()
+--  v1.2.7.0 	29.01.2023	visual tags for mission fields and vehicles. 
+--							show leased vehicles for active contracts 
 --=======================================================================================================
 
 --------------------- lazyNPC --------------------------------------------------------------------------- 
@@ -200,7 +202,7 @@ function harvestCalcStealing(self,superf)
 	return steal + penal
 end
 function updateDetails(self, section, index)
-	if not BetterContracts.config.hardMode then return end
+	local bc = BetterContracts
 	local contract = nil
 	local sectionContracts = self.sectionContracts[section]
 	if sectionContracts ~= nil then
@@ -208,9 +210,10 @@ function updateDetails(self, section, index)
 	end
 	if contract == nil then return end
 	local mission = contract.mission
-	local lease, penal = 0, 0
-	if contract.finished and not mission.success then 
-		-- hard Mode: vehicle lease cost also for canceled mission
+
+	-- hard Mode: vehicle lease cost also for canceled mission
+	if bc.config.hardMode and contract.finished and not mission.success then 
+		local lease, penal = 0, 0
 		if mission:hasLeasableVehicles() and mission.spawnedVehicles then
 			lease = - MathUtil.round(mission.vehicleUseCost)
 		end
@@ -224,7 +227,26 @@ function updateDetails(self, section, index)
 		self.tallyBox:getDescendantByName("stealing"):setText(g_i18n:formatMoney(penal, 0, true, true))
 		self.tallyBox:getDescendantByName("total"):setText(g_i18n:formatMoney(total, 0, true, true))
 	end
+
+	-- show leased vecs for active contract
+	if contract.active and mission:hasLeasableVehicles() and mission.spawnedVehicles 
+		and bc.isOn then 
+		local totalWidth = 0 
+		for _, v in ipairs(mission.vehiclesToLoad) do
+			local storeItem = g_storeManager:getItemByXMLFilename(v.filename)
+			local element = self.vehicleTemplate:clone(self.vehiclesBox)
+			element:setImageFilename(storeItem.imageFilename)
+			element:setImageColor(nil,nil,nil,nil, 1)
+			totalWidth = totalWidth + element.absSize[1] + element.margin[1] + element.margin[3]
+			table.insert(self.vehicleElements, element)
+		end
+		self.vehiclesBox:setVisible(true)
+		self.vehiclesBox:setPosition(0)
+		self.vehiclesBox:setSize(totalWidth)
+		self.vehiclesBox:invalidateLayout()
+	end
 end
+
 function dismiss(self)
 	-- appended to AbstractMission:dismiss()
 	if not BetterContracts.config.hardMode or not self.isServer then return end
@@ -442,5 +464,44 @@ function BetterContracts:onFarmlandStateChanged(landId, farmId)
 		math.max(farm.stats.npcJobs[npcIndex] - self.config.discMaxJobs, 0)
 	else
 		farm.stats.npcJobs[npcIndex] = 0 
+	end
+end
+----------------------------------------
+function renderIcon(self, x, y, rot)
+	-- appended to FieldHotspot:render()
+	if self.field == nil or self.name == "" then return end 
+
+	local bc = BetterContracts
+	local mission = g_missionManager.fieldToMission[self.field.fieldId]
+	if mission ~= nil then 
+		local typeName = mission.type.name 
+		-- only show if Details on and mission type not filtered off
+		if not bc.isOn or not bc.filterState[typeName] then return end 
+
+		-- select icon:
+		local icon = bc.missionIcons[typeName]
+		local other 
+		if icon == nil then 
+			if typeName == "cultivate" then other = "plow" 
+			elseif typeName=="spray" or typeName=="lime" then other = "fertilize"
+			elseif typeName=="mow_bale" then 
+				other = "hay"
+				if mission.fillType == FillType.SILAGE then other = "silage"
+				end
+			end
+			assert(other~=nil, "*Error: no icon found for mission type "..typeName)
+			icon = bc.missionIcons[other]
+		end
+		local r, g, b, a = unpack(self.color)
+		local alpha = 1
+		if self.isBlinking then
+			alpha = IngameMap.alpha
+		end
+		local offx = 11 / g_screenWidth * self.scale
+		local offy = 11 / g_screenHeight* self.scale
+		icon:setPosition(x + offx, y + offy)
+		--icon:setColor(r, g, b, a * alpha)
+		icon:setScale(self.scale, self.scale)
+		icon:render()
 	end
 end

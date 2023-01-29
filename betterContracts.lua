@@ -41,6 +41,8 @@
 --  v1.2.6.5 	18.01.2023	add setting "toDeliver": harvest contract success factor. 
 --							Improve reward multiplier getReward()
 --							handle zombie (pallet, bigbag) vehicles when dismissing contracts
+--  v1.2.7.0 	29.01.2023	visual tags for mission fields and vehicles. 
+--							show leased vehicles for active contracts 
 --=======================================================================================================
 SC = {
 	FERTILIZER = 1, -- prices index
@@ -263,7 +265,7 @@ function loadPrices(self)
 end
 function setupMissionFilter(self)
 	-- setup fieldjob types:
-	local buttonText = {
+	self.jobText = {
 		mow_bale	= g_i18n:getText("fieldJob_jobType_baling"),
 		cultivate 	= g_i18n:getText("fieldJob_jobType_cultivating"),
 		fertilize 	= g_i18n:getText("fieldJob_jobType_fertilizing"),
@@ -280,7 +282,7 @@ function setupMissionFilter(self)
 	for _, type in ipairs(g_missionManager.missionTypes) do
 		-- initial state: show all types
 		self.filterState[type.name] = true
-		local name = buttonText[type.name]
+		local name = self.jobText[type.name]
 		if name ~= nil then 
 			table.insert(self.fieldjobs, {type.typeId, type.name, name})
 		else
@@ -313,14 +315,14 @@ function initGui(self)
 	else
 		debugPrint("-------- gui loaded -----------")
 	end
-	self:fixInGameMenuPage(self.settingsPage, "pageBCSettings", "gui/ui_1.dds",
+	self:fixInGameMenuPage(self.settingsPage, "pageBCSettings", "gui/ui_2.dds",
 			{0, 0, 64, 64}, {256,256}, nil, function () 
 				if g_currentMission.missionDynamicInfo.isMultiplayer then
 					return g_currentMission.isMasterUser 
 				end
 				return true
 				end)
-
+	loadIcons(self)
 	------------------- setup my display elements -------------------------------------
 	-- move farmer picture to right
 	local fbox = self.frCon.farmerBox
@@ -404,6 +406,7 @@ function BetterContracts:initialize()
 	}
 	self.settingsByName = {}				-- will hold setting objects, init by BCsetting.init()
 	self.settings = BCsetting.init(self) 	-- settings list
+	self.missionVecs = {} 					-- holds names of active mission vehicles
 
 	g_missionManager.missionMapNumChannels = 6
 	self.missionUpdTimeout = 15000
@@ -486,6 +489,19 @@ function BetterContracts:initialize()
 	Utility.overwrittenFunction(MissionManager, "loadMissionVehicles", BetterContracts.loadMissionVehicles)
 	Utility.overwrittenFunction(AbstractFieldMission, "loadNextVehicleCallback", loadNextVehicle)
 	Utility.prependedFunction(AbstractFieldMission, "removeAccess", removeAccess)
+	Utility.appendedFunction(AbstractFieldMission, "onVehicleReset", onVehicleReset)
+
+	-- rename mission vehicle: 
+    for name, typeDef in pairs(g_vehicleTypeManager.types) do
+    	if typeDef ~= nil and not TableUtility.contains({"horse","pallet","locomotive"}, name) then
+			SpecializationUtil.registerOverwrittenFunction(typeDef, "getName", vehicleGetName)
+		end
+	end
+	Utility.appendedFunction(MissionManager, "loadFromXMLFile", missionManagerLoadFromXMLFile)
+	Utility.appendedFunction(InGameMenuMapUtil, "showContextBox", showContextBox)
+
+	-- tag mission fields in map: 
+	Utility.appendedFunction(FieldHotspot, "render", renderIcon)
 
 	-- flexible mission limit: 
 	Utility.overwrittenFunction(MissionManager, "hasFarmReachedMissionLimit", hasFarmReachedMissionLimit)

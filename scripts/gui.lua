@@ -20,6 +20,8 @@
 --  v1.2.4.3 	10.10.2022	recognize FS22_LimeMission
 --  v1.2.6.0 	30.11.2022	UI for all settings
 --  v1.2.6.2 	16.12.2022	don't act onFarmlandStateChanged() before mission started. Smaller menu icon 
+--  v1.2.7.0 	29.01.2023	visual tags for mission fields and vehicles. 
+--							show leased vehicles for active contracts 
 --=======================================================================================================
 
 --- Adds a new page to the in game menu.
@@ -80,6 +82,26 @@ function BetterContracts:fixInGameMenuPage(frame, pageName, iconFile, uvs, sizeF
 		end
 	end
 	inGameMenu:rebuildTabList()
+end
+function loadIcons(self)
+	-- body
+	local iconFile = Utils.getFilename("gui/ui_2.dds", self.directory)
+	local missionUVs = {
+		plow = 		{ 64,  0, 64, 64},
+		harvest = 	{128,  0, 64, 64},
+		sow = 		{192,  0, 64, 64},
+		hay = 		{  0, 64, 64, 64},
+		silage = 	{ 64, 64, 64, 64},
+		fertilize = {128, 64, 64, 64},
+		weed = 		{192, 64, 64, 64},
+	}
+	self.missionIcons = {}
+	local icon 
+	for type, uvs in pairs(missionUVs) do 
+		icon = Overlay.new(iconFile,0,0, getNormalizedScreenValues(30, 30))
+		icon:setUVs(GuiUtils.getUVs(uvs, {256,256}))
+		self.missionIcons[type] = icon 
+	end
 end
 function BetterContracts:loadGUI(guiPath)
 	local canLoad = true
@@ -763,5 +785,16 @@ function onRemoveSortButton(frCon, button)
 		self.my.helpsort:setText("")
 	else
 		self.my.helpsort:setText(self.buttons[self.sort][2])
+	end
+end
+-------------------------------------------- v1.2.7.0 -------------------------------
+function showContextBox(contextBox, hotspot, description, imageFilename, uvs, farmId)
+	-- to change color of vehicle text, if mission vehicle
+	if contextBox == nil then return end 
+	local text = contextBox:getDescendantByName("text")
+	if description:sub(-1) == ")" then 
+		text:applyProfile("missionVehicleText")
+	else
+		text:applyProfile("ingameMenuMapContextText")		
 	end
 end

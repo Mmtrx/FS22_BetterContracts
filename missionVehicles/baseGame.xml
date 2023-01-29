@@ -476,10 +476,7 @@
 				<configuration name="rimColor" id="7" />
 				<configuration name="wheel" id="4" />
 			</vehicle>
-			<vehicle filename="$data/vehicles/farmtech/variofex750/variofex750.xml">
-				<!-- spreader -->
-				<configuration name="wheel" id="2" />
-			</vehicle>
+			<vehicle filename="$data/vehicles/farmtech/variofex750/variofex750.xml"/> <!-- spreader -->
 			<vehicle filename="$data/vehicles/agco/weight650/weight650.xml">
 				<configuration name="baseMaterial" id="7" />
 			</vehicle>

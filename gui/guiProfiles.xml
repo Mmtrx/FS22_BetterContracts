@@ -116,4 +116,8 @@
 	</Profile>
 	<Profile name="myFilterDynamicTextInactive" extends="myFilterDynamicText" with="myFilterButtonInactive"/>
 	
+	<Profile name="missionVehicleText" extends="ingameMenuMapContextText" >
+		<Value name="textColor" value="$preset_colorMainUI" />
+	</Profile>
+	
 </GUIProfiles>
