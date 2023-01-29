@@ -96,7 +96,7 @@
 		<text name="bc_discMaxJobs" text="Počet zakázek se slevou" />
 		<text name="bc_discMaxJobs_tooltip" text="Může snížit maximální slevu, např. sleva na smlouvu = 11 %, počet smluv = 3 -> max. sleva = 33 %. Upozornění: Aktuální počet dokončených úloh se při nákupu zemědělské půdy sníží o tuto hodnotu." />
 
-		<text name="bc_toDeliver" text="Delivery on harvest contracts" />
-		<text name="bc_toDeliver_tooltip" text="Percentage of the estimated total yield you must deliver to complete a harvest contract." />
+		<text name="bc_toDeliver" text="Procenta doručení ze sklizně" />
+		<text name="bc_toDeliver_tooltip" text="Procento odhadovaného celkového výnosu, které musíte dodat, abyste dokončili smlouvu o sklizni." />
 	</texts>
 </l10n>
