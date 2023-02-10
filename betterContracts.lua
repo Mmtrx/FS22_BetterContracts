@@ -43,6 +43,7 @@
 --							handle zombie (pallet, bigbag) vehicles when dismissing contracts
 --  v1.2.7.0 	29.01.2023	visual tags for mission fields and vehicles. 
 --							show leased vehicles for active contracts 
+--  v1.2.7.1 	10.02.2023	fix mission visual tags for MP: renderIcon(). 
 --=======================================================================================================
 SC = {
 	FERTILIZER = 1, -- prices index

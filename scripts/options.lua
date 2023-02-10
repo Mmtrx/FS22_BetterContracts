@@ -12,6 +12,7 @@
 --							Improve reward multiplier getReward()
 --  v1.2.7.0 	29.01.2023	visual tags for mission fields and vehicles. 
 --							show leased vehicles for active contracts 
+--  v1.2.7.1 	10.02.2023	fix mission visual tags for MP: renderIcon(). 
 --=======================================================================================================
 
 --------------------- lazyNPC --------------------------------------------------------------------------- 
@@ -472,7 +473,7 @@ function renderIcon(self, x, y, rot)
 	if self.field == nil or self.name == "" then return end 
 
 	local bc = BetterContracts
-	local mission = g_missionManager.fieldToMission[self.field.fieldId]
+	local mission = bc.fieldToMission[self.field.fieldId]
 	if mission ~= nil then 
 		local typeName = mission.type.name 
 		-- only show if Details on and mission type not filtered off
