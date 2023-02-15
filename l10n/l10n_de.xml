@@ -98,5 +98,11 @@
 		<text name="bc_discPerJob_tooltip" text="Pro erfülltem Vertrag erhöht der NPC-Farmer seinen Nachlass für Feldkäufe um diesen Prozentwert. Der maximale Rabatt wird aber 50% nicht übersteigen." />
 		<text name="bc_discMaxJobs" text="Anzahl nachlasswirksamer Jobs" />
 		<text name="bc_discMaxJobs_tooltip" text="Kann den Maximalrabatt verringern, z.B. Nachlass pro Vertrag = 11%, Job-Anzahl = 3 -> Maximalrabatt 33%. Achtung: Bei Feldkauf vermindert sich die aktuelle Zahl nachlasswirksamer Jobs um den hier definierten Wert. " />
+				
+		<text name="bc_missionGeneration" text="Vertrags-Generierung" />
+		<text name="bc_generationInterval" text="Generier-Intervall" />
+		<text name="bc_generationInterval_tooltip" text="Anzahl Stunden (im Spiel), die gewartet wird, bevor neue Verträge generiert werden." />
+		<text name="bc_missionGenPercentage" text="Generier-Prozentsatz" />
+		<text name="bc_missionGenPercentage_tooltip" text="Der Anteil der Verträge pro Generierung, bezogen auf die maximalen Verträge pro Monat." />
 	</texts>
 </l10n>

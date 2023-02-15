@@ -199,6 +199,33 @@ BCSettingsBySubtitle = {
 			},
 		},
 	},
+	{
+	title = "bc_missionGeneration",
+	elements = {
+		{name = "generationInterval",
+		values = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24},
+		texts = {"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24"},
+		default = 1,
+		title = "bc_generationInterval",
+		tooltip = "bc_generationInterval_tooltip",
+		actionFunc = function(self,ix)
+			BetterContracts:updateGenerationSettings() -- recalculate generation settings
+			end,
+		noTranslate = true
+			},
+		{name = "missionGenPercentage",
+		values = {0.01, 0.02, 0.04, 0.05, 0.1, 0.2},
+		texts = {"1%", "2%", "4%", "5%", "10%", "20%"},
+		default = 0.2,
+		title = "bc_missionGenPercentage",
+		tooltip = "bc_missionGenPercentage_tooltip",
+		actionFunc = function(self,ix)
+			BetterContracts:updateGenerationSettings() -- recalculate generation settings
+			end,
+		noTranslate = true
+			},
+		},
+	},
 }
 -- settings class
 BCsetting = {}
