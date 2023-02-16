@@ -200,8 +200,8 @@ function registerXML(self)
 	self.xmlSchema:register(XMLValueType.INT,   key.."#expire")
 
 	local key = self.baseXmlKey..".generation"
-	self.xmlSchema:register(XMLValueType.INT, key.."#interval")
-	self.xmlSchema:register(XMLValueType.INT, key.."#percentage")
+	self.xmlSchema:register(XMLValueType.INT, 	key.."#interval")
+	self.xmlSchema:register(XMLValueType.FLOAT, key.."#percentage")
 end
 function readconfig(self)
 	if g_currentMission.missionInfo.savegameDirectory == nil then return end
@@ -243,7 +243,7 @@ function readconfig(self)
 		end
 		key = self.baseXmlKey..".generation"
 		self.config.generationInterval = xmlFile:getValue(key.."#interval", 1)
-		self.config.missionGenPercentage = xmlFile:getValue(key..("#percentage"), 0.2)
+		self.config.missionGenPercentage = xmlFile:getValue(key.."#percentage", 0.2)
 		xmlFile:delete()
 		for _,setting in ipairs(self.settings) do		
 			setting:setValue(self.config[setting.name])
