@@ -22,6 +22,7 @@
 --  v1.2.6.2 	16.12.2022	don't act onFarmlandStateChanged() before mission started. Smaller menu icon 
 --  v1.2.7.0 	29.01.2023	visual tags for mission fields and vehicles. 
 --							show leased vehicles for active contracts 
+--  v1.2.7.2 	12.02.2023	don't show negative togos
 --=======================================================================================================
 
 --- Adds a new page to the in game menu.
@@ -635,11 +636,12 @@ function updateFarmersBox(frCon, field, npc)
 			self.my.line3:setText(g_i18n:getText("SC_worked"))
 			self.my.etime:setText(string.format("%.1f%%", m.fieldPercentageDone * 100))
 
-			local depo = 1000 		-- just as protection
+			local depo = 0 		-- just as protection
 			if m.depositedLiters then depo = m.depositedLiters end
 
-			local delivered, togo = MathUtil.round(depo / 100) * 100,
-									MathUtil.round((c.deliver - depo) / 100) * 100
+			local delivered = MathUtil.round(depo / 100) * 100
+			-- don't show negative togos:
+			local togo		= math.max(MathUtil.round((c.deliver - depo) / 100)*100), 0)
 			text4a, text4b = g_i18n:getText("SC_delivered"), g_i18n:getText("SC_togo")
 			local val4a, val4b = g_i18n:formatVolume(delivered), g_i18n:formatVolume(togo)
 			if cat == SC.BALING then
