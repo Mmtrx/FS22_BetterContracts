@@ -641,7 +641,7 @@ function updateFarmersBox(frCon, field, npc)
 
 			local delivered = MathUtil.round(depo / 100) * 100
 			-- don't show negative togos:
-			local togo		= math.max(MathUtil.round((c.deliver - depo) / 100)*100), 0)
+			local togo		= math.max(MathUtil.round((c.deliver - depo) / 100)*100, 0)
 			text4a, text4b = g_i18n:getText("SC_delivered"), g_i18n:getText("SC_togo")
 			local val4a, val4b = g_i18n:formatVolume(delivered), g_i18n:formatVolume(togo)
 			if cat == SC.BALING then
