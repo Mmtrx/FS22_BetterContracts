@@ -199,6 +199,32 @@ BCSettingsBySubtitle = {
 			},
 		},
 	},
+	{
+	title = "bc_missionGeneration",
+	elements = {
+		{name = "generationInterval",
+		min = 1, max = 24, increment = 1,
+		default = 1,
+		title = "bc_generationInterval",
+		tooltip = "bc_generationInterval_tooltip",
+		actionFunc = function(self,ix)
+			BetterContracts:updateGenerationSettings() -- recalculate generation settings
+			end,
+		noTranslate = true
+			},
+		{name = "missionGenPercentage",
+		values = {0.01, 0.02, 0.04, 0.05, 0.1, 0.2},
+		texts = {"1%", "2%", "4%", "5%", "10%", "20%"},
+		default = 0.2,
+		title = "bc_missionGenPercentage",
+		tooltip = "bc_missionGenPercentage_tooltip",
+		actionFunc = function(self,ix)
+			BetterContracts:updateGenerationSettings() -- recalculate generation settings
+			end,
+		noTranslate = true
+			},
+		},
+	},
 }
 -- settings class
 BCsetting = {}
@@ -209,7 +235,7 @@ function BCsetting.new(data, customMt)
 	self.type = AIParameterType.SELECTOR
 	self.name = data.name
 	self.data = data
-	if next(data.values) ~=nil then
+	if data.values ~=nil and next(data.values) ~=nil then
 		self.values = table.copy(data.values)
 		self.texts = table.copy(data.texts)
 	elseif data.min ~= nil and data.max ~=nil then

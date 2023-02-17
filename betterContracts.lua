@@ -44,6 +44,7 @@
 --  v1.2.7.0 	29.01.2023	visual tags for mission fields and vehicles. 
 --							show leased vehicles for active contracts 
 --  v1.2.7.1 	10.02.2023	fix mission visual tags for MP: renderIcon(). 
+--  v1.2.7.2	15.02.2023	Add settings to adjust contract generation
 --=======================================================================================================
 SC = {
 	FERTILIZER = 1, -- prices index
@@ -197,6 +198,10 @@ function registerXML(self)
 	self.xmlSchema:register(XMLValueType.FLOAT, key.."#penalty")
 	self.xmlSchema:register(XMLValueType.INT,   key.."#leaseJobs")
 	self.xmlSchema:register(XMLValueType.INT,   key.."#expire")
+
+	local key = self.baseXmlKey..".generation"
+	self.xmlSchema:register(XMLValueType.INT, 	key.."#interval")
+	self.xmlSchema:register(XMLValueType.FLOAT, key.."#percentage")
 end
 function readconfig(self)
 	if g_currentMission.missionInfo.savegameDirectory == nil then return end
@@ -236,6 +241,9 @@ function readconfig(self)
 			self.config.hardLease =		xmlFile:getValue(key.."#leaseJobs", 2)		
 			self.config.hardExpire =	xmlFile:getValue(key.."#expire", SC.MONTH)		
 		end
+		key = self.baseXmlKey..".generation"
+		self.config.generationInterval = xmlFile:getValue(key.."#interval", 1)
+		self.config.missionGenPercentage = xmlFile:getValue(key.."#percentage", 0.2)
 		xmlFile:delete()
 		for _,setting in ipairs(self.settings) do		
 			setting:setValue(self.config[setting.name])
@@ -385,15 +393,17 @@ function BetterContracts:initialize()
 	if self.initialized ~= nil then return end -- run only once
 	self.initialized = false
 	self.config = {
-		debug = false, 			-- debug mode
-		maxActive = 3, 			-- max active contracts
-		multReward = 1., 		-- general reward multiplier
-		multLease = 1.,			-- general lease cost multiplier
-		toDeliver = 0.93,		-- HarvestMission.SUCCESS_FACTOR
-		refreshMP = SC.ADMIN, 	-- necessary permission to refresh contract list (MP)
-		lazyNPC = false, 		-- adjust NPC field work activity
-		hardMode = false, 		-- penalty for canceled missions
-		discountMode = false, 	-- get field price discount for successfull missions
+		debug = false, 				-- debug mode
+		maxActive = 3, 				-- max active contracts
+		multReward = 1., 			-- general reward multiplier
+		multLease = 1.,				-- general lease cost multiplier
+		toDeliver = 0.93,			-- HarvestMission.SUCCESS_FACTOR
+		generationInterval = 1, 	-- MissionManager.MISSION_GENERATION_INTERVAL
+		missionGenPercentage = 0.2, -- percent of missions to be generated (default: 20%)
+		refreshMP = SC.ADMIN, 		-- necessary permission to refresh contract list (MP)
+		lazyNPC = false, 			-- adjust NPC field work activity
+		hardMode = false, 			-- penalty for canceled missions
+		discountMode = false, 		-- get field price discount for successfull missions
 		npcHarvest = false,
 		npcPlowCultivate = false,
 		npcSow = false,	
@@ -531,7 +541,7 @@ function BetterContracts:initialize()
 end
 
 function BetterContracts:onMissionInitialize(baseDirectory, missionCollaborators)
-	MissionManager.MISSION_GENERATION_INTERVAL = 3600000 -- every 1 game hour
+	BetterContracts:updateGenerationInterval()
 end
 
 function BetterContracts:onSetMissionInfo(missionInfo, missionDynamicInfo)
@@ -565,17 +575,7 @@ function BetterContracts:onPostLoadMap(mapNode, mapFile)
 	HarvestMission.SUCCESS_FACTOR = self.config.toDeliver
 	BaleMission.FILL_SUCCESS_FACTOR = self.config.toDeliver - 0.03
 
-	-- adjust max missions
-	local fieldsAmount = table.size(g_fieldManager.fields)
-	local adjustedFieldsAmount = math.max(fieldsAmount, 45)
-	MissionManager.MAX_MISSIONS = math.min(80, math.ceil(adjustedFieldsAmount * 0.60)) -- max missions = 60% of fields amount (minimum 45 fields) max 120
-	MissionManager.MAX_MISSIONS_PER_GENERATION = math.min(MissionManager.MAX_MISSIONS / 5, 30) -- max missions per generation = max mission / 5 but not more then 30
-	MissionManager.MAX_TRIES_PER_GENERATION = math.ceil(MissionManager.MAX_MISSIONS_PER_GENERATION * 1.5) -- max tries per generation 50% more then max missions per generation
-	debugPrint("[%s] Fields amount %s (%s)", self.name, fieldsAmount, adjustedFieldsAmount)
-	debugPrint("[%s] MAX_MISSIONS set to %s", self.name, MissionManager.MAX_MISSIONS)
-	debugPrint("[%s] MAX_TRANSPORT_MISSIONS set to %s", self.name, MissionManager.MAX_TRANSPORT_MISSIONS)
-	debugPrint("[%s] MAX_MISSIONS_PER_GENERATION set to %s", self.name, MissionManager.MAX_MISSIONS_PER_GENERATION)
-	debugPrint("[%s] MAX_TRIES_PER_GENERATION set to %s", self.name, MissionManager.MAX_TRIES_PER_GENERATION)
+	BetterContracts:updateGenerationSettings()
 
 	-- initialize constants depending on game manager instances
 	self.ft = g_fillTypeManager.fillTypes
@@ -605,6 +605,26 @@ function BetterContracts:onPostLoadMap(mapNode, mapFile)
 	self.initialized = true
 end
 
+function BetterContracts:updateGenerationInterval()
+	-- init Mission generation rate (std is 1 hour)
+	MissionManager.MISSION_GENERATION_INTERVAL = self.config.generationInterval * 3600000
+end
+function BetterContracts:updateGenerationSettings()
+	BetterContracts:updateGenerationInterval()
+
+	-- adjust max missions
+	local fieldsAmount = table.size(g_fieldManager.fields)
+	local adjustedFieldsAmount = math.max(fieldsAmount, 45)
+	MissionManager.MAX_MISSIONS = math.min(80, math.ceil(adjustedFieldsAmount * 0.60)) -- max missions = 60% of fields amount (minimum 45 fields) max 120
+	MissionManager.MAX_MISSIONS_PER_GENERATION = math.min(MissionManager.MAX_MISSIONS * self.config.missionGenPercentage, 30) -- max missions per generation = max mission / 5 but not more then 30
+	MissionManager.MAX_TRIES_PER_GENERATION = math.ceil(MissionManager.MAX_MISSIONS_PER_GENERATION * 1.5) -- max tries per generation 50% more then max missions per generation
+	debugPrint("[%s] Fields amount %s (%s)", self.name, fieldsAmount, adjustedFieldsAmount)
+	debugPrint("[%s] MAX_MISSIONS set to %s", self.name, MissionManager.MAX_MISSIONS)
+	debugPrint("[%s] MAX_TRANSPORT_MISSIONS set to %s", self.name, MissionManager.MAX_TRANSPORT_MISSIONS)
+	debugPrint("[%s] MAX_MISSIONS_PER_GENERATION set to %s", self.name, MissionManager.MAX_MISSIONS_PER_GENERATION)
+	debugPrint("[%s] MAX_TRIES_PER_GENERATION set to %s", self.name, MissionManager.MAX_TRIES_PER_GENERATION)
+end
+
 function BetterContracts:onPostSaveSavegame(saveDir, savegameIndex)
 	-- save our settings
 	debugPrint("** saving settings to %s (%d)", saveDir, savegameIndex)
@@ -614,15 +634,15 @@ function BetterContracts:onPostSaveSavegame(saveDir, savegameIndex)
 
 	local conf = self.config
 	local key = self.baseXmlKey 
-	xmlFile:setBool ( key.."#debug", 	conf.debug)
-	xmlFile:setInt  ( key.."#maxActive",conf.maxActive)
-	xmlFile:setFloat( key.."#reward", 	conf.multReward)
-	xmlFile:setFloat( key.."#lease", 	conf.multLease)
-	xmlFile:setFloat( key.."#deliver", 	conf.toDeliver)
-	xmlFile:setInt  ( key.."#refreshMP",conf.refreshMP)
-	xmlFile:setBool ( key.."#lazyNPC", 	conf.lazyNPC)
-	xmlFile:setBool ( key.."#discount", conf.discountMode)
-	xmlFile:setBool ( key.."#hard", 	conf.hardMode)
+	xmlFile:setBool ( key.."#debug", 		  conf.debug)
+	xmlFile:setInt  ( key.."#maxActive",	  conf.maxActive)
+	xmlFile:setFloat( key.."#reward", 		  conf.multReward)
+	xmlFile:setFloat( key.."#lease", 		  conf.multLease)
+	xmlFile:setFloat( key.."#deliver", 		  conf.toDeliver)
+	xmlFile:setInt  ( key.."#refreshMP",	  conf.refreshMP)
+	xmlFile:setBool ( key.."#lazyNPC", 		  conf.lazyNPC)
+	xmlFile:setBool ( key.."#discount", 	  conf.discountMode)
+	xmlFile:setBool ( key.."#hard", 		  conf.hardMode)
 	if conf.lazyNPC then
 		key = self.baseXmlKey .. ".lazyNPC"
 		xmlFile:setBool (key.."#harvest", 	conf.npcHarvest)
@@ -642,6 +662,9 @@ function BetterContracts:onPostSaveSavegame(saveDir, savegameIndex)
 		xmlFile:setInt  (key.."#leaseJobs",	conf.hardLease)
 		xmlFile:setInt  (key.."#expire",	conf.hardExpire)
 	end
+	key = self.baseXmlKey .. ".generation"
+	xmlFile:setInt	( key.."#interval",   conf.generationInterval)
+	xmlFile:setFloat( key.."#percentage", conf.missionGenPercentage)
 	xmlFile:save()
 	xmlFile:delete()
 end
