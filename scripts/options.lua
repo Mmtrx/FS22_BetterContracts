@@ -13,6 +13,7 @@
 --  v1.2.7.0 	29.01.2023	visual tags for mission fields and vehicles. 
 --							show leased vehicles for active contracts 
 --  v1.2.7.1 	10.02.2023	fix mission visual tags for MP: renderIcon(). 
+--  v1.2.7.2 	12.02.2023	icon for roller missions. Don't show negative togos
 --=======================================================================================================
 
 --------------------- lazyNPC --------------------------------------------------------------------------- 
@@ -483,7 +484,7 @@ function renderIcon(self, x, y, rot)
 		local icon = bc.missionIcons[typeName]
 		local other 
 		if icon == nil then 
-			if typeName == "cultivate" then other = "plow" 
+			if typeName == "cultivate"  or typeName=="roll" then other = "plow" 
 			elseif typeName=="spray" or typeName=="lime" then other = "fertilize"
 			elseif typeName=="mow_bale" then 
 				other = "hay"

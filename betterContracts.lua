@@ -45,6 +45,7 @@
 --							show leased vehicles for active contracts 
 --  v1.2.7.1 	10.02.2023	fix mission visual tags for MP: renderIcon(). 
 --  v1.2.7.2	15.02.2023	Add settings to adjust contract generation
+-- 							Icon for roller missions. Don't show negative togos
 --=======================================================================================================
 SC = {
 	FERTILIZER = 1, -- prices index

@@ -26,8 +26,7 @@ The mod keeps track of the amount of contracts you completed for each of the NPC
 
 Changelog v1.2.7.2:
 - add setting to change time interval between contract generation runs
-
-Changelog v1.2.7.1:
+- fix missing icon for roller missions, do not display negative "to go" values
 - fix mission visual tags for MP: renderIcon(). 
 
 Changelog v1.2.7.0:

@@ -103,6 +103,6 @@
 		<text name="bc_generationInterval" text="Generier-Intervall" />
 		<text name="bc_generationInterval_tooltip" text="Anzahl Stunden (im Spiel), die gewartet wird, bevor neue Verträge generiert werden." />
 		<text name="bc_missionGenPercentage" text="Generier-Prozentsatz" />
-		<text name="bc_missionGenPercentage_tooltip" text="Der Anteil der Verträge pro Generierung, bezogen auf die maximalen Verträge pro Monat." />
+		<text name="bc_missionGenPercentage_tooltip" text="Der Anteil der Verträge pro Generierung, bezogen auf die Maximalzahl Verträge." />
 	</texts>
 </l10n>
