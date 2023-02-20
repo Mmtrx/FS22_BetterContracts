@@ -46,6 +46,7 @@
 --  v1.2.7.1 	10.02.2023	fix mission visual tags for MP: renderIcon(). 
 --  v1.2.7.2	15.02.2023	Add settings to adjust contract generation
 -- 							Icon for roller missions. Don't show negative togos
+--  v1.2.7.3	20.02.2023	double progress bar active contracts. Fix PnH BGA/ Maize+ 
 --=======================================================================================================
 SC = {
 	FERTILIZER = 1, -- prices index
@@ -68,7 +69,6 @@ SC = {
     -- hardMode expire:
     DAY = 1,
     MONTH = 2,
-
 	-- Gui controls:
 	CONTROLS = {
 		npcbox = "npcbox",
@@ -95,6 +95,11 @@ SC = {
 		sortprof = "sortprof",
 		sortpmin = "sortpmin",
 		helpsort = "helpsort"
+	},
+	-- Gui contractBox controls:
+	CONTBOX = {
+		"box1", "box2", "prog1", "prog2",
+		"progressBarBg", "progressBar1", "progressBar2"
 	}
 }
 function debugPrint(text, ...)
@@ -372,6 +377,10 @@ function initGui(self)
 	-- set controls for npcbox, sortbox and their elements:
 	for _, name in pairs(SC.CONTROLS) do
 		self.my[name] = self.frCon.farmerBox:getDescendantById(name)
+	end
+	-- set controls for contractBox:
+	for _, name in pairs(SC.CONTBOX) do
+		self.my[name] = self.frCon.contractBox:getDescendantById(name)
 	end
 	-- set callbacks for our 3 sort buttons
 	for _, name in ipairs({"sortcat", "sortprof", "sortpmin"}) do
@@ -722,7 +731,12 @@ function BetterContracts:getFilltypePrice(m)
 			self.name, m.type.name, self.ft[m.fillType].title, m.field.fieldId)
 		return 0
 	end
-	return m.sellPoint:getEffectiveFillTypePrice(m.fillType)
+	-- check for Maize+ filltype
+	local fillType = m.fillType
+	if m.sellPoint.fillTypePrices[fillType] == nil then
+		fillType = FillType.SILAGE
+	end
+	return m.sellPoint:getEffectiveFillTypePrice(fillType)
 end
 function BetterContracts:calcProfit(m, successFactor)
 	-- calculate brutto income as reward + value of kept harvest

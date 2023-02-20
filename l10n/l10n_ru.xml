@@ -49,6 +49,10 @@
 		<text name="SC_sortProf" text="Чистая прибыль" />
 		<text name="SC_sortpMin" text="Доход в мин." />
 
+		<!-- progress bars -->
+		<text name="bc_progField" text="Field progress" />
+		<text name="bc_progDeliver" text="Delivery progress" />
+
 		<!-- Settings Page (and v1.2.6.0 additions) -->
 		<text name="bc_jobsCompleted" text="Выполненные контракты: %d" />
 		<text name="bc_leaseNotEnough" text="Вам нужно выполнить еще %d контрактов для %s с помощью собственного оборудования, прежде чем вы сможете брать машины в аренду." />

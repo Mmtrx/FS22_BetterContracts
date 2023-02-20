@@ -50,6 +50,10 @@
 		<text name="SC_sortProf" text="純利益" />
 		<text name="SC_sortpMin" text="分利益" />
 
+		<!-- progress bars -->
+		<text name="bc_progField" text="Field progress" />
+		<text name="bc_progDeliver" text="Delivery progress" />
+
 		<!-- Settings Page (and v1.2.6.0 additions) -->
 		<text name="bc_jobsCompleted" text="Jobs completed: %d" />
 		<text name="bc_leaseNotEnough" text="You need to complete %d more jobs for %s with own equipment, before you can borrow machines." />

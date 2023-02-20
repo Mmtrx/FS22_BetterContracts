@@ -50,6 +50,10 @@
 		<text name="SC_sortProf" text="Čistý zisk" />
 		<text name="SC_sortpMin" text="Zisk za minutu" />
 
+		<!-- progress bars -->
+		<text name="bc_progField" text="Field progress" />
+		<text name="bc_progDeliver" text="Delivery progress" />
+
 		<!-- Settings Page (and v1.2.6.0 additions) -->
 		<text name="bc_jobsCompleted" text="Dokončené zakázky: %d" />
 		<text name="bc_leaseNotEnough" text="Než si budete moci půjčit stroje, musíte dokončit %d dalších úloh za %s s vlastním vybavením." />

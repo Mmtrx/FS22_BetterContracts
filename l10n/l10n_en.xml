@@ -49,6 +49,10 @@
 		<text name="SC_togo" text="To go:" />
 		<text name="SC_timeleft" text="Time left:" />
 
+		<!-- progress bars -->
+		<text name="bc_progField" text="Field progress" />
+		<text name="bc_progDeliver" text="Delivery progress" />
+
 		<!-- Sort button help text -->
 		<text name="SC_sortCat" text="mission type" />
 		<text name="SC_sortProf" text="net profit" />

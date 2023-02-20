@@ -23,6 +23,7 @@
 --  v1.2.7.0 	29.01.2023	visual tags for mission fields and vehicles. 
 --							show leased vehicles for active contracts 
 --  v1.2.7.2 	12.02.2023	don't show negative togos
+--  v1.2.7.3	20.02.2023	double progress bar active contracts. Fix PnH BGA/ Maize+ 
 --=======================================================================================================
 
 --- Adds a new page to the in game menu.
@@ -116,6 +117,8 @@ function BetterContracts:loadGUI(guiPath)
 		return false
 	end
 	local xmlFile, layout 
+	local cont = self.frCon.contractsContainer
+
 	-- load "SCGui.xml"
 	fname = guiPath .. "SCGui.xml"
 	if fileExists(fname) then
@@ -137,7 +140,6 @@ function BetterContracts:loadGUI(guiPath)
 	fname = guiPath .. "filterGui.xml"
 	if fileExists(fname) then
 		xmlFile = loadXMLFile("Temp", fname)
-		local cont = self.frCon.contractsContainer
 		g_gui:loadGuiRec(xmlFile, "GUI", cont, self.frCon)
 		layout = cont:getDescendantById("filterlayout")
 		layout:applyScreenAlignment()
@@ -146,6 +148,25 @@ function BetterContracts:loadGUI(guiPath)
 		local hidden = cont:getDescendantById("hidden")
 		hidden:applyScreenAlignment()
 		hidden:updateAbsolutePosition()
+		delete(xmlFile)
+	else
+		Logging.error("[GuiLoader %s]  Required file '%s' could not be found!", self.name, fname)
+		return false
+	end
+
+	-- load "progressGui.xml"
+	fname = guiPath .. "progressGui.xml"
+	if fileExists(fname) then
+		xmlFile = loadXMLFile("Temp", fname)
+		local contBox = self.frCon.contractBox
+		-- load our "progressbar" as child of contractBox:
+		g_gui:loadGuiRec(xmlFile, "GUI", contBox, self.frCon)
+		for _,id in ipairs({"box1","box2"}) do
+			layout = contBox:getDescendantById(id)
+			layout:applyScreenAlignment()
+			layout:updateAbsolutePosition()
+			layout:invalidateLayout(true) -- adjust text fields
+		end
 		delete(xmlFile)
 	else
 		Logging.error("[GuiLoader %s]  Required file '%s' could not be found!", self.name, fname)
@@ -629,7 +650,7 @@ function updateFarmersBox(frCon, field, npc)
 		local active = cont.active
 		local text, text4a, text4b
 		--get current price
-		local price = m.sellPoint:getEffectiveFillTypePrice(m.fillType)
+		local price = self:getFilltypePrice(m)
 		self.my.filltype:setText(c.ftype)
 
 		if active then
@@ -656,6 +677,9 @@ function updateFarmersBox(frCon, field, npc)
 			self.my.valu4a:setText(val4a)
 			self.my.line4b:setText(text4b)
 			self.my.valu4b:setText(val4b)
+			-- save values for progress bars:
+			self.fieldPercent = m.fieldPercentageDone
+			self.deliverPercent = depo/c.deliver
 		else
 			text4a = g_i18n:formatVolume(MathUtil.round(c.deliver / 100) * 100)
 			text4b = g_i18n:formatVolume(MathUtil.round(c.keep / 100) * 100)

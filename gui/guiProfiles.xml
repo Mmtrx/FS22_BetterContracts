@@ -120,4 +120,17 @@
 		<Value name="textColor" value="$preset_colorMainUI" />
 	</Profile>
 	
+	<Profile name="myProgressLayout" extends="emptyPanel" with="anchorTopCenter" >
+		<Value name="alignmentY" value="bottom"/>
+		<Value name="flowDirection" value="horizontal"/>
+	</Profile>
+	
+	<!-- Smaller vehicles - - - - - - - - - - - - - - - - - - - - -  -->
+	<Profile name="myVehiclesItem" extends="ingameMenuContractsVehiclesItem">
+		<Value name="size" value="104px 104px"/>
+		<Value name="margin" value="1px 0 2px 0"/>
+	</Profile>
+	<Profile name="myVehiclesBox" extends="ingameMenuContractsVehiclesBox">
+		<Value name="size" value="856px 104px" />
+	</Profile>
 </GUIProfiles>

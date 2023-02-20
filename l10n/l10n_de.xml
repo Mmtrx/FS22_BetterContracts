@@ -54,6 +54,10 @@
 		<text name="SC_sortProf" text="Nettoprofit" />
 		<text name="SC_sortpMin" text="Profit pro Minute" />
 
+		<!-- progress bars -->
+		<text name="bc_progField" text="Fortschritt Feld" />
+		<text name="bc_progDeliver" text="Fortschritt Lieferung" />
+
 		<!-- Settings Page -->
 		<text name="bc_settingsPage_title" text="BetterContracts Einstellungen" />
 

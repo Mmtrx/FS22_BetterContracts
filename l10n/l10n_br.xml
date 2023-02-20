@@ -49,6 +49,10 @@
 		<text name="SC_sortProf" text="Lucro líquido" />
 		<text name="SC_sortpMin" text="Lucro por minuto" />
 
+		<!-- progress bars -->
+		<text name="bc_progField" text="Field progress" />
+		<text name="bc_progDeliver" text="Delivery progress" />
+
 		<!-- Settings Page (and v1.2.6.0 additions) -->
 		<text name="bc_jobsCompleted" text="Trabalhos concluídos: %d" />
 		<text name="bc_leaseNotEnough" text="Você precisa concluir mais %d trabalhos para %s com equipamento próprio antes de poder emprestar máquinas." />

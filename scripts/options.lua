@@ -14,6 +14,7 @@
 --							show leased vehicles for active contracts 
 --  v1.2.7.1 	10.02.2023	fix mission visual tags for MP: renderIcon(). 
 --  v1.2.7.2 	12.02.2023	icon for roller missions. Don't show negative togos
+--  v1.2.7.3	20.02.2023	double progress bar active contracts. Fix PnH BGA/ Maize+ 
 --=======================================================================================================
 
 --------------------- lazyNPC --------------------------------------------------------------------------- 
@@ -204,6 +205,7 @@ function harvestCalcStealing(self,superf)
 	return steal + penal
 end
 function updateDetails(self, section, index)
+	-- appended to InGameMenuContractsFrame:updateDetailContents()
 	local bc = BetterContracts
 	local contract = nil
 	local sectionContracts = self.sectionContracts[section]
@@ -229,11 +231,20 @@ function updateDetails(self, section, index)
 		self.tallyBox:getDescendantByName("stealing"):setText(g_i18n:formatMoney(penal, 0, true, true))
 		self.tallyBox:getDescendantByName("total"):setText(g_i18n:formatMoney(total, 0, true, true))
 	end
+	local noActive = not contract.active or not bc.isOn
 
-	-- show leased vecs for active contract
-	if contract.active and mission:hasLeasableVehicles() and mission.spawnedVehicles 
-		and bc.isOn then 
+	-- toggle standard / enhanced progress bars
+	bc:showProgressBars(contract, not noActive and 
+		table.hasElement({"harvest","mow_bale"}, mission.type.name))
+	if noActive then return end 
+
+	-- update display for active contracts
+	if mission:hasLeasableVehicles() and mission.spawnedVehicles then
+		-- show leased vecs for active contract
 		local totalWidth = 0 
+		-- smaller vehiclesBox to not interfere with 2nd progress bar
+		self.vehicleTemplate:applyProfile("myVehiclesItem")
+		self.vehiclesBox:applyProfile("myVehiclesBox")
 		for _, v in ipairs(mission.vehiclesToLoad) do
 			local storeItem = g_storeManager:getItemByXMLFilename(v.filename)
 			local element = self.vehicleTemplate:clone(self.vehiclesBox)
@@ -248,7 +259,28 @@ function updateDetails(self, section, index)
 		self.vehiclesBox:invalidateLayout()
 	end
 end
+function BetterContracts:showProgressBars(contract, on)
+	-- hide standard progress bar
+	local off = not on 
+	local cbox = self.frCon
+	cbox.progressText:setVisible(off and contract.active)
+	cbox.progressTitleText:setVisible(off and contract.active)
+	cbox.extraProgressText:setVisible(off and contract.active)
+	cbox.progressBarBg:setVisible(off and contract.active)
 
+	-- show my progress bars
+	self.my.box1:setVisible(on)
+	self.my.box2:setVisible(on)
+	if off then return end 
+
+	local fullWidth = self.my.progressBarBg.size[1] - self.my.progressBar1.margin[1] * 2
+	local fieldPercent = math.min(self.fieldPercent, 1)
+	local deliverPercent = math.min(self.deliverPercent, 1)
+	self.my.prog1:setText(string.format("  %.0f%%", fieldPercent * 100))
+	self.my.progressBar1:setSize(fullWidth * fieldPercent, nil)
+	self.my.prog2:setText(string.format("  %.0f%%", deliverPercent * 100))
+	self.my.progressBar2:setSize(fullWidth * deliverPercent, nil)
+end
 function dismiss(self)
 	-- appended to AbstractMission:dismiss()
 	if not BetterContracts.config.hardMode or not self.isServer then return end
