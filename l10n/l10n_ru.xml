@@ -103,10 +103,10 @@
 		<text name="bc_toDeliverBale" text="Доставка по контрактам на тюкование" />
 		<text name="bc_toDeliver_tooltip" text="Процент от расчётного общего урожая, который вы должны доставить, чтобы выполнить контракт на сбор урожая." />
 		
-		<text name="bc_missionGeneration" text="Создание контракта" />
+		<text name="bc_missionGeneration" text="Создание контрактов" />
 		<text name="bc_generationInterval" text="Интервал генерации" />
 		<text name="bc_generationInterval_tooltip" text="Количество внутриигровых часов ожидания перед созданием новых контрактов." />
 		<text name="bc_missionGenPercentage" text="Процент генерации" />
-		<text name="bc_missionGenPercentage_tooltip" text="Процент максимальных контрактов, которые будут создаваться каждый раз." />
+		<text name="bc_missionGenPercentage_tooltip" text="Максимальный процент контрактов, которые будут создаваться каждый раз." />
 	</texts>
 </l10n>
