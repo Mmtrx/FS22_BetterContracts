@@ -101,6 +101,7 @@
 		<text name="bc_discMaxJobs_tooltip" text="Can reduce the max discount, e.g. discount per contract = 11%, number of jobs = 3 -> max discount = 33%. Caution: Current number of jobs complete will decrease by this value on a farmland purchase." />
 		
 		<text name="bc_toDeliver" text="Delivery on harvest contracts" />
+		<text name="bc_toDeliverBale" text="Delivery for baling contracts" />
 		<text name="bc_toDeliver_tooltip" text="Percentage of the estimated total yield you must deliver to complete a harvest contract." />
 		
 		<text name="bc_missionGeneration" text="Contract generation" />

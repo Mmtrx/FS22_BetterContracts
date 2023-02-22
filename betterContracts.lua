@@ -47,6 +47,7 @@
 --  v1.2.7.2	15.02.2023	Add settings to adjust contract generation
 -- 							Icon for roller missions. Don't show negative togos
 --  v1.2.7.3	20.02.2023	double progress bar active contracts. Fix PnH BGA/ Maize+ 
+--  v1.2.7.4	22.02.2023	increase range for "toDeliver". Add setting "toDeliverBale"
 --=======================================================================================================
 SC = {
 	FERTILIZER = 1, -- prices index
@@ -223,7 +224,8 @@ function readconfig(self)
 		self.config.maxActive = xmlFile:getValue(key.."#maxActive", 3)
 		self.config.multReward= xmlFile:getValue(key.."#reward", 1.)
 		self.config.multLease = xmlFile:getValue(key.."#lease", 1.)
-		self.config.toDeliver = xmlFile:getValue(key.."#deliver", 0.93)
+		self.config.toDeliver = xmlFile:getValue(key.."#deliver", 0.94)
+		self.config.toDeliverBale = xmlFile:getValue(key.."#deliver", 0.90)
 		self.config.refreshMP =	xmlFile:getValue(key.."#refreshMP", 2)		
 		self.config.lazyNPC = 	xmlFile:getValue(key.."#lazyNPC", false)
 		self.config.hardMode = 	xmlFile:getValue(key.."#hard", false)
@@ -407,7 +409,8 @@ function BetterContracts:initialize()
 		maxActive = 3, 				-- max active contracts
 		multReward = 1., 			-- general reward multiplier
 		multLease = 1.,				-- general lease cost multiplier
-		toDeliver = 0.93,			-- HarvestMission.SUCCESS_FACTOR
+		toDeliver = 0.94,			-- HarvestMission.SUCCESS_FACTOR
+		toDeliverBale = 0.90,		-- BaleMission.SUCCESS_FACTOR
 		generationInterval = 1, 	-- MissionManager.MISSION_GENERATION_INTERVAL
 		missionGenPercentage = 0.2, -- percent of missions to be generated (default: 20%)
 		refreshMP = SC.ADMIN, 		-- necessary permission to refresh contract list (MP)
@@ -583,7 +586,7 @@ function BetterContracts:onPostLoadMap(mapNode, mapFile)
 	end
 	-- init Harvest SUCCESS_FACTORs (std is harv = .93, bale = .9)
 	HarvestMission.SUCCESS_FACTOR = self.config.toDeliver
-	BaleMission.FILL_SUCCESS_FACTOR = self.config.toDeliver - 0.03
+	BaleMission.FILL_SUCCESS_FACTOR = self.config.toDeliverBale 
 
 	BetterContracts:updateGenerationSettings()
 
@@ -649,6 +652,7 @@ function BetterContracts:onPostSaveSavegame(saveDir, savegameIndex)
 	xmlFile:setFloat( key.."#reward", 		  conf.multReward)
 	xmlFile:setFloat( key.."#lease", 		  conf.multLease)
 	xmlFile:setFloat( key.."#deliver", 		  conf.toDeliver)
+	xmlFile:setFloat( key.."#deliverBale", 	  conf.toDeliverBale)
 	xmlFile:setInt  ( key.."#refreshMP",	  conf.refreshMP)
 	xmlFile:setBool ( key.."#lazyNPC", 		  conf.lazyNPC)
 	xmlFile:setBool ( key.."#discount", 	  conf.discountMode)

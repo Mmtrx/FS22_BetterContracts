@@ -102,6 +102,7 @@
 		<text name="bc_discMaxJobs_tooltip" text="将会减少最大的折扣，例如：每个合同的折扣为11%，任务的数量为3，则最大折扣为33%。注意：在购买农田时，当前完成的工作数量将被这个值减少。" />
 		
 		<text name="bc_toDeliver" text="Delivery on harvest contracts" />
+		<text name="bc_toDeliverBale" text="Delivery for baling contracts" />
 		<text name="bc_toDeliver_tooltip" text="Percentage of the estimated total yield you must deliver to complete a harvest contract." />
 		
 		<text name="bc_missionGeneration" text="Contract generation" />

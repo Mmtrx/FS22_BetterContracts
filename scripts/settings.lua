@@ -6,6 +6,7 @@
 -- Changelog:
 --  v1.2.6.0 	30.11.2022	UI for all settings
 --  v1.2.6.5 	18.01.2023	add setting "toDeliver": harvest contract success factor
+--  v1.2.7.4	22.02.2023	increase range for "toDeliver". Add setting "toDeliverBale"
 --=======================================================================================================
 local function lazyNPCDisabled()
 	return not BetterContracts.config.lazyNPC
@@ -49,15 +50,24 @@ BCSettingsBySubtitle = {
 		noTranslate = true
 			},
 		{name = "toDeliver", 
-		values = {.85,.87,.89,.91,.93},
-		texts = {"85 %","87 %","89 %","91 %","standard"},
-		default = 5,
+		min = .7, max = .941, increment = .03, unit = true,
+		default = 9,
 		title = "bc_toDeliver",
 		tooltip = "bc_toDeliver_tooltip",
 		actionFunc = function(self,ix) 
 			HarvestMission.SUCCESS_FACTOR = self.values[ix]
-			BaleMission.FILL_SUCCESS_FACTOR = self.values[ix] - 0.03
 			BetterContracts:refresh() -- to recalc deliver/keep for harvest contr
+			end,
+		noTranslate = true
+			},
+		{name = "toDeliverBale", 
+		min = .7, max = .91, increment = .04, unit = true,
+		default = 6,
+		title = "bc_toDeliverBale",
+		tooltip = "bc_toDeliver_tooltip",
+		actionFunc = function(self,ix) 
+			BaleMission.FILL_SUCCESS_FACTOR = self.values[ix]
+			BetterContracts:refresh() -- to recalc deliver/keep for baling contr
 			end,
 		noTranslate = true
 			},
@@ -239,7 +249,6 @@ function BCsetting.new(data, customMt)
 		self.values = table.copy(data.values)
 		self.texts = table.copy(data.texts)
 	elseif data.min ~= nil and data.max ~=nil then
-		-- maybe future use --
 		self.data.values = {}
 		self.data.texts = {}
 		BCsetting.generateValues(self, self.data.values, self.data.texts, data.min, data.max, data.increment, data.unit)
@@ -279,7 +288,7 @@ function BCsetting:generateValues(values, texts, min, max, inc, percent)
 	for i=min, max, inc do 
 		table.insert(values, i)
 		local value = MathUtil.round(i, 2)
-		local text = percent and string.format("%+d %%",value*100) or tostring(value)
+		local text = percent and string.format("%d %%",value*100) or tostring(value)
 		table.insert(texts, text)
 	end
 end

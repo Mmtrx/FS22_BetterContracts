@@ -105,74 +105,62 @@ function loadIcons(self)
 		self.missionIcons[type] = icon 
 	end
 end
+function loadGuiFile(self, fname, parent, initial)
+	-- load gui from file, attach to parent, call initial func
+	if fileExists(fname) then
+		xmlFile = loadXMLFile("Temp", fname)
+		local fbox = self.frCon.farmerBox
+		-- load our "npcbox" as child of farmerBox:
+		g_gui:loadGuiRec(xmlFile, "GUI", parent, self.frCon)
+		initial(parent)
+		delete(xmlFile)
+	else
+		Logging.error("[GuiLoader %s]  Required file '%s' could not be found!", self.name, fname)
+		return false
+	end
+	return true
+end
 function BetterContracts:loadGUI(guiPath)
-	local canLoad = true
-	local fname
 	-- load my gui profiles
-	fname = guiPath .. "guiProfiles.xml"
+	local fname = guiPath .. "guiProfiles.xml"
 	if fileExists(fname) then
 		g_gui:loadProfiles(fname)
 	else
 		Logging.error("[GuiLoader %s]  Required file '%s' could not be found!", self.name, fname)
 		return false
 	end
-	local xmlFile, layout 
-	local cont = self.frCon.contractsContainer
-
-	-- load "SCGui.xml"
-	fname = guiPath .. "SCGui.xml"
-	if fileExists(fname) then
-		xmlFile = loadXMLFile("Temp", fname)
-		local fbox = self.frCon.farmerBox
-		-- load our "npcbox" as child of farmerBox:
-		g_gui:loadGuiRec(xmlFile, "GUI", fbox, self.frCon)
-		local npcbox = fbox:getDescendantById("npcbox")
+	-- load our "npcbox" as child of farmerBox:
+	local canLoad = loadGuiFile(self, guiPath.."SCGui.xml", self.frCon.farmerBox, function(parent)
+		local npcbox = parent:getDescendantById("npcbox")
 		npcbox:applyScreenAlignment()
 		npcbox:updateAbsolutePosition()
-		layout = fbox:getDescendantById("layout")
-		layout:invalidateLayout(true) -- adjust sort buttons
-		delete(xmlFile)
-	else
-		Logging.error("[GuiLoader %s]  Required file '%s' could not be found!", self.name, fname)
-		return false
-	end
-	-- load "filterGui.xml"
-	fname = guiPath .. "filterGui.xml"
-	if fileExists(fname) then
-		xmlFile = loadXMLFile("Temp", fname)
-		g_gui:loadGuiRec(xmlFile, "GUI", cont, self.frCon)
-		layout = cont:getDescendantById("filterlayout")
-		layout:applyScreenAlignment()
-		layout:updateAbsolutePosition()
-		layout:invalidateLayout(true) -- adjust filter buttons
-		local hidden = cont:getDescendantById("hidden")
-		hidden:applyScreenAlignment()
-		hidden:updateAbsolutePosition()
-		delete(xmlFile)
-	else
-		Logging.error("[GuiLoader %s]  Required file '%s' could not be found!", self.name, fname)
-		return false
-	end
-
-	-- load "progressGui.xml"
-	fname = guiPath .. "progressGui.xml"
-	if fileExists(fname) then
-		xmlFile = loadXMLFile("Temp", fname)
-		local contBox = self.frCon.contractBox
-		-- load our "progressbar" as child of contractBox:
-		g_gui:loadGuiRec(xmlFile, "GUI", contBox, self.frCon)
-		for _,id in ipairs({"box1","box2"}) do
-			layout = contBox:getDescendantById(id)
+		parent:getDescendantById("layout"):invalidateLayout(true) -- adjust sort buttons
+	end)
+	-- load filter buttons
+	if canLoad then 
+		canLoad = loadGuiFile(self, guiPath.."filterGui.xml", self.frCon.contractsContainer, function(parent)
+			layout = parent:getDescendantById("filterlayout")
 			layout:applyScreenAlignment()
 			layout:updateAbsolutePosition()
-			layout:invalidateLayout(true) -- adjust text fields
-		end
-		delete(xmlFile)
-	else
-		Logging.error("[GuiLoader %s]  Required file '%s' could not be found!", self.name, fname)
-		return false
+			layout:invalidateLayout(true) -- adjust filter buttons
+			local hidden = parent:getDescendantById("hidden")
+			hidden:applyScreenAlignment()
+			hidden:updateAbsolutePosition()
+		end)
 	end
-
+	-- load progress bars
+	if canLoad then 
+		canLoad = loadGuiFile(self, guiPath.."progressGui.xml", self.frCon.contractBox, function(parent)
+			for _,id in ipairs({"box1","box2"}) do
+				layout = parent:getDescendantById(id)
+				layout:applyScreenAlignment()
+				layout:updateAbsolutePosition()
+				layout:invalidateLayout(true) -- adjust text fields
+			end
+		end)
+	end
+	if not canLoad then return false end 
+	
 	-- load "BCsettingsPage.lua"
 	if g_gui ~= nil and g_gui.guis.BCSettingsFrame == nil then
 		local luaPath = guiPath .. "BCsettingsPage.lua"
