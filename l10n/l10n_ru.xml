@@ -50,8 +50,8 @@
 		<text name="SC_sortpMin" text="Доход в мин." />
 
 		<!-- progress bars -->
-		<text name="bc_progField" text="Field progress" />
-		<text name="bc_progDeliver" text="Delivery progress" />
+		<text name="bc_progField" text="Прогресс на поле" />
+		<text name="bc_progDeliver" text="Прогресс доставки" />
 
 		<!-- Settings Page (and v1.2.6.0 additions) -->
 		<text name="bc_jobsCompleted" text="Выполненные контракты: %d" />
