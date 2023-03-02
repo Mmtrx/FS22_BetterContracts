@@ -8,11 +8,11 @@
 	 v1.0.0      20.04.2021  submit for release 
 	 v1.1.0.4    07.07.2021  (Mmtrx) add user-defined missionVehicles.xml, allow missions with no vehicles
 	 v1.2.0.0    18.01.2022  (Mmtrx) adapt for FS22
+	 v1.2.7.5	 26.02.2023	display other farms active contracts (general table)
 =======================================================================================================-->
-
 <GUIProfiles>
 	<Presets>
-		<Preset name="len398" value="398px 40px" />
+		<Preset name="len398" value="600px 30px" />
 		<Preset name="colorTransparent" value="0 0 0 0"/>
 		<Preset name="colorMainUI" value="0.0227 0.5346 0.8519 1.0" />
 		<Preset name="colorMainUI_60" value="0.0227 0.5346 0.8519 0.6"/>
@@ -21,6 +21,16 @@
 		<Preset name="colorGlass" value="0.0036 0.0056 0.0065 0.5" />
 		<Preset name="colorWhite" value="1 1 1 1" />
 		<Preset name="colorDisabled" value="0.4 0.4 0.4 1"/>
+	<!-- general table - - - - - - - - - - - - - - - - - - - - - - -  -->
+		<Preset name="container" value="580px 300px"/>
+		<Preset name="header" value="580px 40px"/>
+		<Preset name="tableSize" value="580px 260px"/> 	<!-- y = container - header -->
+		<Preset name="rowSize" value="580px 30px"/>
+		<Preset name="cellSize" value="110px 30px"/>
+		<Preset name="col1" value="138px 30px"/>	 	<!-- column 1 length -->
+		<Preset name="textMax" value="105px"/> 			<!-- leave 5px space before next cell -->
+		<Preset name="textMax1" value="129px"/> 		<!-- col1 - 6px offset - 5px -->
+		<Preset name="textSize" value="16px"/> 	
 	</Presets>
 	<Traits>
 		<Trait name="buttonActive">
@@ -132,5 +142,59 @@
 	</Profile>
 	<Profile name="myVehiclesBox" extends="ingameMenuContractsVehiclesBox">
 		<Value name="size" value="856px 104px" />
+	</Profile>
+
+	<!-- general table - - - - - - - - - - - - - - - - - - - - -  -->
+	<Profile name="myRow" extends="ingameMenuStatisticsRow">
+		<Value name="size" value="$preset_rowSize"/>
+	</Profile>
+	<Profile name="myRowBg" extends="ingameMenuStatisticsRowBackground">
+		<Value name="size" value="$preset_rowSize"/>
+	</Profile>
+	<Profile name="myRowBgAlt" extends="ingameMenuStatisticsRowBackgroundAlternate">
+		<Value name="size" value="$preset_rowSize"/>
+	</Profile>
+	<Profile name="myContainer" extends="ingameMenuStatisticsContainer" with="lightFrame">
+		<Value name="size" value="$preset_container"/>
+	</Profile>
+	<Profile name="myHeaderBox" extends="ingameMenuTableHeaderBox">
+		<Value name="size" value="$preset_header"/>
+	</Profile>
+	<Profile name="myTable" extends="ingameMenuStatisticsTable">
+		<Value name="size" value="$preset_tableSize"/>
+		<Value name="itemsPerCol" value="6"/>
+		<Value name="rowBackgroundProfile" value="myRowBg"/>
+		<Value name="rowBackgroundProfileAlternate" value="myRowBgAlt"/>
+	</Profile>
+	<Profile name="myHeaderText" extends="ingameMenuStatisticsTableHeader">
+		<Value name="size" value="$preset_cellSize"/>
+		<Value name="textSize" value="16px"/>
+		<Value name="textOffset" value="-7px 0px"/>
+	</Profile>
+	<Profile name="myHeaderText1" extends="myHeaderText">
+		<Value name="size" value="$preset_col1"/>
+		<Value name="textAlignment" value="left"/>
+		<Value name="textOffset" value="7px 0px"/>
+		<Value name="allowSortingDesc" value="true"/>
+		<Value name="columnName" value="c1"/>  		<!-- allow sorting on column 1 -->
+	</Profile>
+	<Profile name="myCell1" extends="myCell">
+		<Value name="size" value="$preset_col1"/>
+		<Value name="textMaxWidth" value="$preset_textMax1"/>
+		<Value name="textOffset" value="7px 0px"/>
+		<Value name="textAlignment" value="left" />
+		<Value name="textBold" value="true"/>
+	</Profile>
+	<Profile name="myCell" extends="ingameMenuStatisticsRowCell">
+		<Value name="size" value="$preset_cellSize"/>
+		<Value name="textMaxWidth" value="$preset_textMax"/>
+		<Value name="textSize" value="$preset_textSize"/>
+		<Value name="textOffset" value="-7px 0px"/>
+	</Profile>
+	<Profile name="mySlider" extends="verticalListSliderRightDocked">
+		<Value name="size" value="12px 260px"/>
+	</Profile>
+	<Profile name="mySliderBar" extends="verticalListSliderBar">
+		<Value name="size" value="6px 260px"/> 		<!-- height = table height -->
 	</Profile>
 </GUIProfiles>

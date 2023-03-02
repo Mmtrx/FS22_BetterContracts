@@ -3,6 +3,7 @@
 	<texts>
 		<!-- Keys -->
 		<text name = "input_MENU_EXTRA_3" text = "Melhores contratos: Detalhes Ligado/Desligado"/>
+		<text name = "input_BC_MTOGGLE" text = "BC: Toggle display of active farm contracts"/>
 		<!-- Gui Buttons -->
 		<text name="bc_hidden" text="Oculto: %d" />
 		<text name="bc_other" text="Outros" />
@@ -50,8 +51,8 @@
 		<text name="SC_sortpMin" text="Lucro por minuto" />
 
 		<!-- progress bars -->
-		<text name="bc_progField" text="Field progress" />
-		<text name="bc_progDeliver" text="Delivery progress" />
+		<text name="bc_progField" text="Progresso de campo" />
+		<text name="bc_progDeliver" text="Progresso da entrega" />
 
 		<!-- Settings Page (and v1.2.6.0 additions) -->
 		<text name="bc_jobsCompleted" text="Trabalhos concluídos: %d" />
@@ -69,7 +70,7 @@
 		<text name="bc_maxActive_tooltip" text="Número máximo de contratos ativos simultaneamente." />
 		<text name="bc_refreshMP" text="Lista de contratos de permissões" />
 		<text name="bc_refreshMP_tooltip" text="Quem pode deletar/atualizar contratos em um jogo MP." />
-		<text name="bc_debug" text="Depurar Modus" />
+		<text name="bc_debug" text="Modo de depuração" />
 		<text name="bc_debug_tooltip" text="Imprime mensagens informativas no log, se ativo. Pode ajudar a encontrar bugs." />
 
 		<text name="bc_lazyNPC" text="Fazendeiros preguiçosos" />
@@ -99,14 +100,14 @@
 		<text name="bc_discMaxJobs" text="Número de trabalhos efetivos com desconto" />
 		<text name="bc_discMaxJobs_tooltip" text="Pode reduzir o desconto máximo, por ex. desconto por contrato = 11%, número de trabalhos = 3 -> desconto máximo = 33%. Cuidado: o número atual de trabalhos concluídos diminuirá neste valor na compra de terras agrícolas." />
 		
-		<text name="bc_toDeliver" text="Delivery on harvest contracts" />
-		<text name="bc_toDeliverBale" text="Delivery for baling contracts" />
-		<text name="bc_toDeliver_tooltip" text="Percentage of the estimated total yield you must deliver to complete a harvest contract." />
+		<text name="bc_toDeliver" text="Entrega em contratos de colheita" />
+		<text name="bc_toDeliverBale" text="Entrega para contratos de enfardamento" />
+		<text name="bc_toDeliver_tooltip" text="Porcentagem do rendimento total estimado que você deve entregar para completar um contrato de colheita." />
 				
-		<text name="bc_missionGeneration" text="Contract generation" />
-		<text name="bc_generationInterval" text="Generation Interval" />
-		<text name="bc_generationInterval_tooltip" text="Amount of in-game hours to wait before generating new contracts." />
-		<text name="bc_missionGenPercentage" text="Generation percentage" />
-		<text name="bc_missionGenPercentage_tooltip" text="Percentage of max contracts to be generated each time." />
+		<text name="bc_missionGeneration" text="Geração de contratos" />
+		<text name="bc_generationInterval" text="Intervalo de Geração" />
+		<text name="bc_generationInterval_tooltip" text="Quantidade de horas no jogo para esperar antes de gerar novos contratos." />
+		<text name="bc_missionGenPercentage" text="Porcentagem de geração" />
+		<text name="bc_missionGenPercentage_tooltip" text="Porcentagem de contratos máximos a serem gerados a cada vez." />
 	</texts>
 </l10n>

@@ -48,6 +48,8 @@
 -- 							Icon for roller missions. Don't show negative togos
 --  v1.2.7.3	20.02.2023	double progress bar active contracts. Fix PnH BGA/ Maize+ 
 --  v1.2.7.4	22.02.2023	increase range for "toDeliver". Add setting "toDeliverBale"
+--  v1.2.7.5	26.02.2023	display other farms active contracts (MP only). 
+--							Read userDefined missions from "BCuserDefined.xml" in modSettings dir
 --=======================================================================================================
 SC = {
 	FERTILIZER = 1, -- prices index
@@ -62,15 +64,15 @@ SC = {
 	BALING = 4,
 	TRANSP = 5,
 	SUPPLY = 6,
-    OTHER = 7,
-    -- refresh MP:
-    ADMIN = 1,
-    FARMMANAGER = 2,
-    PLAYER = 3,
-    -- hardMode expire:
-    DAY = 1,
-    MONTH = 2,
-	-- Gui controls:
+	OTHER = 7,
+	-- refresh MP:
+	ADMIN = 1,
+	FARMMANAGER = 2,
+	PLAYER = 3,
+	-- hardMode expire:
+	DAY = 1,
+	MONTH = 2,
+	-- Gui farmerBox controls:
 	CONTROLS = {
 		npcbox = "npcbox",
 		sortbox = "sortbox",
@@ -95,7 +97,10 @@ SC = {
 		sortcat = "sortcat",
 		sortprof = "sortprof",
 		sortpmin = "sortpmin",
-		helpsort = "helpsort"
+		helpsort = "helpsort",
+		container = "container",
+		mTable = "mTable",
+		mToggle = "mToggle",
 	},
 	-- Gui contractBox controls:
 	CONTBOX = {
@@ -128,28 +133,30 @@ function catMissionTypes(self)
 		mission.type to BC category: harvest, spread, simple, mow, transp, supply
 		self.typeToCat = {4, 3, 3, 2, 1, 3, 2, 2, 5, 6} 
 	]]
-    self.typeToCat = {}
-    local function addMapping(name, category)
-        local missionType = g_missionManager:getMissionType(name)
-        if missionType ~= nil then
-            self.typeToCat[missionType.typeId] = category
-        end
-    end
-    addMapping("mow_bale", SC.BALING)
-    addMapping("plow", SC.SIMPLE)
-    addMapping("cultivate", SC.SIMPLE)
-    addMapping("sow", SC.SPREAD)
-    addMapping("harvest", SC.HARVEST)
-    addMapping("weed", SC.SIMPLE)
-    addMapping("spray", SC.SPREAD)
-    addMapping("fertilize", SC.SPREAD)
-    addMapping("transport", SC.TRANSP)
-    addMapping("supplyTransport", SC.SUPPLY) 	-- mod by GtX
-    addMapping("deadwood", SC.OTHER) 			-- Platinum DLC mission by Giants
-    addMapping("treeTransport", SC.OTHER) 		-- Platinum DLC mission by Giants
-    addMapping("destructibleRocks", SC.OTHER) 	-- Platinum DLC mission by Giants
-    addMapping("roll", SC.SIMPLE) 				-- roller mission by tn4799
-    addMapping("lime", SC.SPREAD) 				-- lime mission by Mmtrx
+	self.typeToCat = {}
+	self.jobText = {}
+	local function addMapping(name, title, category)
+		local missionType = g_missionManager:getMissionType(name)
+		if missionType ~= nil then
+			self.typeToCat[missionType.typeId] = category
+			self.jobText[name] = g_i18n:getText(title)
+		end
+	end
+	addMapping("mow_bale", "fieldJob_jobType_baling", SC.BALING)
+	addMapping("plow","fieldJob_jobType_plowing", SC.SIMPLE)
+	addMapping("cultivate","fieldJob_jobType_cultivating", SC.SIMPLE)
+	addMapping("sow","fieldJob_jobType_sowing", SC.SPREAD)
+	addMapping("harvest","fieldJob_jobType_harvesting", SC.HARVEST)
+	addMapping("weed","fieldJob_jobType_weeding", SC.SIMPLE)
+	addMapping("spray","fieldJob_jobType_spraying", SC.SPREAD)
+	addMapping("fertilize","fieldJob_jobType_fertilizing", SC.SPREAD)
+	addMapping("transport","helpLine_Misc_Transport", SC.TRANSP)
+	addMapping("supplyTransport","ai_jobTitleDeliver", SC.SUPPLY) 		-- mod by GtX
+	addMapping("deadwood","deadwoodMission_title", SC.OTHER) 			-- Platinum DLC mission by Giants
+	addMapping("treeTransport","treeTransportMission_title", SC.OTHER) 	-- Platinum DLC mission by Giants
+	addMapping("destructibleRocks","destructibleRockMission_title", SC.OTHER) 	-- Platinum DLC mission by Giants
+	addMapping("roll","helpLine_ImproveYield_Rolling", SC.SIMPLE) 		-- roller mission by tn4799
+	addMapping("lime","helpLine_ImproveYield_Liming", SC.SPREAD) 		-- lime mission by Mmtrx
 	for _, missionType in pairs(g_missionManager.missionTypes) do
 		if self.typeToCat[missionType.typeId] == nil then
 			addMapping(missionType.name, SC.OTHER) -- default category for not registered mission types
@@ -281,36 +288,25 @@ function loadPrices(self)
 	return prices
 end
 function setupMissionFilter(self)
-	-- setup fieldjob types:
-	self.jobText = {
-		mow_bale	= g_i18n:getText("fieldJob_jobType_baling"),
-		cultivate 	= g_i18n:getText("fieldJob_jobType_cultivating"),
-		fertilize 	= g_i18n:getText("fieldJob_jobType_fertilizing"),
-		harvest 	= g_i18n:getText("fieldJob_jobType_harvesting" ),
-		plow   		= g_i18n:getText("fieldJob_jobType_plowing"),
-		sow     	= g_i18n:getText("fieldJob_jobType_sowing"),
-		spray   	= g_i18n:getText("fieldJob_jobType_spraying"),
-		weed    	= g_i18n:getText("fieldJob_jobType_weeding"),
-		-- lime is g_missionManager.missionTypes[2] !
-	}
-	self.fieldjobs = {}
+	self.buttonNames = {}
 	self.otherTypes = {}
 	self.filterState = {}
 	for _, type in ipairs(g_missionManager.missionTypes) do
 		-- initial state: show all types
 		self.filterState[type.name] = true
+		-- setup button names
 		local name = self.jobText[type.name]
-		if name ~= nil then 
-			table.insert(self.fieldjobs, {type.typeId, type.name, name})
+		if string.find("mow_balecultivatefertilizeharvestplowsowsprayweed",type.name) then
+			table.insert(self.buttonNames, {type.typeId, type.name, name})
 		else
-			table.insert(self.otherTypes,{type.typeId, type.name})
+			table.insert(self.otherTypes,{type.typeId, type.name, name})
 		end
 	end
-	table.sort(self.fieldjobs, function(a,b)
+	table.sort(self.buttonNames, function(a,b)
 				return a[3] < b[3]
 				end)
 	-- this is for all other mission types:
-	table.insert(self.fieldjobs, 
+	table.insert(self.buttonNames, 
 				{nil,"other", g_i18n:getText("bc_other")})
 
 	-- set controls for filterbox:
@@ -323,7 +319,7 @@ function setupMissionFilter(self)
 		button.onClickCallback = onClickFilterButton
 		button.pressed = true 
 		-- set button text
-		button.elements[1]:setText(self.fieldjobs[i][3])
+		button.elements[1]:setText(self.buttonNames[i][3])
 	end
 end
 function initGui(self)
@@ -378,7 +374,7 @@ function initGui(self)
 
 	-- set controls for npcbox, sortbox and their elements:
 	for _, name in pairs(SC.CONTROLS) do
-		self.my[name] = self.frCon.farmerBox:getDescendantById(name)
+		self.my[name] = self.frCon.detailsBox:getDescendantById(name)
 	end
 	-- set controls for contractBox:
 	for _, name in pairs(SC.CONTBOX) do
@@ -394,12 +390,18 @@ function initGui(self)
 	end
 	setupMissionFilter(self)
 
+	-- init other farms mission table
+	self.my.mTable:initialize()
+	self.my.container:setVisible(false)
+	self.mapTableOn = false 	-- visibility of other farms mission table
+	self.my.mToggle.onClickCallback = onClickToggle
+	self.my.mToggle:setVisible(self.isMultiplayer)
+
 	self.my.filterlayout:setVisible(true)
 	self.my.hidden:setVisible(false)
 	self.my.npcbox:setVisible(false)
 	self.my.sortbox:setVisible(false)
 end
-
 function BetterContracts:initialize()
 	debugPrint("[%s] initialize(): %s", self.name,self.initialized)
 	if self.initialized ~= nil then return end -- run only once
@@ -447,7 +449,7 @@ function BetterContracts:initialize()
 	self.mow_bale = {} -- mow/ bale             	4
 	self.transp = {} -- transport   				5
 	self.supply = {} -- supplyTransport mod 		6
-    self.other = {} -- deadwood, treeTrans			7
+	self.other = {} -- deadwood, treeTrans			7
 	self.IdToCont = {} -- to find a contract from its mission id
 	self.fieldToMission = {} -- to find a contract from its field number
 	self.catHarvest = "BEETHARVESTING BEETVEHICLES CORNHEADERS COTTONVEHICLES CUTTERS POTATOHARVESTING POTATOVEHICLES SUGARCANEHARVESTING SUGARCANEVEHICLES"
@@ -516,8 +518,8 @@ function BetterContracts:initialize()
 	Utility.appendedFunction(AbstractFieldMission, "onVehicleReset", onVehicleReset)
 
 	-- rename mission vehicle: 
-    for name, typeDef in pairs(g_vehicleTypeManager.types) do
-    	if typeDef ~= nil and not TableUtility.contains({"horse","pallet","locomotive"}, name) then
+	for name, typeDef in pairs(g_vehicleTypeManager.types) do
+		if typeDef ~= nil and not TableUtility.contains({"horse","pallet","locomotive"}, name) then
 			SpecializationUtil.registerOverwrittenFunction(typeDef, "getName", vehicleGetName)
 		end
 	end
@@ -577,8 +579,9 @@ function BetterContracts:onPostLoadMap(mapNode, mapFile)
 		if self.config.discountMode then txt = txt..", discountMode" end
 		debugPrint(txt)
 	end
+	addConsoleCommand("bcprint","Print detail stats for all available missions.","consoleCommandPrint",self)
+	addConsoleCommand("bcMissions","Print stats for other clients active missions.","bcMissions",self)
 	if self.config.debug then
-		addConsoleCommand("bcprint", "Print detail stats for all available missions.", "consoleCommandPrint", self)
 		addConsoleCommand("bcFieldGenerateMission", "Force generating a new mission for given field", "consoleGenerateFieldMission", g_missionManager)
 		addConsoleCommand("gsMissionLoadAllVehicles", "Loading and unloading all field mission vehicles", "consoleLoadAllFieldMissionVehicles", g_missionManager)
 		addConsoleCommand("gsMissionHarvestField", "Harvest a field and print the liters", "consoleHarvestField", g_missionManager)
@@ -591,6 +594,7 @@ function BetterContracts:onPostLoadMap(mapNode, mapFile)
 	BetterContracts:updateGenerationSettings()
 
 	-- initialize constants depending on game manager instances
+	self.isMultiplayer = g_currentMission.missionDynamicInfo.isMultiplayer
 	self.ft = g_fillTypeManager.fillTypes
 	self.prices = loadPrices()
 	self.sprUse = {
@@ -859,18 +863,18 @@ function BetterContracts:addMission(m)
 			reward = rew
 		}
 		table.insert(self.transp, cont)
-    elseif cat == SC.OTHER then
-        cont = {
-            miss = m,
-            worktime = 0,
-            profit = rew,
-            permin = 0,
-            reward = rew
-        }
-        table.insert(self.other, cont)
+	elseif cat == SC.OTHER then
+		cont = {
+			miss = m,
+			worktime = 0,
+			profit = rew,
+			permin = 0,
+			reward = rew
+		}
+		table.insert(self.other, cont)
 	else 	
 		Logging.warning("[%s]: Unknown cat %s in addMission(m)", self.name, cat)
-    end
+	end
 	return {cat, cont}
 end
 function getPalletType(m)

@@ -14,6 +14,7 @@
 --  v1.2.6.5 	19.01.2023	handle zombie (pallet, bigbag) vehicles when dismissing contracts
 --  v1.2.7.0 	29.01.2023	visual tags for mission fields and vehicles. 
 --							show leased vehicles for active contracts 
+--  v1.2.7.5	28.02.2023	Read userDefined missions from "BCuserDefined.xml" in savegame dir
 --=======================================================================================================
 
 ---------------------- mission vehicle loading functions --------------------------------------------
@@ -25,27 +26,19 @@ function BetterContracts.loadMissionVehicles(missionManager, superFunc, xmlFilen
 	if self.overwrittenVehicles then return true end -- do not add further vecs to a userdefined setup
 	
 	if superFunc(missionManager, xmlFilename, baseDirectory) then 
-		--[[
-		if g_modIsLoaded["FS19_ThueringerHoehe_BG_Edition"] then
-			debugPrint("[%s] %s map detected, loading mission vehicles created by %s", self.name, "FS19_ThueringerHoehe", "Lahmi")
-			missionManager.missionVehicles = {}
-			self:loadExtraMissionVehicles(self.directory .. "missionVehicles/FS19_ThueringerHoehe/baseGame.xml")
-		else
-		]]	
 		if self.loadedVehicles then return true end
 
-			if self.debug then
-				self:checkExtraMissionVehicles(self.directory .. "missionVehicles/baseGame.xml")
-			end
-			self:loadExtraMissionVehicles(self.directory .. "missionVehicles/baseGame.xml")
-			-- self:loadExtraMissionVehicles(self.directory .. "missionVehicles/claasPack.xml")
-			self.loadedVehicles = true
-		--end
-		local userdef = self.directory .. "missionVehicles/userDefined.xml"
+		if self.debug then
+			self:checkExtraMissionVehicles(self.directory .. "missionVehicles/baseGame.xml")
+		end
+		self:loadExtraMissionVehicles(self.directory .. "missionVehicles/baseGame.xml")
+		self.loadedVehicles = true
+
+		local userdef = g_modSettingsDirectory .. "BCuserDefined.xml"
 		if fileExists(userdef) and self:checkExtraMissionVehicles(userdef) then 
 			-- check for other mod:
 			if g_modIsLoaded.FS22_DynamicMissionVehicles then
-				Logging.warning("[%s] userDefined.xml not loaded. Incompatible with FS22_DynamicMissionVehicles",
+				Logging.warning("[%s] BCuserDefined.xml not loaded. Incompatible with FS22_DynamicMissionVehicles",
 					self.name)
 			else
 				self.overwrittenVehicles = self:loadExtraMissionVehicles(userdef)
@@ -268,7 +261,6 @@ function BetterContracts:vehicleTag(m, vehicle)
 	local txt =  string.format(" (%.6s %s)", self.jobText[m.type.name], m.field.fieldId)
 	self.missionVecs[vehicle] = txt 
 end
-
 function loadNextVehicle(self, super, vehicle, vehicleLoadState, arguments)
 	-- overwritten AbstractFieldMission:loadNextVehicleCallback() to allow spawning pallets
 	if vehicle == nil then return end 

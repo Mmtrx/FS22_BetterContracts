@@ -24,6 +24,7 @@
 --							show leased vehicles for active contracts 
 --  v1.2.7.2 	12.02.2023	don't show negative togos
 --  v1.2.7.3	20.02.2023	double progress bar active contracts. Fix PnH BGA/ Maize+ 
+--  v1.2.7.5	26.02.2023	display other farms active contracts (MP only)
 --=======================================================================================================
 
 --- Adds a new page to the in game menu.
@@ -120,6 +121,13 @@ function loadGuiFile(self, fname, parent, initial)
 	end
 	return true
 end
+function fixPosition(element, invLayout)
+	element:applyScreenAlignment()
+	element:updateAbsolutePosition()
+	if invLayout then 
+		element:invalidateLayout(true)
+	end
+end
 function BetterContracts:loadGUI(guiPath)
 	-- load my gui profiles
 	local fname = guiPath .. "guiProfiles.xml"
@@ -129,33 +137,24 @@ function BetterContracts:loadGUI(guiPath)
 		Logging.error("[GuiLoader %s]  Required file '%s' could not be found!", self.name, fname)
 		return false
 	end
-	-- load our "npcbox" as child of farmerBox:
-	local canLoad = loadGuiFile(self, guiPath.."SCGui.xml", self.frCon.farmerBox, function(parent)
-		local npcbox = parent:getDescendantById("npcbox")
-		npcbox:applyScreenAlignment()
-		npcbox:updateAbsolutePosition()
+	-- load our npcbox and mission table as child of detailsBox:
+	local canLoad = loadGuiFile(self, guiPath.."SCGui.xml", self.frCon.detailsBox, function(parent)
+		fixPosition(parent:getDescendantById("npcbox"))
 		parent:getDescendantById("layout"):invalidateLayout(true) -- adjust sort buttons
+		fixPosition(parent:getDescendantById("container"))
 	end)
 	-- load filter buttons
 	if canLoad then 
 		canLoad = loadGuiFile(self, guiPath.."filterGui.xml", self.frCon.contractsContainer, function(parent)
-			layout = parent:getDescendantById("filterlayout")
-			layout:applyScreenAlignment()
-			layout:updateAbsolutePosition()
-			layout:invalidateLayout(true) -- adjust filter buttons
-			local hidden = parent:getDescendantById("hidden")
-			hidden:applyScreenAlignment()
-			hidden:updateAbsolutePosition()
+			fixPosition(parent:getDescendantById("filterlayout"), true)
+			fixPosition(parent:getDescendantById("hidden"))
 		end)
 	end
 	-- load progress bars
 	if canLoad then 
 		canLoad = loadGuiFile(self, guiPath.."progressGui.xml", self.frCon.contractBox, function(parent)
 			for _,id in ipairs({"box1","box2"}) do
-				layout = parent:getDescendantById(id)
-				layout:applyScreenAlignment()
-				layout:updateAbsolutePosition()
-				layout:invalidateLayout(true) -- adjust text fields
+				fixPosition(parent:getDescendantById(id), true)
 			end
 		end)
 	end
@@ -519,8 +518,11 @@ function sortList(frCon, superfunc)
 	end
 end
 function updateFarmersBox(frCon, field, npc)
-	-- set the text values in our npcbox
 	local self = BetterContracts
+	-- hide farmerBox when our mapTable is shown:
+	frCon.farmerBox:setVisible(not self.mapTableOn)
+
+	-- set the text values in our npcbox
 	if not self.isOn then return end
 
 	-- find the current contract
@@ -761,8 +763,8 @@ function onClickFilterButton(frCon, button)
 			filterList(other[1], button.pressed)
 		end
 	else
-		local typeId = self.fieldjobs[index][1]
-		local typeName = self.fieldjobs[index][2]
+		local typeId = self.buttonNames[index][1]
+		local typeName = self.buttonNames[index][2]
 		self.filterState[typeName] = button.pressed
 		filterList(typeId, button.pressed)
 	end		
@@ -811,4 +813,16 @@ function showContextBox(contextBox, hotspot, description, imageFilename, uvs, fa
 	else
 		text:applyProfile("ingameMenuMapContextText")		
 	end
+end
+-------------------------------------------- v1.2.7.5 -------------------------------
+function onClickToggle(frCon)
+	-- toggles display of other farms mission table, can only be called in MP game
+	self = BetterContracts
+	local stat = not self.mapTableOn
+	self.mapTableOn = stat
+	if stat then 
+		updateMTable(self)
+	end
+	self.my.container:setVisible(stat)
+	frCon.farmerBox:setVisible(not stat)
 end

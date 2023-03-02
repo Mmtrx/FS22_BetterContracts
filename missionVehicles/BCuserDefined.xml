@@ -7,7 +7,7 @@
 				 You can define mod vehicles/ tools, see requiredMod="FS22_vaderstadSpiritR300S" below.
 				 Your user-defined vehicles are added to the mission vehicles from base game (and possibly
 				 from the map definition), to choose from when a new mission is created.
-				 To make the mod read in your vehicle definitions, rename this file to userDefined.xml.
+				 To make the mod read in your vehicle definitions, copy this file to your modSettings/ directory .
 				 You can delete any base game or map-defined mission vehicles (and thus use only those
 				 that you defined) by setting overwrite="true" in the <missionVehicles> tag. If you want to try 
 				 this, use extreme
@@ -20,6 +20,7 @@
 	 v1.1.0.4    07.07.2021  (Mmtrx) add user-defined missionVehicles.xml, allow missions with no vehicles
 	 v1.2.0.0    18.01.2022  adapt for FS22
 	 v1.2.6.3    18.01.2023  add seed / fertilizer / herbicide
+	 v1.2.7.5	 28.02.2023	 Read userDefined missions from "BCuserDefined.xml" in modSettings/ dir
 =======================================================================================================-->
 <missionVehicles overwrite="false">
 	<mission type="sow">

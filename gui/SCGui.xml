@@ -8,8 +8,8 @@
 	 v1.0.0		20.04.2021	submit for release 
      v1.1.0.4    07.07.2021  (Mmtrx) add user-defined missionVehicles.xml, allow missions with no vehicles
      v1.2.0.0    18.01.2022  (Mmtrx) adapt for FS22
+	 v1.2.7.5	 26.02.2023	display other farms active contracts (general table)
 ======================================================================================================-->
-
 <GUI name="npcDetails">
 	<GuiElement type="empty" id="npcbox" size="305px 300px" anchors="0 0 1 1"  hasFrame="true" debugEnabled="false">
 		<!-- left column -->
@@ -40,6 +40,36 @@
 			</GuiElement>
 			<GuiElement type="text" profile="betterContractsLeft" id="sort" position="5px 0px" text="$l10n_SC_sort" debugEnabled="false"/>
 			<GuiElement type="text" profile="betterContractsRight" id="helpsort" size="125px 40px" position="55px 0px" text="" debugEnabled="false"/>
+		</GuiElement>
+	</GuiElement>
+
+	<!-- active missions display (anchor top right: 1 1 1 1) -->
+	<GuiElement type="button" profile="buttonOK" id="mToggle" anchors="1 1 1 1" inputAction="BC_MTOGGLE" size="34px 34px" position="78px -3px" debugEnabled="false" />
+
+	<GuiElement type="empty" positionOrigin="topLeft" id="container" profile="myContainer" anchors="1 1 1 1" debugEnabled="false" >
+		<!-- header: -->
+		<GuiElement type="flowLayout" profile="myHeaderBox" id="missionHeaderBox" >
+			<GuiElement type="tableHeader" profile="myHeaderText1" text="$l10n_ui_farm" />
+			<GuiElement type="tableHeader" profile="myHeaderText" text="$l10n_ui_contracts" />
+			<GuiElement type="tableHeader" profile="myHeaderText" text="$l10n_ui_fieldNo" />
+			<GuiElement type="tableHeader" profile="myHeaderText" text="$l10n_statistic_fillType" />
+			<GuiElement type="tableHeader" profile="myHeaderText" text="$l10n_fieldJob_progress" />
+		</GuiElement>
+
+		<!-- table + slider: -->
+		<GuiElement type="empty" position="0px -40px" debugEnabled="false" >
+			<!-- table: -->
+			<GuiElement type="table" id="mTable" handleFocus="false" profile="myTable" rowTemplateName="myRowTemplate" columnNames="c1 c2 c3 c4 c5" periodicUpdate="false" updateInterval="20" onUpdate="updateStats">
+				<GuiElement type="listItem" profile="myRow" name="myRowTemplate" >
+				<GuiElement type="bitmap" profile="myRowBg" debugEnabled="true" >
+					<GuiElement type="text" profile="myCell1" name="c1" />
+					<GuiElement type="text" profile="myCell" name="c2" position="140px 0px"/>
+					<GuiElement type="text" profile="myCell" name="c3" position="250px 0px"/>
+					<GuiElement type="text" profile="myCell" name="c4" position="360px 0px"/>
+					<GuiElement type="text" profile="myCell" name="c5" position="470px 0px"/>
+				</GuiElement>
+				</GuiElement>
+			</GuiElement>
 		</GuiElement>
 	</GuiElement>
 </GUI>

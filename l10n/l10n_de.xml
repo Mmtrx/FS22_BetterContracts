@@ -2,7 +2,8 @@
 <l10n>
 	<texts>
 		<!-- Keys -->
-		<text name = "input_MENU_EXTRA_3" text = "Better Contracts: Details an/aus"/>
+		<text name = "input_MENU_EXTRA_3" text = "BC: Details an/aus"/>
+		<text name = "input_BC_MTOGGLE" text = "BC: Anzeige aktiver Farm-Verträge an/aus"/>
 		<!-- Gui Buttons -->
 		<text name="bc_hidden" text="Ausgeblendet: %d" />
 		<text name="bc_other" text="Sonstige" />

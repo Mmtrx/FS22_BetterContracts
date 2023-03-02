@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <modDesc descVersion="72">
 	<author>Mmtrx</author>
-	<version>1.2.7.4</version>
+	<version>1.2.7.5</version>
 	<title>
 		<en>Better Contracts</en>
 	</title>
@@ -24,7 +24,8 @@ Disclaimer: All values shown in details display are ESTIMATES. You should not ta
 
 The mod keeps track of the amount of contracts you completed for each of the NPC farmers (number of completed jobs is displayed below the farmers image, if "Details" on). If you enable the optional discount mode or hard mode options (on the mods settings page), the amount of completed jobs influence gameplay.
 
-Changelog v1.2.7.4:
+Changelog v1.2.7.5:
+- add all farms active missions display (MP only)
 - increase settings range for harvest success, separate setting for baling
 - add 2nd progress bar for active harvest contracts 
 - fix Maize+ issue with Pumps'n Hoses BGA 
@@ -251,10 +252,14 @@ Registro de alterações v1.2.2.0:
 	<l10n filenamePrefix="l10n/l10n" />
 	<actions>
 		<action name="MENU_EXTRA_3" category="SYSTEM" axisType="HALF" ignoreComboMask="true" />
+		<action name="BC_MTOGGLE" category="SYSTEM" axisType="HALF" ignoreComboMask="true" />
 	</actions>
 	<inputBinding>
 		<actionBinding action="MENU_EXTRA_3">
 			<binding device="KB_MOUSE_DEFAULT" input="KEY_d" index="1" />
+		</actionBinding>
+		<actionBinding action="BC_MTOGGLE">
+			<binding device="KB_MOUSE_DEFAULT" input="KEY_m" index="1" />
 		</actionBinding>
 	</inputBinding>
 </modDesc>
