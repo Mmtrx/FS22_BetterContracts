@@ -50,8 +50,8 @@
 		<text name="SC_sortpMin" text="Доход в мин." />
 
 		<!-- progress bars -->
-		<text name="bc_progField" text="Field progress" />
-		<text name="bc_progDeliver" text="Delivery progress" />
+		<text name="bc_progField" text="Прогресс на поле" />
+		<text name="bc_progDeliver" text="Прогресс доставки" />
 
 		<!-- Settings Page (and v1.2.6.0 additions) -->
 		<text name="bc_jobsCompleted" text="Выполненные контракты: %d" />
@@ -100,13 +100,13 @@
 		<text name="bc_discMaxJobs_tooltip" text="Можно изменить максимальную скидку: скидка за контракт = 11%, количество заданий = 3 -> максимальная скидка = 33%. Внимание: Текущее количество выполненных работ уменьшится на это значение при покупке участков." />
 
 		<text name="bc_toDeliver" text="Доставка по контрактам на сбор урожая" />
-		<text name="bc_toDeliverBale" text="Delivery for baling contracts" />
+		<text name="bc_toDeliverBale" text="Доставка по контрактам на тюкование" />
 		<text name="bc_toDeliver_tooltip" text="Процент от расчётного общего урожая, который вы должны доставить, чтобы выполнить контракт на сбор урожая." />
 		
-		<text name="bc_missionGeneration" text="Contract generation" />
-		<text name="bc_generationInterval" text="Generation Interval" />
-		<text name="bc_generationInterval_tooltip" text="Amount of in-game hours to wait before generating new contracts." />
-		<text name="bc_missionGenPercentage" text="Generation percentage" />
-		<text name="bc_missionGenPercentage_tooltip" text="Percentage of max contracts to be generated each time." />
+		<text name="bc_missionGeneration" text="Создание контрактов" />
+		<text name="bc_generationInterval" text="Интервал генерации" />
+		<text name="bc_generationInterval_tooltip" text="Количество внутриигровых часов ожидания перед созданием новых контрактов." />
+		<text name="bc_missionGenPercentage" text="Процент генерации" />
+		<text name="bc_missionGenPercentage_tooltip" text="Максимальный процент контрактов, которые будут создаваться каждый раз." />
 	</texts>
 </l10n>
