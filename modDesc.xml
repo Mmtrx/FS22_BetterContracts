@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<modDesc descVersion="72">
+<modDesc descVersion="73">
 	<author>Mmtrx</author>
-	<version>1.2.7.5</version>
+	<version>1.2.7.6</version>
 	<title>
 		<en>Better Contracts</en>
 	</title>
@@ -23,6 +23,10 @@ With the "Details" button you can toggle on/ off the display of additional contr
 Disclaimer: All values shown in details display are ESTIMATES. You should not take them absolutely, but rather as an indication of what contracts to prefer among others.
 
 The mod keeps track of the amount of contracts you completed for each of the NPC farmers (number of completed jobs is displayed below the farmers image, if "Details" on). If you enable the optional discount mode or hard mode options (on the mods settings page), the amount of completed jobs influence gameplay.
+
+Changelog v1.2.7.6:
+- format reward values > 100.000 (issue #113)
+- read userDefined from modSettings/FS22_BetterContracts/<mapName>/ (issue #115)
 
 Changelog v1.2.7.5:
 - add all farms active missions display (MP only)

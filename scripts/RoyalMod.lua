@@ -14,6 +14,7 @@
 --				13.04.2022	add check on g_vehicleTypeManager when calling mod.initialize 
 --				15.05.2022	call mod.onLoad with "mission" param
 --				20.06.2022	check on TypeManager.typeName when calling mod.initialize 
+--  v1.2.7.6	21.03.2023	add modSettings, myModSettings
 
 --------- possible functions that mod can specify: ------------------------------------
 --[[
@@ -73,8 +74,10 @@ function RoyalMod.new(debug, mpSync)
 	---@type RoyalMod
 	local mod = {}
 	mod.directory = g_currentModDirectory
-	mod.userProfileDirectory = getUserProfileAppPath()
 	mod.name = g_currentModName
+	mod.modSettings = getUserProfileAppPath().."modSettings/"
+	mod.myModSettings = mod.modSettings .. mod.name.."/"
+	mod.userProfileDirectory = getUserProfileAppPath()
 	mod.modManagerMod = g_modManager:getModByName(mod.name)
 	mod.version = mod.modManagerMod.version
 	mod.author = mod.modManagerMod.author

@@ -19,18 +19,17 @@ Disclaimer: All values shown in details display are ESTIMATES. You should not ta
 **Changelog**:
 Version | Date | Description
 ---|---|---
+v1.2.7.6 |21.03.2023|Format rewd values > 100.000 (issue #113). Read userDefined from modSettings/FS22_BetterContracts/<mapName>/ (issue #115)
+v1.2.7.5 |26.02.2023|Fix mission visual tags for MP: renderIcon(). Add settings to adjust contract generation. Icon for roller missions. Don't show negative togos. Double progress bar active contracts. Fix PnH BGA/ Maize+. Increase range for "toDeliver". Add setting "toDeliverBale". Display other farms active contracts (MP only). Read userDefined missions from "BCuserDefined.xml" in modSettings
+v1.2.7.0 |29.01.2023|Visual tags for mission fields and vehicles. Show leased vehicles for active contracts 
+v1.2.6.5 |18.01.2023|Fix issue #88: onClickBuyFarmland() if discountMode off. Add setting "toDeliver": harvest contract success factor. Improve reward multiplier getReward(). Handle zombie (pallet, bigbag) vehicles when dismissing contracts 
+v1.2.6.3 |02.01.2023|initGui(): utf8ToUpper(). Don't act onFarmlandStateChanged() before mission started. Smaller menu icon. onClickBuyFarmland, missionVehicles (userdefined) fixed
 v1.2.6.0 |30.11.2022|UI for all settings
 v1.2.5.0 |31.10.2022|Hard mode: active missions time out at month end. Penalty for mission cancel. Discount mode: get discounted field price, based on # of missions. Mission vehicle warnings: only if no vehicles or debug="true"
 v1.2.4.4 |16.10.2022|fix FS22_LimeMission details, filter buttons. Add timeLeft to MP sync
 |        |21.10.2022|fix mtype.LIME, FS22_IBCtankfix mod compat
 v1.2.4.3 |10.10.2022|recognize FS22_LimeMission, RollerMission. Add lazyNPC switch for weed. Delete config.xml file template from mod directory
-
- v1.2.4.2:
-- "lazy NPCs" (leave more work for contracts) can be configured on/ off
-- maximum number of active contracts configurable (in modSettings/FS22_BetterContracts.xml)
-- indicator for active contracts with borrowed equipment 
-- clear / new contracts buttons in MP games only work for master user
-- recognize FS22_DynamicMissionVehicles
+v1.2.4.2 |19.09.2022|"lazy NPCs" (leave more work for contracts) can be configured on/ off. Maximum number of active contracts configurable (in modSettings/FS22_BetterContracts.xml). Indicator for active contracts with borrowed equipment. Clear / new contracts buttons in MP games only work for master user. Recognize FS22_DynamicMissionVehicles
 
 Changelog v1.2.4.0:
 - Added (interim) fix for "lazy NPCs": leave more work for contracts

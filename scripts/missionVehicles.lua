@@ -14,7 +14,8 @@
 --  v1.2.6.5 	19.01.2023	handle zombie (pallet, bigbag) vehicles when dismissing contracts
 --  v1.2.7.0 	29.01.2023	visual tags for mission fields and vehicles. 
 --							show leased vehicles for active contracts 
---  v1.2.7.5	28.02.2023	Read userDefined missions from "BCuserDefined.xml" in savegame dir
+--  v1.2.7.5	28.02.2023	Read userDefined missions from "BCuserDefined.xml" in modSettings dir
+--  v1.2.7.6	21.03.2023	Read userDefined from modSettings/FS22_BetterContracts/<mapName>/ (issue #115)
 --=======================================================================================================
 
 ---------------------- mission vehicle loading functions --------------------------------------------
@@ -34,13 +35,29 @@ function BetterContracts.loadMissionVehicles(missionManager, superFunc, xmlFilen
 		self:loadExtraMissionVehicles(self.directory .. "missionVehicles/baseGame.xml")
 		self.loadedVehicles = true
 
-		local userdef = g_modSettingsDirectory .. "BCuserDefined.xml"
-		if fileExists(userdef) and self:checkExtraMissionVehicles(userdef) then 
+		-- determine userdef location
+		local map = g_currentMission.missionInfo.map
+		local mapDir = map.id
+		if map.isModMap then 
+			mapDir = map.customEnvironment
+		end
+		local path = self.myModSettings .. mapDir .."/"
+		createFolder(path)
+
+		local userdef = path.."userDefined.xml"
+		local found = fileExists(userdef)
+		if not found then 
+			userdef = self.myModSettings .. "userDefined.xml"
+			found = fileExists(userdef)
+		end
+		-- we found a userdef file:
+		if found and self:checkExtraMissionVehicles(userdef) then 
 			-- check for other mod:
 			if g_modIsLoaded.FS22_DynamicMissionVehicles then
-				Logging.warning("[%s] BCuserDefined.xml not loaded. Incompatible with FS22_DynamicMissionVehicles",
-					self.name)
+				Logging.warning("[%s] '%s' not loaded. Incompatible with FS22_DynamicMissionVehicles",
+					self.name, userdef)
 			else
+				debugPrint("[%s] loading user mission vehicles from '%s'.",self.name, userdef)
 				self.overwrittenVehicles = self:loadExtraMissionVehicles(userdef)
 			end
 		end    
@@ -129,6 +146,9 @@ function BetterContracts:checkExtraMissionVehicles(xmlFilename)
 		i = i + 1
 	end
 	delete(xmlFile)
+	if not check then 
+		Logging.warning("[%s] ignoring mission vehicles file '%s'",self.name,xmlFilename)
+	end
 	return check
 end
 

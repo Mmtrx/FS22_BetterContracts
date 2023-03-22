@@ -50,6 +50,8 @@
 --  v1.2.7.4	22.02.2023	increase range for "toDeliver". Add setting "toDeliverBale"
 --  v1.2.7.5	26.02.2023	display other farms active contracts (MP only). 
 --							Read userDefined missions from "BCuserDefined.xml" in modSettings dir
+--  v1.2.7.6	21.03.2023	format rewd values > 100.000 (issue #113)
+--							Read userDefined from modSettings/FS22_BetterContracts/<mapName>/ (issue #115)
 --=======================================================================================================
 SC = {
 	FERTILIZER = 1, -- prices index
@@ -349,7 +351,7 @@ function initGui(self)
 	local rewd = self.frCon.contractsList.cellDatabase.autoCell1:getDescendantByName("reward")
 	local profit = rewd:clone(self.frCon.contractsList.cellDatabase.autoCell1)
 	profit.name = "profit"
-	profit:setPosition(-110/1920 *g_aspectScaleX, -12/1080 *g_aspectScaleY) 	-- 
+	profit:setPosition(-144/1920 *g_aspectScaleX, -12/1080 *g_aspectScaleY) 	-- 
 	profit.textBold = false
 	profit:setVisible(false)
 

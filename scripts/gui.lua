@@ -25,6 +25,7 @@
 --  v1.2.7.2 	12.02.2023	don't show negative togos
 --  v1.2.7.3	20.02.2023	double progress bar active contracts. Fix PnH BGA/ Maize+ 
 --  v1.2.7.5	26.02.2023	display other farms active contracts (MP only)
+--  v1.2.7.6	21.03.2023	format rewd values > 100.000 (issue #113)
 --=======================================================================================================
 
 --- Adds a new page to the in game menu.
@@ -328,6 +329,13 @@ function makeCon(m)
 		jobType = missionInfo.jobType
 	}
 end
+function formatReward(x)
+	-- return g_i18n:formatMoney(), but special handling for big values >100k
+	if x < 100000.6 then return g_i18n:formatMoney(x,0,true,true)
+	end
+	local xk = MathUtil.round(x/1000)
+	return g_i18n:formatMoney(xk,0,true,true) .."k"
+end
 function updateList(frCon,superFunc)
 	-- complete overwrite, to handle filterbutton settings 
 	-- called from messageCenter on mission change events (start,dismiss,finish),
@@ -427,8 +435,8 @@ function populateCell(frCon, list, sect, index, cell)
 		--todo: update profit spread mission
 		
 		local reward = cell:getAttribute("reward")
-		local rewtext = reward:getText()
-		reward:setText(g_i18n:formatMoney(prof, 0, true, true))
+		local rewtext = formatReward(m:getReward())  -- formats values > 1k
+		reward:setText(formatReward(prof))
 		profit:setText(rewtext)
 		showProf = true
 		if cat == SC.HARVEST and cont ~= nil then 
