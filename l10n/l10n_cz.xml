@@ -3,7 +3,7 @@
 	<texts>
 		<!-- Keys -->
 		<text name = "input_MENU_EXTRA_3" text = "Vylepšené zakázky: Detaily zap/vyp"/>
-		<text name = "input_BC_MTOGGLE" text = "BC: Toggle display of active farm contracts"/>
+		<text name = "input_BC_MTOGGLE" text = "BC: Přepnout zobrazení aktivních zakázek farmy"/>
 		<!-- Gui Buttons -->
 		<text name="bc_hidden" text="Skryté: %d" />
 		<text name="bc_other" text="Další" />
