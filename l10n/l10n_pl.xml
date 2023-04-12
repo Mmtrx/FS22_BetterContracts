@@ -4,6 +4,7 @@
 		<!-- Keys -->
 		<text name = "input_MENU_EXTRA_3" text = "Better Contracts: Szczegóły wł./wył."/>
 		<text name = "input_BC_MTOGGLE" text = "BC: Przełącz wyświetlanie aktywnych umów rolniczych"/>
+		<text name = "bc_ferment" text = "Ferment Bale"/>
 		<!-- Gui Buttons -->
 		<text name="bc_hidden" text="Ukryty: %d" />
 		<text name="bc_other" text="Inny" />

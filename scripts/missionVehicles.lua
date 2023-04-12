@@ -16,6 +16,7 @@
 --							show leased vehicles for active contracts 
 --  v1.2.7.5	28.02.2023	Read userDefined missions from "BCuserDefined.xml" in modSettings dir
 --  v1.2.7.6	21.03.2023	Read userDefined from modSettings/FS22_BetterContracts/<mapName>/ (issue #115)
+--	v1.2.7.7	03.04.2013	userDefined.xml compatible with FS22_DynamicMissionVehicles
 --=======================================================================================================
 
 ---------------------- mission vehicle loading functions --------------------------------------------
@@ -54,12 +55,13 @@ function BetterContracts.loadMissionVehicles(missionManager, superFunc, xmlFilen
 		if found and self:checkExtraMissionVehicles(userdef) then 
 			-- check for other mod:
 			if g_modIsLoaded.FS22_DynamicMissionVehicles then
-				Logging.warning("[%s] '%s' not loaded. Incompatible with FS22_DynamicMissionVehicles",
-					self.name, userdef)
-			else
-				debugPrint("[%s] loading user mission vehicles from '%s'.",self.name, userdef)
-				self.overwrittenVehicles = self:loadExtraMissionVehicles(userdef)
+				Logging.warning("[%s] Mod FS22_DynamicMissionVehicles detected. Make sure '%s' contains 'variant definitions'",self.name, userdef)
+				local dmv = FS22_DynamicMissionVehicles.DynamicMissionVehicles
+				dmv.variants = {}
+				dmv:loadVariants(userdef)
 			end
+			debugPrint("[%s] loading user mission vehicles from '%s'.",self.name, userdef)
+			self.overwrittenVehicles = self:loadExtraMissionVehicles(userdef)
 		end    
 		return true
 	end

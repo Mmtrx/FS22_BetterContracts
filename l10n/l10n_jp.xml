@@ -4,6 +4,7 @@
 		<!-- Keys -->
 		<text name = "input_MENU_EXTRA_3" text = "契約詳細表示切替"/>
 		<text name = "input_BC_MTOGGLE" text = "BC: Toggle display of active farm contracts"/>
+		<text name = "bc_ferment" text = "Ferment Bale"/>
 		<!-- Gui Buttons -->
 		<text name="bc_hidden" text="Hidden: %d" />
 		<text name="bc_other" text="Other" />

@@ -52,6 +52,10 @@
 --							Read userDefined missions from "BCuserDefined.xml" in modSettings dir
 --  v1.2.7.6	21.03.2023	format rewd values > 100.000 (issue #113)
 --							Read userDefined from modSettings/FS22_BetterContracts/<mapName>/ (issue #115)
+--  v1.2.7.7	29.03.2023	add "off" values to hardMode settings. Allow forage wagon on grass missions (#118)
+--							"userDefined.xml" compat with FS22_DynamicMissionVehicles
+--  v1.2.7.8	12.04.2023	getfilltypePrice() catch unknown fillType. Allow mission bales in storage.
+--							let player instant-ferment wrapped bales
 --=======================================================================================================
 SC = {
 	FERTILIZER = 1, -- prices index
@@ -72,6 +76,7 @@ SC = {
 	FARMMANAGER = 2,
 	PLAYER = 3,
 	-- hardMode expire:
+	OFF = 0,
 	DAY = 1,
 	MONTH = 2,
 	-- Gui farmerBox controls:
@@ -482,6 +487,8 @@ function BetterContracts:initialize()
 
 	-- to show our ingame menu settings page when admin logs in:
 	Utility.appendedFunction(InGameMenuMultiplayerUsersFrame,"onAdminLoginSuccess",adminMP)
+	-- to allow forage wagon on bale missions:
+	Utility.overwrittenFunction(BaleMission, "new", baleMissionNew)
 
 	-- to count and save/load # of jobs per farm per NPC
 	Utility.appendedFunction(AbstractFieldMission,"finish",finish)
@@ -741,12 +748,17 @@ function BetterContracts:getFilltypePrice(m)
 			self.name, m.type.name, self.ft[m.fillType].title, m.field.fieldId)
 		return 0
 	end
-	-- check for Maize+ filltype
+	-- check for Maize+ (or other unknown) filltype
 	local fillType = m.fillType
-	if m.sellPoint.fillTypePrices[fillType] == nil then
-		fillType = FillType.SILAGE
+	if m.sellPoint.fillTypePrices[fillType] ~= nil then
+		return m.sellPoint:getEffectiveFillTypePrice(fillType)
 	end
-	return m.sellPoint:getEffectiveFillTypePrice(fillType)
+	if m.sellPoint.fillTypePrices[FillType.SILAGE] then
+		return m.sellPoint:getEffectiveFillTypePrice(FillType.SILAGE)
+	end
+	Logging.warning("[%s]:addMission(): SellPoint %s has no price for fillType %s.", 
+		self.name, m.sellPoint:getName(), self.ft[m.fillType].title)
+	return 0
 end
 function BetterContracts:calcProfit(m, successFactor)
 	-- calculate brutto income as reward + value of kept harvest
@@ -937,10 +949,17 @@ end
 function abstractMissionNew(isServer, superf, isClient, customMt )
 	local self = superf(isServer, isClient, customMt)
 	self.mission = g_currentMission 
-	-- Fix for error in AbstractMission 'self.mission' still missing in Version 1.6
+	-- Fix for error in AbstractMission 'self.mission' still missing in Version 1.9
 	return self
 end
 function adminMP(self)
 	-- appended to InGameMenuMultiplayerUsersFrame:onAdminLoginSuccess()
 	BetterContracts.gameMenu:updatePages()
+end
+function baleMissionNew(isServer, superf, isClient, customMt )
+	local self = superf(isServer, isClient, customMt)
+	self.workAreaTypes[WorkAreaType.FORAGEWAGON] = true 
+	self.workAreaTypes[WorkAreaType.CUTTER] = true 
+	-- allow forage wagons to collect grass/ hay, for baling/wrapping at stationary baler
+	return self
 end

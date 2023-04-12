@@ -7,6 +7,7 @@
 --  v1.2.6.0 	30.11.2022	UI for all settings
 --  v1.2.6.5 	18.01.2023	add setting "toDeliver": harvest contract success factor
 --  v1.2.7.4	22.02.2023	increase range for "toDeliver". Add setting "toDeliverBale"
+--  v1.2.7.7	29.03.2023	add "off" values to hardMode settings
 --=======================================================================================================
 local function lazyNPCDisabled()
 	return not BetterContracts.config.lazyNPC
@@ -152,17 +153,15 @@ BCSettingsBySubtitle = {
 		tooltip = "bc_hardMode_tooltip",
 			},
 		{name = "hardPenalty",
-		values = {.1,.2,.3,.4,.5,.6,.7},
-		texts = {"10 %","20 %","30 %","40 %","50 %","60 %","70 %"},
-		default = 1,
+		min = .0, max = .7, increment = .1, unit = true,
+		default = 2,
 		title = "bc_hardPenalty",
 		tooltip = "bc_hardPenalty_tooltip",
 		isDisabledFunc = hardDisabled,
 		noTranslate = true
 			},
 		{name = "hardLease",
-		values = {1,2,3,4,5,6,7},
-		texts = {"1", "2", "3", "4", "5", "6", "7",},
+		min = 0, max = 7, increment = 1, 
 		default = 2,
 		title = "bc_hardLease",
 		tooltip = "bc_hardLease_tooltip",
@@ -170,9 +169,9 @@ BCSettingsBySubtitle = {
 		noTranslate = true
 			},
 		{name = "hardExpire",
-		values = {SC.DAY, SC.MONTH},
-		texts = {"ui_day", "ui_month"},
-		default = 2,
+		values = {SC.OFF, SC.DAY, SC.MONTH},
+		texts = {"ui_off", "ui_day", "ui_month"},
+		default = 3,
 		title = "bc_hardExpire",
 		tooltip = "bc_hardExpire_tooltip",
 		isDisabledFunc = hardDisabled,

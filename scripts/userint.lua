@@ -12,6 +12,7 @@
 --  v1.2.4.3 	10.10.2022	recognize FS22_LimeMission
 --  v1.2.5.0 	31.10.2022	fewer mission vehicle warnings
 --  v1.2.5.1 	02.11.2022	check estWorktime() parms if nil
+--	v1.2.7.8	12.04.2023	allow mission bales in storage. Let player instant-ferment wrapped bales
 --=======================================================================================================
 
 -------------------- mission analysis functions ---------------------------------------------------
@@ -136,7 +137,7 @@ function BetterContracts:getFromVehicle(cat, m)
 			then  -- skip this, it's a slurry barrel w/o spreader
 
 		elseif cat == SC.HARVEST and vtype == "BEETVEHICLES" then  
-			if vec.name == "Rexor 6300 Platinum" then 
+			if string.find(vec.name, "Rexor 6300 Platinum") then 
 				wwidth, speed = 2.8, 10.
 				break 
 			end
@@ -152,11 +153,11 @@ function BetterContracts:getFromVehicle(cat, m)
 					wwidth = Vehicle.getSpecValueWorkingWidthConfig(vec, nil, con, nil, true)
 				end
 				if wwidth == nil then
-					if vec.name == "Ventor 4150" then wwidth = 3.3 end
+					if string.find(vec.name, "Ventor 4150") then wwidth = 3.3 end
 				end
 				if wwidth == nil then
 					self:warning(3, spr)
-					DebugUtil.printTableRecursively(vec," ",0,0)
+					--DebugUtil.printTableRecursively(vec," ",0,0)
 				end
 			end
 			break
@@ -291,4 +292,84 @@ function BetterContracts:estWorktime(wid, hei, wwid, speed)
 	local workL = nlanes * hei + wid -- length of working path
 	local netT = workL / speed * 3.6 -- net working time in sec
 	return netT, netT + nlanes * self.turnTime -- assume 5 sec per u-turn
+end
+
+-------------------- allow mission bales in bale/pallet store ------------------------------------
+AbstractBaleObject = PlaceableObjectStorage.ABSTRACT_OBJECTS_BY_CLASS_NAME["Bale"]
+function AbstractBaleObject.isObjectSupported(storage, object)
+	if not storage.spec_objectStorage.supportsBales then
+		return false
+	end
+	if not storage:getObjectStorageSupportsFillType(object:getFillType()) then
+		return false
+	end
+	return true
+end
+
+-------------------- bale fermenting functions ---------------------------------------------------
+BC_Action = {
+	BC_CUT = 1,
+	BC_FERMENT = 2,
+}
+function BaleActivatable:getIsActivatable()
+	if self.bale:getCanInteract() then 
+		if self.bale:getCanBeOpened() then 
+			self.activateText = g_i18n:getText("action_cutBale")
+			self.action = BC_Action.BC_CUT
+			return true
+		end
+		if self.bale:getIsFermenting() then
+			self.activateText = g_i18n:getText("bc_ferment")
+			self.action = BC_Action.BC_FERMENT
+			return true
+		end
+	end
+	return false
+end
+function BaleActivatable:run()
+	-- called by ActivatableObjectsSystem:onActivateObjectInput()
+	if self.action == BC_Action.BC_FERMENT then
+		-- ferment bale immediately
+		if g_server ~= nil then
+			self.bale:onFermentationEnd()
+		else
+			g_client:getServerConnection():sendEvent(BaleFermentEvent.new(self.bale))
+		end
+		return
+	end
+	if g_server ~= nil then
+		self.bale:open()
+	else
+		g_client:getServerConnection():sendEvent(BaleOpenEvent.new(self.bale))
+	end
+end
+
+BaleFermentEvent = {}
+local BaleFermentEvent_mt = Class(BaleFermentEvent, Event)
+InitEventClass(BaleFermentEvent, "BaleFermentEvent")
+
+function BaleFermentEvent.emptyNew()
+	local self = Event.new(BaleFermentEvent_mt)
+	return self
+end
+function BaleFermentEvent.new(bale)
+	local self = BaleFermentEvent.emptyNew()
+	self.bale = bale
+	return self
+end
+function BaleFermentEvent:readStream(streamId, connection)
+	if not connection:getIsServer() then
+		self.bale = NetworkUtil.readNodeObject(streamId)
+	end
+	self:run(connection)
+end
+function BaleFermentEvent:writeStream(streamId, connection)
+	if connection:getIsServer() then
+		NetworkUtil.writeNodeObject(streamId, self.bale)
+	end
+end
+function BaleFermentEvent:run(connection)
+	if not connection:getIsServer() then
+		self.bale:onFermentationEnd()
+	end
 end

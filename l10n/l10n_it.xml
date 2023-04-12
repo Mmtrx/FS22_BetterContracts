@@ -3,6 +3,7 @@
 	<texts>
 		<!-- Keys -->
 		<text name = "input_MENU_EXTRA_3" text = "Better Contracts: Détails on/off"/>
+		<text name = "bc_ferment" text = "Ferment Bale"/>
 		<text name = "input_BC_MTOGGLE" text = "BC: Toggle display of active farm contracts"/>
 		<!-- Gui Buttons -->
 		<text name="bc_hidden" text="Hidden: %d" />

@@ -4,6 +4,7 @@
 		<!-- Keys -->
 		<text name = "input_MENU_EXTRA_3" text = "更好的合同：开启/关闭详情"/>
 		<text name = "input_BC_MTOGGLE" text = "BC: Toggle display of active farm contracts"/>
+		<text name = "bc_ferment" text = "Ferment Bale"/>
 		<!-- Gui Buttons -->
 		<text name="bc_hidden" text="隐藏的：%d" />
 		<text name="bc_other" text="其他" />

@@ -15,6 +15,7 @@
 --  v1.2.7.1 	10.02.2023	fix mission visual tags for MP: renderIcon(). 
 --  v1.2.7.2 	12.02.2023	icon for roller missions. Don't show negative togos
 --  v1.2.7.3	20.02.2023	double progress bar active contracts. Fix PnH BGA/ Maize+ 
+--  v1.2.7.7	29.03.2023	add "off" values to hardMode settings
 --=======================================================================================================
 
 --------------------- lazyNPC --------------------------------------------------------------------------- 
@@ -339,7 +340,7 @@ end
 function BetterContracts:onDayChanged()
 	-- hard mode: cancel any active field missions
 	if g_server == nil or not self.config.hardMode 
-		or self.config.hardExpire == SC.MONTH then return end
+		or self.config.hardExpire ~= SC.DAY then return end
 	for _, m in ipairs(g_missionManager:getActiveMissions()) do 
 		if m:hasField() then
 			g_missionManager:cancelMission(m)
@@ -348,11 +349,12 @@ function BetterContracts:onDayChanged()
 end
 function BetterContracts:onHourChanged()
 	-- hard mode: issue warnings 6,3,1 h before active missions cancel
-	if not self.config.hardMode or g_client == nil then return end
+	if not self.config.hardMode or self.config.hardExpire == SC.OFF or g_client == nil 
+		then return end
 	local env = g_currentMission.environment
 	if self.config.hardExpire == SC.MONTH and 
 		env.currentDayInPeriod ~= env.daysPerPeriod then return end
-	if not TableUtility.contains({18,21,23}, env.currentHour) then return end 
+	if not table.hasElement({18,21,23}, env.currentHour) then return end 
 
 	local farmId = g_currentMission:getFarmId()
 	local count = 0 
@@ -367,14 +369,16 @@ function BetterContracts:onHourChanged()
 	end
 end
 function onButtonCancel(self, superf)
-	if not BetterContracts.config.hardMode then return superf(self) end
+	local bc = BetterContracts
+	if not bc.config.hardMode or bc.config.hardPenalty == 0.0
+		then return superf(self) end
 	local contract = self:getSelectedContract()
 	local m = contract.mission 
 	--local difficulty = 0.7 + 0.3 * g_currentMission.missionInfo.economicDifficulty
 	local text = g_i18n:getText("fieldJob_endContract")
 	local reward = m:getReward()
 	if reward then  
-		local penalty = MathUtil.round(reward * BetterContracts.config.hardPenalty) 
+		local penalty = MathUtil.round(reward * bc.config.hardPenalty) 
 		text = text.. g_i18n:getText("bc_warnCancel") ..
 		 g_i18n:formatMoney(penalty, 0, true, true)
 	end
