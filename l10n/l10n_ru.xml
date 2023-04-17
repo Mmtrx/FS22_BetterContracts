@@ -4,7 +4,7 @@
 		<!-- Keys -->
 		<text name = "input_MENU_EXTRA_3" text = "Better Contracts: Детали вкл./выкл."/>
 		<text name = "input_BC_MTOGGLE" text = "BC: Переключить отображение активных контрактов ферм"/>
-		<text name = "bc_ferment" text = "Ferment Bale"/>
+		<text name = "bc_ferment" text = "Ферментировать тюк"/>
 		<!-- Gui Buttons -->
 		<text name="bc_hidden" text="Скрыто: %d" />
 		<text name="bc_other" text="Другое" />
