@@ -13,6 +13,7 @@
 --  v1.2.5.0 	31.10.2022	fewer mission vehicle warnings
 --  v1.2.5.1 	02.11.2022	check estWorktime() parms if nil
 --	v1.2.7.8	12.04.2023	allow mission bales in storage. Let player instant-ferment wrapped bales
+--  v1.2.7.9	21.04.2023	Allow 240er PackedBales as mission bales, i.e. insta ferment.
 --=======================================================================================================
 
 -------------------- mission analysis functions ---------------------------------------------------
@@ -372,4 +373,82 @@ function BaleFermentEvent:run(connection)
 	if not connection:getIsServer() then
 		self.bale:onFermentationEnd()
 	end
+end
+
+-------------------- allow packed bale as mision bale --------------------------------------------
+function baleLoaderState(self, superf, id, baleId)
+	-- overwrites BaleLoader:doStateChange(id)
+	local spec = self.spec_baleLoader
+	local packBales = spec.balePacker.node ~= nil and spec.balePacker.filename ~= nil
+	packbales = packBales and self.isServer
+	if id ~= BaleLoader.CHANGE_DROP_BALES or not packBales then 
+		superf(self, id, baleId) 
+		return
+	end
+	local packedMissionBale, packedFarmId, packedFillType = false 
+	local packedFillLevel = 0
+
+	for _, balePlace in pairs(spec.balePlaces) do
+		if balePlace.bales ~= nil then
+			for i, baleServerId in pairs(balePlace.bales) do
+				local bale = NetworkUtil.getObject(baleServerId)
+				if bale ~= nil then
+					if spec.dynamicMount.enabled then self:unmountDynamicBale(bale)
+					else self:unmountBale(bale)
+					end
+					packedFarmId = bale.ownerFarmId
+					packedFillType = bale.fillType
+					packedFillLevel = packedFillLevel + bale.fillLevel
+					-- sufficient if 1 of the bales was a missionBale:
+					packedMissionBale = packedMissionBale or bale.isMissionBale
+					bale:delete()
+				end
+				spec.balesToMount[baleServerId] = nil
+			end
+			balePlace.bales = nil
+		end
+	end
+	local bale = PackedBale.new(self.isServer, self.isClient)
+	local x, y, z = getWorldTranslation(spec.balePacker.node)
+	local rx, ry, rz = getWorldRotation(spec.balePacker.node)
+	local bc = BetterContracts
+	local packFilename = bc.directory .. "missionVehicles/"
+	if bc.maizePlus then 
+		packFilename = g_modNameToDirectory.FS22_MaizePlus .."data/bales/squarebale120/"
+	end
+	packFilename = packFilename .. "packedSquareBale120.xml"
+	debugPrint("[%s]** loadin packedBale from %s", bc.name, packFilename)
+	if not bale:loadFromConfigXML(packFilename, x, y, z, rx, ry, rz) then
+		Logging.error("[BC] could not load bale from %s",packFilename)
+		return false
+	end		
+	bale:setFillType(packedFillType)
+	bale:setFillLevel(packedFillLevel)
+	bale:setOwnerFarmId(packedFarmId, true)
+	bale:setIsMissionBale(packedMissionBale)
+	bale:register()
+	removeFromPhysics(bale.nodeId)
+	addToPhysics(bale.nodeId)
+	
+	local speed = 1
+	if spec.animations.releaseFrontPlatformFillLevelSpeed then
+		speed = 1 / (self:getFillUnitFillLevel(spec.fillUnitIndex) / self:getFillUnitCapacity(spec.fillUnitIndex))
+	end
+	self:addFillUnitFillLevel(self:getOwnerFarmId(), spec.fillUnitIndex, -math.huge, self:getFillUnitFirstSupportedFillType(spec.fillUnitIndex), ToolType.UNDEFINED, nil)
+	if self.isServer and spec.unloadingMover.trigger ~= nil then
+		spec.unloadingMover.isActive = true
+		spec.unloadingMover.frameDelay = 3
+		for i = 1, #spec.unloadingMover.nodes do
+			local unloadingMoverNode = spec.unloadingMover.nodes[i]
+			setFrictionVelocity(unloadingMoverNode.node, unloadingMoverNode.speed)
+		end
+		if self.isClient then
+			g_animationManager:startAnimations(spec.unloadingMover.animationNodes)
+			g_soundManager:playSample(spec.samples.unload)
+		end
+		self:raiseDirtyFlags(spec.unloadingMover.dirtyFlag)
+	end
+	self:playAnimation(spec.animations.releaseFrontPlatform, speed, nil, true)
+	self:playAnimation(spec.animations.closeGrippers, -1, nil, true)
+	spec.emptyState = BaleLoader.EMPTY_WAIT_TO_SINK
 end

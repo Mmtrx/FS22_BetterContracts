@@ -56,6 +56,8 @@
 --							"userDefined.xml" compat with FS22_DynamicMissionVehicles
 --  v1.2.7.8	12.04.2023	getfilltypePrice() catch unknown fillType. Allow mission bales in storage.
 --							let player instant-ferment wrapped bales
+--  v1.2.7.9	21.04.2023	Allow 240er PackedBales as mission bales, i.e. insta ferment.
+--							Add 240er bales to Kuhn sw4014 wrapper 
 --=======================================================================================================
 SC = {
 	FERTILIZER = 1, -- prices index
@@ -183,6 +185,7 @@ function checkOtherMods(self)
 		FS22_DynamicMissionVehicles = "dynamicVehicles",
 		FS22_TransportMissions = "transportMission",
 		FS22_LimeMission = "limeMission",
+		FS22_MaizePlus = "maizePlus",
 		}
 	for mod, switch in pairs(mods) do
 		if g_modIsLoaded[mod] then
@@ -526,10 +529,14 @@ function BetterContracts:initialize()
 	Utility.prependedFunction(AbstractFieldMission, "removeAccess", removeAccess)
 	Utility.appendedFunction(AbstractFieldMission, "onVehicleReset", onVehicleReset)
 
-	-- rename mission vehicle: 
 	for name, typeDef in pairs(g_vehicleTypeManager.types) do
+		-- rename mission vehicle: 
 		if typeDef ~= nil and not TableUtility.contains({"horse","pallet","locomotive"}, name) then
 			SpecializationUtil.registerOverwrittenFunction(typeDef, "getName", vehicleGetName)
+		end
+		-- to set missionBale for packed 240cm bales:
+		if typeDef ~= nil and name == "baleLoader" then 
+			SpecializationUtil.registerOverwrittenFunction(typeDef, "doStateChange", baleLoaderState)
 		end
 	end
 	Utility.appendedFunction(MissionManager, "loadFromXMLFile", missionManagerLoadFromXMLFile)
