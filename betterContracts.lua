@@ -492,6 +492,8 @@ function BetterContracts:initialize()
 	Utility.appendedFunction(InGameMenuMultiplayerUsersFrame,"onAdminLoginSuccess",adminMP)
 	-- to allow forage wagon on bale missions:
 	Utility.overwrittenFunction(BaleMission, "new", baleMissionNew)
+	-- to set missionBale for packed 240cm bales:
+	Utility.overwrittenFunction(Bale, "loadBaleAttributesFromXML", loadBaleAttributes)
 
 	-- to count and save/load # of jobs per farm per NPC
 	Utility.appendedFunction(AbstractFieldMission,"finish",finish)
@@ -533,10 +535,6 @@ function BetterContracts:initialize()
 		-- rename mission vehicle: 
 		if typeDef ~= nil and not TableUtility.contains({"horse","pallet","locomotive"}, name) then
 			SpecializationUtil.registerOverwrittenFunction(typeDef, "getName", vehicleGetName)
-		end
-		-- to set missionBale for packed 240cm bales:
-		if typeDef ~= nil and name == "baleLoader" then 
-			SpecializationUtil.registerOverwrittenFunction(typeDef, "doStateChange", baleLoaderState)
 		end
 	end
 	Utility.appendedFunction(MissionManager, "loadFromXMLFile", missionManagerLoadFromXMLFile)

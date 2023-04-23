@@ -25,7 +25,7 @@ Disclaimer: All values shown in details display are ESTIMATES. You should not ta
 The mod keeps track of the amount of contracts you completed for each of the NPC farmers (number of completed jobs is displayed below the farmers image, if "Details" on). If you enable the optional discount mode or hard mode options (on the mods settings page), the amount of completed jobs influence gameplay.
 
 Changelog v1.2.7.9	
-- Allow 240er PackedBales as mission bales, i.e. insta ferment.
+- Allow 240er PackedBales as mission bales, i.e. insta ferment (needs mod arcusin Multipack D14)
 - Add 240er bales to Kuhn sw4014 wrapper 
 
 Changelog v1.2.7.8:
@@ -277,5 +277,6 @@ Registro de alterações v1.2.2.0:
 	</inputBinding>
 	<storeItems>
 		<storeItem xmlFilename="missionVehicles/sw4014.xml"/>
+		<storeItem xmlFilename="missionVehicles/multipackD14.xml"/>
 	</storeItems>
 </modDesc>
