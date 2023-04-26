@@ -399,7 +399,7 @@ function getDiscountPrice(farmland)
 	local price = farmland.price
 	local disct = ""
 	local farm =  g_farmManager:getFarmById(g_currentMission.player.farmId)
-	local jobs = farm.stats.npcJobs
+	local jobs = farm.stats.npcJobs or {}
 	local count = jobs[farmland.npcIndex] or 0
 	local disJobs = math.min(count, BetterContracts.config.discMaxJobs,
 		math.floor(0.5 / discPerJob))
