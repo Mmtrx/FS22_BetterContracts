@@ -731,8 +731,8 @@ function BetterContracts:refresh()
 	self.IdToCont, self.fieldToMission = {}, {}
 	local list = g_missionManager:getMissionsList(g_currentMission:getFarmId())
 	local res = {}
-	debugPrint("[%s] refresh() at %s sec, found %d contracts", self.name, 
-		g_i18n:formatNumber(g_currentMission.time/1000)  ,#list)
+	--debugPrint("[%s] refresh() at %s sec, found %d contracts", self.name, 
+	--	g_i18n:formatNumber(g_currentMission.time/1000)  ,#list)
 	self.numCont = 0
 	for _, m in ipairs(list) do
 		res = self:addMission(m)

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<modDesc descVersion="73">
+<modDesc descVersion="75">
 	<author>Mmtrx</author>
 	<version>1.2.7.9</version>
 	<title>
@@ -25,7 +25,7 @@ Disclaimer: All values shown in details display are ESTIMATES. You should not ta
 The mod keeps track of the amount of contracts you completed for each of the NPC farmers (number of completed jobs is displayed below the farmers image, if "Details" on). If you enable the optional discount mode or hard mode options (on the mods settings page), the amount of completed jobs influence gameplay.
 
 Changelog v1.2.7.9	
-- Allow 240er PackedBales as mission bales, i.e. insta ferment (needs mod arcusin Multipack D14)
+- Allow 240er PackedBales as mission bales, i.e. insta ferment (needs mod arcusin Multipack D14) (#131)
 - Add 240er bales to Kuhn sw4014 wrapper 
 
 Changelog v1.2.7.8:
@@ -106,6 +106,32 @@ Mit dem "Details" Button kann die Anzeige der zusätzlichen Vertragsdetails ein-
 Warnung: Alle in der Detailanzeige angegebenen Werte sind GESCHÄTZT. Sie sollten sie also nicht als absolute Zahlen verstehen, sondern als Hinweis, welche Verträge vielleicht anderen vorzuziehen sind.
 
 Die Mod merkt sich die Anzahl Verträge, die Sie für jeden der NPC Farmer abgeschlossen haben (die Zahl wird unter dem Bild des Farmers angezeigt, wenn "Details" an ist). Wenn der optionale Discount Modus oder der Hard Modus aktiviert wird, beeinflusst die Anzahl abgeschlossener Jobs das Spielgeschehen.
+
+Changelog v1.2.7.9	
+- Gepackte 240er Ballen können mit dem im Mod enthaltenen arcusin Multipack D14 nun auch bei Gras-Missionen verwendet werden (#131)
+- Kuhn sw4014 Ballenwickler (im Mod) verarbeitet auch gepackte 240er Ballen 
+
+Changelog v1.2.7.8:
+- Spieler kann gewickelte Grasballen schnell-gären (um z.B. stationäre Ballenpressen auch für Silage-Missionen zu nutzen)
+- Im Hard Modus können einzelne Settings auf "aus" gestellt werden
+- Ladewagen können für Gras-Missionen benutzt werden (#118)
+- Vetragswerte > 100.000 werden anders formatiert (#113)
+- userDefined.xml wird nun in modSettings/FS22_BetterContracts/<mapName>/ gesucht (#115)
+
+Changelog v1.2.7.5:
+- Anzeige aktiver Verträge für alle Farmen (MP)
+- Wertebereich für Ernte-Erfog vergrößert, separate Einstellung für Gras-Missionen
+- Zweiter Fortschrittsbalken für aktive Ernte-Verträge
+- Fix für Maize+ / Pumps'n Hoses BGA
+- Einstellung für Zeitintervall: wie häufig sollen neue Verträge erzeugt werden
+- Fehlendes Icon für Walzmissionen ergänzt. Keine negativen "to go" Werte anzeigen 
+- Missions-Icons bei MP repariert
+
+Changelog v1.2.7.0:
+- Fixed: Farmland kaufen mit Mausklick
+- neue Einstellung für Erfolgsfaktor bei Ernte-Verträgen
+- Icons für Missions-Felder und -Fahrzeuge auf Übersichtskarte
+- Anzeige geleaster Fahrzeuge für aktive Verträge
 
 Changelog v1.2.6.2:
 - UI Einstellungs-Seite im Hauptmenu

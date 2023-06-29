@@ -8,6 +8,7 @@
 --  v1.2.6.5 	18.01.2023	add setting "toDeliver": harvest contract success factor
 --  v1.2.7.4	22.02.2023	increase range for "toDeliver". Add setting "toDeliverBale"
 --  v1.2.7.7	29.03.2023	add "off" values to hardMode settings
+--  v1.2.7.9	03.05.2023	more values discPerJob, discMaxJobs
 --=======================================================================================================
 local function lazyNPCDisabled()
 	return not BetterContracts.config.lazyNPC
@@ -189,8 +190,9 @@ BCSettingsBySubtitle = {
 		tooltip = "bc_discountMode_tooltip",
 			},
 		{name = "discPerJob",
-		values = {.05,.08,.11,.14},
-		texts = {"5 %","8 %","11 %","14 %", },
+		min = .01, max = .14, increment = .01, unit = true,
+		--values = {.05,.08,.11,.14},
+		--texts = {"5 %","8 %","11 %","14 %", },
 		default = 1,
 		title = "bc_discPerJob",
 		tooltip = "bc_discPerJob_tooltip",
@@ -198,8 +200,9 @@ BCSettingsBySubtitle = {
 		noTranslate = true
 			},
 		{name = "discMaxJobs",
-		values = {1,2,3,4,5,6,7},
-		texts = {"1", "2", "3", "4", "5", "6", "7",},
+		min = 1, max = 20, increment = 1,
+		--values = {1,2,3,4,5,6,7},
+		--texts = {"1", "2", "3", "4", "5", "6", "7",},
 		default = 5,
 		title = "bc_discMaxJobs",
 		tooltip = "bc_discMaxJobs_tooltip",

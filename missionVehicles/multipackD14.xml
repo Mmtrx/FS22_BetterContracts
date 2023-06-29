@@ -9,7 +9,7 @@
             <combination xmlFilename="$data/vehicles/masseyFerguson/baler1840/baler1840.xml"/>
         </specs>
         <functions>
-            <function>$l10n_function_baleStackerM+</function>
+            <function>$l10n_function_baleStacker</function>
         </functions>
         <image>$data/vehicles/arcusin/multipackD14/store_multipackD14.png</image>
         <price>64000</price>
