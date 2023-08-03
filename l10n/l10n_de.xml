@@ -53,8 +53,10 @@
 
 		<!-- Sort button help text -->
 		<text name="SC_sortCat" text="Missionstyp" />
+		<text name="SC_sortRev" text="Vertragswert" />
+		<text name="SC_sortNpc" text="Auftraggeber" />
 		<text name="SC_sortProf" text="Nettoprofit" />
-		<text name="SC_sortpMin" text="Profit pro Minute" />
+		<text name="SC_sortpMin" text="Profit/min" />
 
 		<!-- progress bars -->
 		<text name="bc_progField" text="Fortschritt Feld" />

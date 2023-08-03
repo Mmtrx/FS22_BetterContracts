@@ -59,14 +59,14 @@
 	</Profile>
 
 	<!-- Sortbox Frame   - - - - - - - - - - - - - - - - - - - - -  -->
-	<Profile name="SeeContSortbox" extends="emptyPanel">
+	<Profile name="BCSortbox" extends="emptyPanel">
 		<Value name="hasFrame" value="true" />
 		<Value name="frameThickness" value="0 1px 1px 0dp" />
 		<Value name="frameTopColor" value="$preset_colorMainUI" />
 		<Value name="frameRightColor" value="$preset_colorMainUI" />
 	</Profile>
 	<!-- Sortbox Buttons - - - - - - - - - - - - - - - - - - - - -  -->
-	<Profile name="SeeContsortCat" extends="buttonBase">
+	<Profile name="BCsortCat" extends="buttonBase">
 		<Value name="handleFocus" value="true" />
 		<Value name="size" value="39px 39px" />
 		<Value name="iconSize" value="40px 40px" />
@@ -80,16 +80,24 @@
 		<Value name="onHighlight" value="onHighlightCallback" />
 		<Value name="onHighlightRemove" value="onHighlightRemoveCallback" />
 	</Profile>
-	<Profile name="SeeContsortProf" extends="SeeContsortCat">
+	<Profile name="BCsortRev" extends="BCsortCat">
+		<Value name="iconUVs" value="384px 336px 48px 48px" />
+	</Profile>
+	<Profile name="BCsortNpc" extends="BCsortCat">
+		<Value name="iconUVs" value="336px 96px 48px 48px" />
+	</Profile>
+	<Profile name="BCsortProf" extends="BCsortCat">
 		<Value name="iconUVs" value="0px 288px 48px 48px" />
 	</Profile>
-	<Profile name="SeeContsortpMin" extends="SeeContsortCat">
+	<Profile name="BCsortpMin" extends="BCsortCat">
 		<Value name="iconUVs" value="768px 288px 48px 48px" />
 	</Profile>
 
-	<Profile name="SeeContactiveCat" extends="SeeContsortCat" with="buttonActive" />
-	<Profile name="SeeContactiveProf" extends="SeeContsortProf" with="buttonActive" />
-	<Profile name="SeeContactivepMin" extends="SeeContsortpMin" with="buttonActive" />
+	<Profile name="BCactiveCat" extends="BCsortCat" with="buttonActive" />
+	<Profile name="BCactiveRev" extends="BCsortRev" with="buttonActive" />
+	<Profile name="BCactiveNpc" extends="BCsortNpc" with="buttonActive" />
+	<Profile name="BCactiveProf" extends="BCsortProf" with="buttonActive" />
+	<Profile name="BCactivepMin" extends="BCsortpMin" with="buttonActive" />
 
 	<!-- Filterbox Buttons - - - - - - - - - - - - - - - - - - - - -  -->
 	<Profile name="myFilterOptionPage" extends="emptyPanel" with="anchorMiddleLeft">

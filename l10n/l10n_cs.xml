@@ -57,6 +57,8 @@
 
 		<!-- Sort button help text -->
 		<text name="SC_sortCat" text="任务类型" />
+		<text name="SC_sortRev" text="revenue" />
+		<text name="SC_sortNpc" text="farmer" />
 		<text name="SC_sortProf" text="净利润" />
 		<text name="SC_sortpMin" text="每分钟利润" />
 

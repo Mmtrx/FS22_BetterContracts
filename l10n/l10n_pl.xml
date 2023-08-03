@@ -49,6 +49,8 @@
 
 		<!-- Sort button help text -->
 		<text name="SC_sortCat" text="Typ kontraktu/Nr pola" />
+		<text name="SC_sortRev" text="revenue" />
+		<text name="SC_sortNpc" text="farmer" />
 		<text name="SC_sortProf" text="Zysk netto" />
 		<text name="SC_sortpMin" text="Zysk na minutę" />
 

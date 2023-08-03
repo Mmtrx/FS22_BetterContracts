@@ -32,14 +32,16 @@
 		<GuiElement type="text" profile="betterContractsRight" id="valu6" position="100px 75px" />
 		<GuiElement type="text" profile="betterContractsRight" id="valu7" position="100px 42px" />
 		<!-- Sort buttons -->
-		<GuiElement type="empty" id="sortbox" profile="SeeContSortbox" size="305px 45px" position="3px 0px" anchors="1 1 0 0" >
-			<GuiElement type="boxLayout" profile="ingameMenuMapFilterButtonBox" id="layout" size="120px 42px" position="0px -18px" >
-				<GuiElement type="button" profile="SeeContsortCat" id="sortcat" />
-				<GuiElement type="button" profile="SeeContsortProf" id="sortprof" />
-				<GuiElement type="button" profile="SeeContsortpMin" id="sortpmin" />
+		<GuiElement type="empty" id="sortbox" profile="BCSortbox" size="305px 45px" position="3px 0px" anchors="1 1 0 0" >
+			<GuiElement type="boxLayout" profile="ingameMenuMapFilterButtonBox" id="layout" size="200px 42px" position="0px -18px" >
+				<GuiElement type="button" profile="BCsortCat" id="sortcat" />
+				<GuiElement type="button" profile="BCsortRev" id="sortrev" />
+				<GuiElement type="button" profile="BCsortNpc" id="sortnpc" />
+				<GuiElement type="button" profile="BCsortProf" id="sortprof" />
+				<GuiElement type="button" profile="BCsortpMin" id="sortpmin" />
 			</GuiElement>
-			<GuiElement type="text" profile="betterContractsLeft" id="sort" position="5px 0px" text="$l10n_SC_sort" debugEnabled="false"/>
-			<GuiElement type="text" profile="betterContractsRight" id="helpsort" size="125px 40px" position="55px 0px" text="" debugEnabled="false"/>
+			<GuiElement type="text" profile="betterContractsLeft" id="sort" position="5px 18px" text="$l10n_SC_sort" debugEnabled="false"/>
+		<GuiElement type="text" profile="betterContractsLeft" id="helpsort" size="125px 40px" position="5px -2px" text="" debugEnabled="false"/>
 		</GuiElement>
 	</GuiElement>
 

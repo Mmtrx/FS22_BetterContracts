@@ -26,6 +26,7 @@
 --  v1.2.7.3	20.02.2023	double progress bar active contracts. Fix PnH BGA/ Maize+ 
 --  v1.2.7.5	26.02.2023	display other farms active contracts (MP only)
 --  v1.2.7.6	21.03.2023	format rewd values > 100.000 (issue #113)
+--  v1.2.8.0	03.08.2023	Sort per NPC and contract value
 --=======================================================================================================
 
 --- Adds a new page to the in game menu.
@@ -458,7 +459,13 @@ function populateCell(frCon, list, sect, index, cell)
 	end
 end
 function sortList(frCon, superfunc)
-	-- sort frCon.contracts according to sort button clicked
+	--[[ sort frCon.contracts according to sort button clicked:
+		1 "sortcat",  mission category / field (defaut)
+		2 "sortrev",  Revenue / contract value
+		3 "sortnpc",  NPC farmer offering mission
+		4 "sortprof", net profit
+		5 "sortpmin", net profit per minute
+	]]
 	local self = BetterContracts
 	if not self.isOn or self.sort < 2 then
 		superfunc(frCon)
@@ -468,24 +475,29 @@ function sortList(frCon, superfunc)
 		local av, bv = 1000000.0 * (a.active and 1 or 0) + 500000.0 * (a.finished and 1 or 0), 1000000.0 * (b.active and 1 or 0) + 500000.0 * (b.finished and 1 or 0)
 		local am, bm = a.mission, b.mission
 
-		if self.sort == 3 then -- sort profit per Minute
+		if self.sort == 5 then -- sort profit per Minute
 			-- if permin == 0 for both am, bm, then sort on profit
 			av = av +  50.0 * self.IdToCont[am.id][2].permin + 0.0001 * self.IdToCont[am.id][2].profit
 			bv = bv +  50.0 * self.IdToCont[bm.id][2].permin + 0.0001 * self.IdToCont[bm.id][2].profit
-		elseif self.sort == 2 then -- sort profit
+
+		elseif self.sort == 4 then -- sort profit
 			av = av + self.IdToCont[am.id][2].profit
 			bv = bv + self.IdToCont[bm.id][2].profit
-		--[[
-		elseif self.sort == 1 then -- sort mission category / field #
-			av = av - 10000 * self.IdToCont[am.id][1] - 100 * am.type.typeId
-			if am.field ~= nil then
-				av = av - am.field.fieldId
-			end
-			bv = bv - 10000 * self.IdToCont[bm.id][1] - 100 * bm.type.typeId
-			if bm.field ~= nil then
-				bv = bv - bm.field.fieldId
-			end
-		]]	
+
+		elseif self.sort == 3 then -- sort NPC
+			local anpc, bnpc = am:getNPC().title, bm:getNPC().title 
+			local afield = am.field ~= nil and am.field.fieldId or 0
+			local bfield = bm.field ~= nil and bm.field.fieldId or 0
+			local z = anpc < bnpc and 1000 or -1000
+
+			if anpc == bnpc then z = 0 end
+			av = av + z - afield
+			bv = bv - z - bfield
+
+		elseif self.sort == 2 then -- sort revenue
+			av = av + self.IdToCont[am.id][2].reward
+			bv = bv + self.IdToCont[bm.id][2].reward
+
 		else -- should not happen
 			av, bv = am.generationTime, bm.generationTime
 		end
@@ -501,21 +513,38 @@ function sortList(frCon, superfunc)
 		{	title = g_i18n:getText("fieldJob_finished"),
 			contracts = {}
 		},
-		{	title = g_i18n:getText("SC_sortpMin"):upper(),
+		{	title = g_i18n:getText("SC_sortpMin"):upper(),  -- assume self.sort == 5
 			contracts = {}
 		}
 	}
-	if self.sort == 2 then 
+	if self.sort == 3 then 				-- npc sort, needs multiple sections
+		table.remove(frCon.sectionContracts, 3)
+	elseif self.sort == 4 then 
 		frCon.sectionContracts[3].title = g_i18n:getText("SC_sortProf"):upper()
+	elseif self.sort == 2 then
+		frCon.sectionContracts[3].title = g_i18n:getText("SC_sortRev"):upper()
 	end
-	local lastType = nil
+	local lastNpc, npc = nil
 	for _, contract in ipairs(frCon.contracts) do
 		if contract.active then
 			table.insert(frCon.sectionContracts[1].contracts, contract)
 		elseif contract.finished then
 			table.insert(frCon.sectionContracts[2].contracts, contract)
 		else
-			table.insert(frCon.sectionContracts[3].contracts, contract)
+			if self.sort ~= 3 then 
+				table.insert(frCon.sectionContracts[3].contracts, contract)
+			else 
+				-- if new npc, make a section, else insert contract in current sect
+				npc = contract.mission:getNPC()
+				if lastNpc ~= npc then
+					table.insert(frCon.sectionContracts, {
+						title = npc.title,
+						contracts = {}
+					})
+					lastNpc = npc
+				end
+				table.insert(frCon.sectionContracts[#frCon.sectionContracts].contracts, contract)
+			end
 		end
 	end
 	if #frCon.sectionContracts[2].contracts == 0 then
@@ -726,11 +755,10 @@ function updateButtonsPanel(menu, page)
 end
 function BetterContracts:radioButton(st)
 	-- implement radiobutton behaviour: max. one sort button can be active
-	self.lastSort = self.sort
 	self.sort = st
 	local prof = {
-		active = {"SeeContactiveCat", "SeeContactiveProf", "SeeContactivepMin"},
-		std = {"SeeContsortCat", "SeeContsortProf", "SeeContsortpMin"}
+		active = {"BCactiveCat", "BCactiveRev", "BCactiveNpc", "BCactiveProf", "BCactivepMin"},
+		std = {"BCsortCat", "BCsortRev", "BCsortNpc", "BCsortProf", "BCsortpMin"}
 	}
 	local bname
 	if st == 0 then -- called from buttonCallback() when switching to off
@@ -743,16 +771,13 @@ function BetterContracts:radioButton(st)
 		end
 		return
 	end
-	local a, b = math.fmod(st + 1, 3), math.fmod(st + 2, 3)
-	if a == 0 then
-		a = 3
-	end
-	if b == 0 then
-		b = 3
-	end
 	self.my[self.buttons[st][1]]:applyProfile(prof.active[st]) -- set this Button Active
-	self.my[self.buttons[a][1]]:applyProfile(prof.std[a]) -- reset the other 2
-	self.my[self.buttons[b][1]]:applyProfile(prof.std[b])
+
+	local last = self.lastSort
+	if last > 0 then 
+		self.my[self.buttons[last][1]]:applyProfile(prof.std[last]) -- reset the last active button
+	end
+	self.lastSort = self.sort
 end
 function onClickFilterButton(frCon, button)
 	local self = BetterContracts

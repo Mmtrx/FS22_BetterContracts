@@ -58,6 +58,8 @@
 --							let player instant-ferment wrapped bales
 --  v1.2.7.9	21.04.2023	Allow 240er PackedBales as mission bales, i.e. insta ferment.
 --							Add 240er bales to Kuhn sw4014 wrapper 
+--  v1.2.8.0	03.08.2023	Sort per NPC and contract value. Allow Göweil mission bales.
+--							Allow mowers/ swathers on harvest missions. Tweak plow reward (#137)
 --=======================================================================================================
 SC = {
 	FERTILIZER = 1, -- prices index
@@ -103,7 +105,7 @@ SC = {
 		valu6 = "valu6",
 		valu7 = "valu7",
 		sort = "sort",
-		sortcat = "sortcat",
+		sortcat = "sortcat", "sortrev", "sortnpc",
 		sortprof = "sortprof",
 		sortpmin = "sortpmin",
 		helpsort = "helpsort",
@@ -391,7 +393,7 @@ function initGui(self)
 		self.my[name] = self.frCon.contractBox:getDescendantById(name)
 	end
 	-- set callbacks for our 3 sort buttons
-	for _, name in ipairs({"sortcat", "sortprof", "sortpmin"}) do
+	for _, name in ipairs({"sortcat", "sortrev", "sortnpc", "sortprof", "sortpmin"}) do
 		self.my[name].onClickCallback = onClickSortButton
 		self.my[name].onHighlightCallback = onHighSortButton
 		self.my[name].onHighlightRemoveCallback = onRemoveSortButton
@@ -473,6 +475,8 @@ function BetterContracts:initialize()
 	self.lastSort = 0 	-- last sorted status
 	self.buttons = {
 		{"sortcat", g_i18n:getText("SC_sortCat")}, -- {button id, help text}
+		{"sortrev", g_i18n:getText("SC_sortRev")},
+		{"sortnpc", g_i18n:getText("SC_sortNpc")},
 		{"sortprof", g_i18n:getText("SC_sortProf")},
 		{"sortpmin", g_i18n:getText("SC_sortpMin")}
 	}
@@ -490,10 +494,20 @@ function BetterContracts:initialize()
 
 	-- to show our ingame menu settings page when admin logs in:
 	Utility.appendedFunction(InGameMenuMultiplayerUsersFrame,"onAdminLoginSuccess",adminMP)
+
 	-- to allow forage wagon on bale missions:
 	Utility.overwrittenFunction(BaleMission, "new", baleMissionNew)
+	-- to allow MOWER / SWATHER on harvest missions:
+	Utility.overwrittenFunction(HarvestMission, "new", harvestMissionNew)
+
 	-- to set missionBale for packed 240cm bales:
 	Utility.overwrittenFunction(Bale, "loadBaleAttributesFromXML", loadBaleAttributes)
+
+	-- allow stationary baler to produce mission bales:
+	local pType =  g_vehicleTypeManager:getTypeByName("pdlc_goeweilPack.balerStationary")
+	if pType ~= nil then
+    	SpecializationUtil.registerOverwrittenFunction(pType, "createBale", self.createBale)
+    end
 
 	-- to count and save/load # of jobs per farm per NPC
 	Utility.appendedFunction(AbstractFieldMission,"finish",finish)
@@ -574,6 +588,9 @@ function BetterContracts:onMissionInitialize(baseDirectory, missionCollaborators
 end
 
 function BetterContracts:onSetMissionInfo(missionInfo, missionDynamicInfo)
+	PlowMission.REWARD_PER_HA = 2800 	-- tweak plow reward (#137)
+
+	-- setup new / clear buttons for contracts page:
 	Utility.overwrittenFunction(g_currentMission.inGameMenu, "onClickMenuExtra1", onClickMenuExtra1)
 	Utility.overwrittenFunction(g_currentMission.inGameMenu, "onClickMenuExtra2", onClickMenuExtra2)
 end
@@ -962,9 +979,16 @@ function adminMP(self)
 	BetterContracts.gameMenu:updatePages()
 end
 function baleMissionNew(isServer, superf, isClient, customMt )
+	-- allow forage wagons to collect grass/ hay, for baling/wrapping at stationary baler
 	local self = superf(isServer, isClient, customMt)
 	self.workAreaTypes[WorkAreaType.FORAGEWAGON] = true 
 	self.workAreaTypes[WorkAreaType.CUTTER] = true 
-	-- allow forage wagons to collect grass/ hay, for baling/wrapping at stationary baler
+	return self
+end
+function harvestMissionNew(isServer, superf, isClient, customMt )
+	-- allow mower/ swather to harvest swaths
+	local self = superf(isServer, isClient, customMt)
+	self.workAreaTypes[WorkAreaType.MOWER] = true 
+	self.workAreaTypes[WorkAreaType.FORAGEWAGON] = true 
 	return self
 end

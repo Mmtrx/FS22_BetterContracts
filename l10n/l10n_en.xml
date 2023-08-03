@@ -57,8 +57,10 @@
 
 		<!-- Sort button help text -->
 		<text name="SC_sortCat" text="mission type" />
+		<text name="SC_sortRev" text="revenue" />
+		<text name="SC_sortNpc" text="farmer" />
 		<text name="SC_sortProf" text="net profit" />
-		<text name="SC_sortpMin" text="profit per minute" />
+		<text name="SC_sortpMin" text="profit/min" />
 
 		<!-- Settings Page -->
 		<text name="bc_settingsPage_title" text="Contract Settings" />

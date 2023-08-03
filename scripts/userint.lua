@@ -295,18 +295,6 @@ function BetterContracts:estWorktime(wid, hei, wwid, speed)
 	return netT, netT + nlanes * self.turnTime -- assume 5 sec per u-turn
 end
 
--------------------- allow mission bales in bale/pallet store ------------------------------------
-AbstractBaleObject = PlaceableObjectStorage.ABSTRACT_OBJECTS_BY_CLASS_NAME["Bale"]
-function AbstractBaleObject.isObjectSupported(storage, object)
-	if not storage.spec_objectStorage.supportsBales then
-		return false
-	end
-	if not storage:getObjectStorageSupportsFillType(object:getFillType()) then
-		return false
-	end
-	return true
-end
-
 -------------------- bale fermenting functions ---------------------------------------------------
 BC_Action = {
 	BC_CUT = 1,
@@ -375,7 +363,7 @@ function BaleFermentEvent:run(connection)
 	end
 end
 
--------------------- allow packed bale as mision bale --------------------------------------------
+-------------------- allow packed bale as mission bale --------------------------------------------
 function loadBaleAttributes(self, superf, xmlFile)
 	-- overwrites Bale:loadBaleAttributesFromXML(xmlFile)
 	if self:isa(PackedBale) then 
@@ -386,4 +374,22 @@ function loadBaleAttributes(self, superf, xmlFile)
 		end
 	end
 	return superf(self, xmlFile)
+end
+
+-------------------- let Göweil create mission bale -----------------------------------------------
+function BetterContracts:createBale(superFunc, baleFillType, fillLevel, ...)
+	-- overwrites createBale() in "balerStationary" spec
+	local ret = superFunc(self, baleFillType, fillLevel, ...)
+	if ret then 
+    	local spec = self.spec_baler
+		local bale = spec.bales[#spec.bales]
+		if bale.baleObject ~= nil then 
+			local x,_,z = getWorldTranslation(self.rootNode)
+			local m = g_missionManager:getMissionAtWorldPosition(x,z)
+			if m ~= nil and m.type.name == "mow_bale" then
+				bale.baleObject:setIsMissionBale(true)
+			end
+		end
+	end
+	return ret
 end
