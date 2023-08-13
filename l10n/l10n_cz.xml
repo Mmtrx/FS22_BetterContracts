@@ -49,8 +49,8 @@
 
 		<!-- Sort button help text -->
 		<text name="SC_sortCat" text="Typ mise" />
-		<text name="SC_sortRev" text="revenue" />
-		<text name="SC_sortNpc" text="farmer" />
+		<text name="SC_sortRev" text="Příjem" />
+		<text name="SC_sortNpc" text="Farmář" />
 		<text name="SC_sortProf" text="Čistý zisk" />
 		<text name="SC_sortpMin" text="Zisk za minutu" />
 
