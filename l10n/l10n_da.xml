@@ -14,6 +14,8 @@
 		<text name="bc_detailsOn" text="Detaljer til" />
 
 		<!-- Display texts -->
+		<text name="bc_chaff" text="Cut %s" />
+		<text name="bc_jobType_chaff" text="Forage" />
 		<text name="bc_harvest" text="Høst. " />
 		<text name="bc_leased" text="/ Leaset " />
 		<text name="bc_enoughMissions" text="Din gård har allerede maximum af kontrakter." />

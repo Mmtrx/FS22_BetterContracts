@@ -13,8 +13,10 @@
 		<text name="bc_detailsOff" text="Details aus" />
 		<text name="bc_detailsOn" text="Details an" />
 
-		<!-- Display texts -->
-		<text name="bc_harvest" text="Ernte " />
+		<!-- Display texts --> 
+		<text name="bc_chaff" text="Häcksle %s" />
+		<text name="bc_jobType_chaff" text="Häckseln" />
+		<text name="bc_harvest" text="Ernte %s" />
 		<text name="bc_leased" text="/ Leased " />
 		<text name="bc_enoughMissions" text="Deine Farm hat bereits die maximale Zahl aktiver Lohnaufträge." />
 		<text name="bc_jobsCompleted" text="Anzahl erfolgreicher Jobs: %d" />

@@ -19,6 +19,8 @@
 		<text name="bc_warnCancel" text=" Contract penalty will be at least " />
 
 		<!-- discount mode -->
+		<text name="bc_chaff" text="Cut %s" />
+		<text name="bc_jobType_chaff" text="Forage" />
 		<text name="bc_maxJobs" text="You have reached the maximum discount for %s." />
 		<text name="bc_discount" text=" (%d%% discount)" />
 		<text name="bc_discValue" text="%s grants you %d %% discount for future field purchases." />

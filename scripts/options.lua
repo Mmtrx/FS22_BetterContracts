@@ -236,7 +236,7 @@ function updateDetails(self, section, index)
 
 	-- toggle standard / enhanced progress bars
 	bc:showProgressBars(contract, not noActive and 
-		table.hasElement({"harvest","mow_bale"}, mission.type.name))
+		table.hasElement({"harvest","mow_bale", "chaff"}, mission.type.name))
 	if noActive then return end 
 
 	-- update display for active contracts
@@ -504,6 +504,31 @@ function BetterContracts:onFarmlandStateChanged(landId, farmId)
 		farm.stats.npcJobs[npcIndex] = 0 
 	end
 end
+function farmlandManagerSaveToXMLFile(self, superf, xmlFilename)
+	local xmlFile = createXMLFile("farmlandsXML", xmlFilename, "farmlands")
+	if xmlFile ~= nil then
+		local index = 0
+
+		for farmlandId, farmId in pairs(self.farmlandMapping) do
+			local farmlandKey = string.format("farmlands.farmland(%d)", index)
+
+			setXMLInt(xmlFile, farmlandKey .. "#id", farmlandId)
+			setXMLInt(xmlFile, farmlandKey .. "#farmId", Utils.getNoNil(farmId, FarmlandManager.NO_OWNER_FARM_ID))
+			local farmland = self.farmlands[farmlandId]
+			if farmland ~= nil then 
+				setXMLInt(xmlFile, farmlandKey .. "#npcIndex", farmland.npcIndex)
+			end
+			index = index + 1
+		end
+
+		saveXMLFile(xmlFile)
+		delete(xmlFile)
+
+		return true
+	end
+
+	return false
+end
 ----------------------------------------
 function renderIcon(self, x, y, rot)
 	-- appended to FieldHotspot:render()
@@ -522,6 +547,7 @@ function renderIcon(self, x, y, rot)
 		if icon == nil then 
 			if typeName == "cultivate"  or typeName=="roll" then other = "plow" 
 			elseif typeName=="spray" or typeName=="lime" then other = "fertilize"
+			elseif typeName=="chaff" then other = "harvest"
 			elseif typeName=="mow_bale" then 
 				other = "hay"
 				if mission.fillType == FillType.SILAGE then other = "silage"

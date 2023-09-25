@@ -24,6 +24,8 @@
 		<text name="bc_discValue" text="%s grants you %d %% discount for future field purchases." />
 
 		<!-- Display texts -->
+		<text name="bc_chaff" text="Cut %s" />
+		<text name="bc_jobType_chaff" text="Forage" />
 		<text name="bc_harvest" text="Harv. " />
 		<text name="bc_leased" text="/ Leased " />
 		<text name="bc_enoughMissions" text="Your farm already has the maximum number of contracts." />

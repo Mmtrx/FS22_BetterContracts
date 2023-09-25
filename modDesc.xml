@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <modDesc descVersion="75">
 	<author>Mmtrx</author>
-	<version>1.2.8.0</version>
+	<version>1.2.8.2</version>
 	<title>
 		<en>Better Contracts</en>
 	</title>
@@ -23,6 +23,11 @@ With the "Details" button you can toggle on/ off the display of additional contr
 Disclaimer: All values shown in details display are ESTIMATES. You should not take them absolutely, but rather as an indication of what contracts to prefer among others.
 
 The mod keeps track of the amount of contracts you completed for each of the NPC farmers (number of completed jobs is displayed below the farmers image, if "Details" on). If you enable the optional discount mode or hard mode options (on the mods settings page), the amount of completed jobs influence gameplay.
+
+Changelog v1.2.8.2
+- Save NPC farmland owners to farmland.xml (#153).
+- Insta-ferment only in debug mode (#158)
+- Support chaff mission 
 
 Changelog v1.2.8.0
 - Tweak plow reward. Sort per NPC and contract value (#137) 
@@ -111,6 +116,16 @@ Mit dem "Details" Button kann die Anzeige der zusätzlichen Vertragsdetails ein-
 Warnung: Alle in der Detailanzeige angegebenen Werte sind GESCHÄTZT. Sie sollten sie also nicht als absolute Zahlen verstehen, sondern als Hinweis, welche Verträge vielleicht anderen vorzuziehen sind.
 
 Die Mod merkt sich die Anzahl Verträge, die Sie für jeden der NPC Farmer abgeschlossen haben (die Zahl wird unter dem Bild des Farmers angezeigt, wenn "Details" an ist). Wenn der optionale Discount Modus oder der Hard Modus aktiviert wird, beeinflusst die Anzahl abgeschlossener Jobs das Spielgeschehen.
+
+Changelog v1.2.8.2
+- NPC Farmland-Besitzer speichern, damit nach Restart ein Feld noch den selben Besitzer hat (#153).
+- Schnell-gären nur noch im debug mode (#158)
+- Unterstützung für Häckselaufträge (FS22_ChaffMissions)
+
+Changelog v1.2.8.0
+- Tweak plow reward. Sort per NPC and contract value (#137) 
+- Allow mowers/ swathers on harvest missions (#137)
+- Allow Göweil mission bales (#144)
 
 Changelog v1.2.7.9
 - Gepackte 240er Ballen können mit dem im Mod enthaltenen arcusin Multipack D14 nun auch bei Gras-Missionen verwendet werden (#131)

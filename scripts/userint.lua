@@ -307,7 +307,7 @@ function BaleActivatable:getIsActivatable()
 			self.action = BC_Action.BC_CUT
 			return true
 		end
-		if self.bale:getIsFermenting() then
+		if BetterContracts.config.debug and self.bale:getIsFermenting() then
 			self.activateText = g_i18n:getText("bc_ferment")
 			self.action = BC_Action.BC_FERMENT
 			return true

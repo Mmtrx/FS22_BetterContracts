@@ -443,7 +443,11 @@ function populateCell(frCon, list, sect, index, cell)
 		if cat == SC.HARVEST and cont ~= nil then 
 			-- overwrite "contract" with fruittype to harvest
 			local fruit = cell:getAttribute("contract")
-			fruit:setText(g_i18n:getText("bc_harvest").. cont.ftype)
+			local txt = string.format(g_i18n:getText("bc_harvest"), cont.ftype)
+			if m.type.name == "chaff" then 
+				txt = string.format(g_i18n:getText("bc_chaff"), self.ft[m.orgFillType].title)
+			end
+			fruit:setText(txt)
 		end
 	end
 	profit:setVisible(showProf)

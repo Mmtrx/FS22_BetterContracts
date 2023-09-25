@@ -60,6 +60,8 @@
 --							Add 240er bales to Kuhn sw4014 wrapper 
 --  v1.2.8.0	03.08.2023	Sort per NPC and contract value. Allow Göweil mission bales.
 --							Allow mowers/ swathers on harvest missions. Tweak plow reward (#137)
+--  v1.2.8.1	17.08.2023	save NPC farmland owners to farmland.xml (#153).
+--  v1.2.8.2	22.09.2023	support chaff mission. Insta-ferment only in debug mode (#158)
 --=======================================================================================================
 SC = {
 	FERTILIZER = 1, -- prices index
@@ -168,6 +170,7 @@ function catMissionTypes(self)
 	addMapping("destructibleRocks","destructibleRockMission_title", SC.OTHER) 	-- Platinum DLC mission by Giants
 	addMapping("roll","helpLine_ImproveYield_Rolling", SC.SIMPLE) 		-- roller mission by tn4799
 	addMapping("lime","helpLine_ImproveYield_Liming", SC.SPREAD) 		-- lime mission by Mmtrx
+	addMapping("chaff","bc_jobType_chaff", SC.HARVEST) 					-- chaff mission by Mmtrx
 	for _, missionType in pairs(g_missionManager.missionTypes) do
 		if self.typeToCat[missionType.typeId] == nil then
 			addMapping(missionType.name, SC.OTHER) -- default category for not registered mission types
@@ -515,6 +518,7 @@ function BetterContracts:initialize()
 	Utility.appendedFunction(FarmStats,"loadFromXMLFile",loadFromXML)
 	Utility.appendedFunction(Farm,"writeStream",farmWrite)
 	Utility.appendedFunction(Farm,"readStream",farmRead)
+	Utility.overwrittenFunction(FarmlandManager, "saveToXMLFile", farmlandManagerSaveToXMLFile)
 
 	-- to adjust contracts reward / vehicle lease values:
 	Utility.overwrittenFunction(AbstractFieldMission,"getReward",getReward)
