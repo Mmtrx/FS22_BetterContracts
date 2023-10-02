@@ -2,19 +2,19 @@
 <l10n>
 	<texts>
 		<!-- Keys -->
-		<text name = "input_MENU_EXTRA_3" text = "Better Contracts: Szczegóły wł./wył."/>
-		<text name = "input_BC_MTOGGLE" text = "BC: Przełącz wyświetlanie aktywnych umów rolniczych"/>
-		<text name = "bc_ferment" text = "Fermentacja bel"/>
+		<text name="input_MENU_EXTRA_3" text="Better Contracts: Szczegóły wł./wył."/>
+		<text name="input_BC_MTOGGLE" text="BC: Przełącz wyświetlanie aktywnych kontraktów rolniczych"/>
+		<text name="bc_ferment" text="Fermentacja bel"/>
 		<!-- Gui Buttons -->
-		<text name="bc_hidden" text="Ukryty: %d" />
+		<text name="bc_hidden" text="Ukrytych: %d" />
 		<text name="bc_other" text="Inny" />
 		<text name="bc_new_contracts" text="Nowe kontrakty" />
 		<text name="bc_clear_contracts" text="Wyczyść kontrakty" />
 		<text name="bc_detailsOff" text="Szczegóły wył." />
 		<text name="bc_detailsOn" text="Szczegóły wł." />
 
-		<text name="bc_chaff" text="Cut %s" />
-		<text name="bc_jobType_chaff" text="Forage" />
+		<text name="bc_chaff" text="Zetnij %s" />
+		<text name="bc_jobType_chaff" text="Ścieczka qq" />
 		<text name="bc_harvest" text="Zbiór " />
 		<text name="bc_leased" text="/ Wynajęte  " />
 		<text name="bc_enoughMissions" text="Twój gospodarstwo osiągnęło już maksymalną liczbę kontraktów." />
@@ -51,8 +51,8 @@
 
 		<!-- Sort button help text -->
 		<text name="SC_sortCat" text="Typ kontraktu/Nr pola" />
-		<text name="SC_sortRev" text="revenue" />
-		<text name="SC_sortNpc" text="farmer" />
+		<text name="SC_sortRev" text="Przychód" />
+		<text name="SC_sortNpc" text="Zleceniodawca" />
 		<text name="SC_sortProf" text="Zysk netto" />
 		<text name="SC_sortpMin" text="Zysk na minutę" />
 
