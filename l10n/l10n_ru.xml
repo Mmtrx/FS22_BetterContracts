@@ -75,10 +75,10 @@
 		<text name="bc_maxActive_tooltip" text="Максимальное количество одновременно активных контрактов." />
 		<text name="bc_refreshMP" text="Управляющий контрактами в МП" />
 		<text name="bc_refreshMP_tooltip" text="Кто может удалять/обновлять контракты в сетевой игре." />
-		<text name="bc_ferment" text="Insta-Fermenting" />
-		<text name="bc_ferment_tooltip" text="Allows player to insta-ferment a wrapped grass bale from the F1 menu." />
-		<text name="bc_forcePlow" text="Root Crop Plowing" />
-		<text name="bc_forcePlow_tooltip" text="Every harvest of corn/ potato/ sugarbeet requires subsequent plowing." />
+		<text name="bc_ferment" text="Мгновенная ферментация" />
+		<text name="bc_ferment_tooltip" text="Позволяет игроку мгновенно ферментировать обёрнутый тюк травы из меню F1." />
+		<text name="bc_forcePlow" text="Вспашка после сбора корнеплодов" />
+		<text name="bc_forcePlow_tooltip" text="Каждый урожай кукурузы/картофеля/сахарной свёклы требует последующей вспашки." />
 		<text name="bc_debug" text="Режим отладки" />
 		<text name="bc_debug_tooltip" text="Информационные сообщения в журнале, если активировано. Может помочь найти ошибки." />
 
