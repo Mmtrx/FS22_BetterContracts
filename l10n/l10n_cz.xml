@@ -4,7 +4,7 @@
 		<!-- Keys -->
 		<text name = "input_MENU_EXTRA_3" text = "Vylepšené zakázky: Detaily zap/vyp"/>
 		<text name = "input_BC_MTOGGLE" text = "BC: Přepnout zobrazení aktivních zakázek farmy"/>
-		<text name = "bc_ferment" text = "Kvašené balíky"/>
+		<text name = "bc_actionFerment" text = "Kvašené balíky"/>
 		<!-- Gui Buttons -->
 		<text name="bc_hidden" text="Skryté: %d" />
 		<text name="bc_other" text="Další" />
@@ -76,6 +76,10 @@
 		<text name="bc_maxActive_tooltip" text="Maximální počet současně aktivních zakázek." />
 		<text name="bc_refreshMP" text="Seznam práv pro zakázky" />
 		<text name="bc_refreshMP_tooltip" text="Kdo může mazat/obnovovat smlouvy ve hře MP." />
+		<text name="bc_ferment" text="Insta-Fermenting" />
+		<text name="bc_ferment_tooltip" text="Allows player to insta-ferment a wrapped grass bale from the F1 menu." />
+		<text name="bc_forcePlow" text="Root Crop Plowing" />
+		<text name="bc_forcePlow_tooltip" text="Every harvest of corn/ potato/ sugarbeet requires subsequent plowing." />
 		<text name="bc_debug" text="Vývojářský mód" />
 		<text name="bc_debug_tooltip" text="Vytiskne informační zprávy do protokolu, pokud je aktivní. Může pomoci najít chyby." />
 

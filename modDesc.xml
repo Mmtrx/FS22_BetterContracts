@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<modDesc descVersion="75">
+<modDesc descVersion="77">
 	<author>Mmtrx</author>
-	<version>1.2.8.2</version>
+	<version>1.2.8.3</version>
 	<title>
 		<en>Better Contracts</en>
 	</title>
@@ -24,9 +24,9 @@ Disclaimer: All values shown in details display are ESTIMATES. You should not ta
 
 The mod keeps track of the amount of contracts you completed for each of the NPC farmers (number of completed jobs is displayed below the farmers image, if "Details" on). If you enable the optional discount mode or hard mode options (on the mods settings page), the amount of completed jobs influence gameplay.
 
-Changelog v1.2.8.2
+Changelog v1.2.8.3
+- Force plow after root crop harvest (#123). Insta-ferment separate setting (#158)
 - Save NPC farmland owners to farmland.xml (#153).
-- Insta-ferment only in debug mode (#158)
 - Support chaff mission 
 
 Changelog v1.2.8.0
@@ -117,9 +117,9 @@ Warnung: Alle in der Detailanzeige angegebenen Werte sind GESCHÄTZT. Sie sollte
 
 Die Mod merkt sich die Anzahl Verträge, die Sie für jeden der NPC Farmer abgeschlossen haben (die Zahl wird unter dem Bild des Farmers angezeigt, wenn "Details" an ist). Wenn der optionale Discount Modus oder der Hard Modus aktiviert wird, beeinflusst die Anzahl abgeschlossener Jobs das Spielgeschehen.
 
-Changelog v1.2.8.2
+Changelog v1.2.8.3
+- Wurzelfrüchte erfordern Pflügen (#123). Schnell-gären als separates Setting (#158)
 - NPC Farmland-Besitzer speichern, damit nach Restart ein Feld noch den selben Besitzer hat (#153).
-- Schnell-gären nur noch im debug mode (#158)
 - Unterstützung für Häckselaufträge (FS22_ChaffMissions)
 
 Changelog v1.2.8.0

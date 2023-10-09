@@ -4,7 +4,7 @@
 		<!-- Keys -->
 		<text name = "input_MENU_EXTRA_3" text = "更好的合同：开启/关闭详情"/>
 		<text name = "input_BC_MTOGGLE" text = "BC: Toggle display of active farm contracts"/>
-		<text name = "bc_ferment" text = "Ferment Bale"/>
+		<text name = "bc_actionFerment" text = "Ferment Bale"/>
 		<!-- Gui Buttons -->
 		<text name="bc_hidden" text="隐藏的：%d" />
 		<text name="bc_other" text="其他" />
@@ -76,6 +76,10 @@
 		<text name="bc_maxActive_tooltip" text="同时生效的合同的最大数量。" />
 		<text name="bc_refreshMP" text="合同权限列表" />
 		<text name="bc_refreshMP_tooltip" text="谁可以在多人游戏中删除/刷新合同。" />
+		<text name="bc_ferment" text="Insta-Fermenting" />
+		<text name="bc_ferment_tooltip" text="Allows player to insta-ferment a wrapped grass bale from the F1 menu." />
+		<text name="bc_forcePlow" text="Root Crop Plowing" />
+		<text name="bc_forcePlow_tooltip" text="Every harvest of corn/ potato/ sugarbeet requires subsequent plowing." />
 		<text name="bc_debug" text="Debug模式" />
 		<text name="bc_debug_tooltip" text="打印信息到日志。可以帮助寻找Bug。" />
 

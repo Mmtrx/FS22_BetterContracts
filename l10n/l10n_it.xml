@@ -3,7 +3,7 @@
 	<texts>
 		<!-- Keys -->
 		<text name = "input_MENU_EXTRA_3" text = "Better Contracts: Détails on/off"/>
-		<text name = "bc_ferment" text = "Ferment Bale"/>
+		<text name = "bc_actionFerment" text = "Ferment Bale"/>
 		<text name = "input_BC_MTOGGLE" text = "BC: Toggle display of active farm contracts"/>
 		<!-- Gui Buttons -->
 		<text name="bc_hidden" text="Hidden: %d" />
@@ -76,6 +76,10 @@
 		<text name="bc_maxActive_tooltip" text="Max number of concurrently active contracts." />
 		<text name="bc_refreshMP" text="Permission contracts list" />
 		<text name="bc_refreshMP_tooltip" text="Who can delete / refresh contracts in an MP game." />
+		<text name="bc_ferment" text="Insta-Fermenting" />
+		<text name="bc_ferment_tooltip" text="Allows player to insta-ferment a wrapped grass bale from the F1 menu." />
+		<text name="bc_forcePlow" text="Root Crop Plowing" />
+		<text name="bc_forcePlow_tooltip" text="Every harvest of corn/ potato/ sugarbeet requires subsequent plowing." />
 		<text name="bc_debug" text="Debug Modus" />
 		<text name="bc_debug_tooltip" text="Prints info messages to the log if active. Can help to find bugs." />
 

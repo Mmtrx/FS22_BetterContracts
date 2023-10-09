@@ -9,6 +9,7 @@
 --  v1.2.7.4	22.02.2023	increase range for "toDeliver". Add setting "toDeliverBale"
 --  v1.2.7.7	29.03.2023	add "off" values to hardMode settings
 --  v1.2.7.9	03.05.2023	more values discPerJob, discMaxJobs
+--  v1.2.8.3	10.10.2023	force plow after root crop harvest. Insta-ferment separate setting (#158)
 --=======================================================================================================
 local function lazyNPCDisabled()
 	return not BetterContracts.config.lazyNPC
@@ -81,6 +82,20 @@ BCSettingsBySubtitle = {
 		tooltip = "bc_refreshMP_tooltip",
 		isDisabledFunc = function() 
 			return not g_currentMission.missionDynamicInfo.isMultiplayer end,
+			},
+		{name = "ferment",
+		values = {false, true},
+		texts = {"ui_off", "ui_on"},
+		default = 1,
+		title = "bc_ferment",
+		tooltip = "bc_ferment_tooltip",
+			},
+		{name = "forcePlow",
+		values = {false, true},
+		texts = {"ui_off", "ui_on"},
+		default = 1,
+		title = "bc_forcePlow",
+		tooltip = "bc_forcePlow_tooltip",
 			},
 		{name = "debug",
 		values = {false, true},

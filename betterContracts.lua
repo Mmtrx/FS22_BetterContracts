@@ -62,6 +62,7 @@
 --							Allow mowers/ swathers on harvest missions. Tweak plow reward (#137)
 --  v1.2.8.1	17.08.2023	save NPC farmland owners to farmland.xml (#153).
 --  v1.2.8.2	22.09.2023	support chaff mission. Insta-ferment only in debug mode (#158)
+--  v1.2.8.3	10.10.2023	force plow after root crop harvest (#123). Insta-ferment separate setting (#158)
 --=======================================================================================================
 SC = {
 	FERTILIZER = 1, -- prices index
@@ -423,6 +424,8 @@ function BetterContracts:initialize()
 	self.initialized = false
 	self.config = {
 		debug = false, 				-- debug mode
+		ferment = false, 			-- allow insta-fermenting wrapped bales by player
+		forcePlow = false, 			-- force plow after root crop harvest
 		maxActive = 3, 				-- max active contracts
 		multReward = 1., 			-- general reward multiplier
 		multLease = 1.,				-- general lease cost multiplier
@@ -502,6 +505,9 @@ function BetterContracts:initialize()
 	Utility.overwrittenFunction(BaleMission, "new", baleMissionNew)
 	-- to allow MOWER / SWATHER on harvest missions:
 	Utility.overwrittenFunction(HarvestMission, "new", harvestMissionNew)
+
+	-- to allow MOWER / SWATHER on harvest missions:
+	Utility.prependedFunction(HarvestMission, "completeField", harvestCompleteField)
 
 	-- to set missionBale for packed 240cm bales:
 	Utility.overwrittenFunction(Bale, "loadBaleAttributesFromXML", loadBaleAttributes)

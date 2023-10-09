@@ -16,6 +16,7 @@
 --  v1.2.7.2 	12.02.2023	icon for roller missions. Don't show negative togos
 --  v1.2.7.3	20.02.2023	double progress bar active contracts. Fix PnH BGA/ Maize+ 
 --  v1.2.7.7	29.03.2023	add "off" values to hardMode settings
+--  v1.2.8.3	10.10.2023	force plow after root crop harvest. Insta-ferment separate setting (#158)
 --=======================================================================================================
 
 --------------------- lazyNPC --------------------------------------------------------------------------- 
@@ -567,5 +568,15 @@ function renderIcon(self, x, y, rot)
 		--icon:setColor(r, g, b, a * alpha)
 		icon:setScale(self.scale, self.scale)
 		icon:render()
+	end
+end
+
+function harvestCompleteField(self)
+	-- prepended to HarvestMission:completeField()
+	if not BetterContracts.conf.forcePlow then return end
+	
+	local ft = g_fruitTypeManager:getFruitTypeByIndex(self.field.fruitType)
+	if string.find("MAIZE POTATO SUGARBEET", ft.name) then 
+		self.fieldPlowFactor = 0 -- force plowing after root crop harvest
 	end
 end

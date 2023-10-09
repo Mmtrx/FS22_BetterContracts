@@ -4,7 +4,7 @@
 		<!-- Keys -->
 		<text name = "input_MENU_EXTRA_3" text = "BC: Details an/aus"/>
 		<text name = "input_BC_MTOGGLE" text = "BC: Anzeige aktiver Farm-Verträge an/aus"/>
-		<text name = "bc_ferment" text = "Ballen fermentieren"/>
+		<text name = "bc_actionFerment" text = "Ballen fermentieren"/>
 		<!-- Gui Buttons -->
 		<text name="bc_hidden" text="Ausgeblendet: %d" />
 		<text name="bc_other" text="Sonstige" />
@@ -79,6 +79,10 @@
 		<text name="bc_toDeliver_tooltip" text="Pozentsatz des theoretisch möglichen Ertrags, der zur Erfüllung eines Erntevertrags abgeliefert werden muss." />
 		<text name="bc_refreshMP" text="Berechtigung Vertragsliste" />
 		<text name="bc_refreshMP_tooltip" text="Wer in einem MP-Spiel Verträge löschen/ erzeugen darf" />
+		<text name="bc_ferment" text="Insta-Gären" />
+		<text name="bc_ferment_tooltip" text="Der Spieler kann einen gewickelten Grasballen sofort fertig gären (F1 menu)." />
+		<text name="bc_forcePlow" text="Wurzelfrüchte pflügen" />
+		<text name="bc_forcePlow_tooltip" text="Nach jeder Ernte von Mais/ Kartoffeln/ Rüben muss das Feld gepflügt werden." />
 		<text name="bc_debug" text="Debug Modus" />
 		<text name="bc_debug_tooltip" text="Wenn aktiviert, werden Info Meldungen in die Log-Datei geschrieben. Kann bei der Fehlersuche helfen." />
 

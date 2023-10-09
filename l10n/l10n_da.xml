@@ -4,7 +4,7 @@
 		<!-- Keys -->
 		<text name = "input_MENU_EXTRA_3" text = "Better Contracts: Detaljer til/fra"/>
 		<text name = "input_BC_MTOGGLE" text = "BC: Skift visning af aktive gård kontrakter"/>
-		<text name = "bc_ferment" text = "Fermenter Balle"/>
+		<text name = "bc_actionFerment" text = "Fermenter Balle"/>
 		<!-- Gui Buttons -->
 		<text name="bc_hidden" text="Skjulte: %d" />
 		<text name="bc_other" text="Andre" />
@@ -79,6 +79,10 @@
 		<text name="bc_toDeliver_tooltip" text="Procent af den beregnet total udbytte du skal levere for at færdiggøre en høst kontrakt." />
 		<text name="bc_refreshMP" text="Kontrakt liste tilladelser" />
 		<text name="bc_refreshMP_tooltip" text="Hvem kan slette / opdatere kontrakter i et MP game." />
+		<text name="bc_ferment" text="Insta-Fermenting" />
+		<text name="bc_ferment_tooltip" text="Allows player to insta-ferment a wrapped grass bale from the F1 menu." />
+		<text name="bc_forcePlow" text="Root Crop Plowing" />
+		<text name="bc_forcePlow_tooltip" text="Every harvest of corn/ potato/ sugarbeet requires subsequent plowing." />
 		<text name="bc_debug" text="Debug Mode" />
 		<text name="bc_debug_tooltip" text="Printer info beskeder til log vis aaktiv. Kan hjælpe med at finde bugs." />
 
