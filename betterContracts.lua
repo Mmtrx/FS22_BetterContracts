@@ -63,6 +63,7 @@
 --  v1.2.8.1	17.08.2023	save NPC farmland owners to farmland.xml (#153).
 --  v1.2.8.2	22.09.2023	support chaff mission. Insta-ferment only in debug mode (#158)
 --  v1.2.8.3	10.10.2023	force plow after root crop harvest (#123). Insta-ferment separate setting (#158)
+--  v1.2.8.4	10.10.2023	add settings ferment, forcePlow to readconfig(), onPostSaveSavegame()
 --=======================================================================================================
 SC = {
 	FERTILIZER = 1, -- prices index
@@ -244,6 +245,8 @@ function readconfig(self)
 		local key = self.baseXmlKey
 
 		self.config.debug =		xmlFile:getValue(key.."#debug", false)			
+		self.config.ferment =	xmlFile:getValue(key.."#ferment", false)			
+		self.config.forcePlow =	xmlFile:getValue(key.."#forcePlow", false)			
 		self.config.maxActive = xmlFile:getValue(key.."#maxActive", 3)
 		self.config.multReward= xmlFile:getValue(key.."#reward", 1.)
 		self.config.multLease = xmlFile:getValue(key.."#lease", 1.)
@@ -693,6 +696,8 @@ function BetterContracts:onPostSaveSavegame(saveDir, savegameIndex)
 	local conf = self.config
 	local key = self.baseXmlKey 
 	xmlFile:setBool ( key.."#debug", 		  conf.debug)
+	xmlFile:setBool ( key.."#ferment", 		  conf.ferment)
+	xmlFile:setBool ( key.."#forcePlow", 	  conf.forcePlow)
 	xmlFile:setInt  ( key.."#maxActive",	  conf.maxActive)
 	xmlFile:setFloat( key.."#reward", 		  conf.multReward)
 	xmlFile:setFloat( key.."#lease", 		  conf.multLease)
