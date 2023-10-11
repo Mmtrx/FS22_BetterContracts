@@ -63,7 +63,7 @@
 --  v1.2.8.1	17.08.2023	save NPC farmland owners to farmland.xml (#153).
 --  v1.2.8.2	22.09.2023	support chaff mission. Insta-ferment only in debug mode (#158)
 --  v1.2.8.3	10.10.2023	force plow after root crop harvest (#123). Insta-ferment separate setting (#158)
---  v1.2.8.4	10.10.2023	add settings ferment, forcePlow to readconfig(), onPostSaveSavegame()
+--  v1.2.8.5	10.10.2023	add settings ferment, forcePlow to readconfig(), onPostSaveSavegame()
 --=======================================================================================================
 SC = {
 	FERTILIZER = 1, -- prices index
@@ -204,6 +204,8 @@ function registerXML(self)
 	self.baseXmlKey = "BetterContracts"
 	self.xmlSchema = XMLSchema.new(self.baseXmlKey)
 	self.xmlSchema:register(XMLValueType.BOOL, self.baseXmlKey.."#debug")
+	self.xmlSchema:register(XMLValueType.BOOL, self.baseXmlKey.."#ferment")
+	self.xmlSchema:register(XMLValueType.BOOL, self.baseXmlKey.."#forcePlow")
 	self.xmlSchema:register(XMLValueType.BOOL, self.baseXmlKey.."#lazyNPC")
 	self.xmlSchema:register(XMLValueType.BOOL, self.baseXmlKey.."#discount")
 	self.xmlSchema:register(XMLValueType.BOOL, self.baseXmlKey.."#hard")
