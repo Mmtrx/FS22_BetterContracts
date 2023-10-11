@@ -573,7 +573,7 @@ end
 
 function harvestCompleteField(self)
 	-- prepended to HarvestMission:completeField()
-	if not BetterContracts.conf.forcePlow then return end
+	if not BetterContracts.config.forcePlow then return end
 	
 	local ft = g_fruitTypeManager:getFruitTypeByIndex(self.field.fruitType)
 	if string.find("MAIZE POTATO SUGARBEET", ft.name) then 
