@@ -77,6 +77,7 @@
 		<text name="bc_refreshMP" text="Seznam práv pro zakázky" />
 		<text name="bc_refreshMP_tooltip" text="Kdo může mazat/obnovovat smlouvy ve hře MP." />
 		<text name="bc_ferment" text="Okamžitá fermentace" />
+
 		<text name="bc_ferment_tooltip" text="Umožňuje hráči okamžitě fermentovat zabalený balík trávy z nabídky F1." />
 		<text name="bc_forcePlow" text="Vyorávání po kořenových plodinách" />
 		<text name="bc_forcePlow_tooltip" text="Každá sklizeň kukuřice/brambor/cukrové řepy vyžaduje následnou orbu." />
