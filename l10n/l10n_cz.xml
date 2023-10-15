@@ -25,7 +25,7 @@
 
 		<!-- Display texts -->
 		<text name="bc_chaff" text="Řezání %s" />
-		<text name="bc_jobType_chaff" text="Řezání" />
+		<text name="bc_jobType_chaff" text="Řezanka" />
 		<text name="bc_harvest" text="Skliz. " />
 		<text name="bc_leased" text="/ Nájem " />
 		<text name="bc_enoughMissions" text="Vaše farma již má maximální počet zakázek." />
@@ -77,8 +77,9 @@
 		<text name="bc_refreshMP" text="Seznam práv pro zakázky" />
 		<text name="bc_refreshMP_tooltip" text="Kdo může mazat/obnovovat smlouvy ve hře MP." />
 		<text name="bc_ferment" text="Okamžitá fermentace" />
-		<text name="bc_ferment_tooltip" text="Umožňuje hráči okamžitě fermentovat ovinutou trávu z nabídky F1." />
-		<text name="bc_forcePlow" text="Orání po sklizni" />
+
+		<text name="bc_ferment_tooltip" text="Umožňuje hráči okamžitě fermentovat zabalený balík trávy z nabídky F1." />
+		<text name="bc_forcePlow" text="Vyorávání po kořenových plodinách" />
 		<text name="bc_forcePlow_tooltip" text="Každá sklizeň kukuřice/brambor/cukrové řepy vyžaduje následnou orbu." />
 		<text name="bc_debug" text="Vývojářský mód" />
 		<text name="bc_debug_tooltip" text="Vytiskne informační zprávy do protokolu, pokud je aktivní. Může pomoci najít chyby." />
