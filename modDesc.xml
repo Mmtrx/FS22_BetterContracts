@@ -295,6 +295,94 @@ Registro de alterações v1.2.2.0:
 - Adicionado suporte para FS22_SupplyTransportContracts, FS22_TransportMissions
 ]]>
 		</br>
+		<pl>
+			<![CDATA[
+"Jeśli kiedykolwiek zadawaliście sobie pytania takie jak: "Czy powinienem przyjąć te trzy misje związane z nawozami, czy może raczej umowę na zbiór ziemniaków na 2,3 hektara?" lub "Ile płynnego nawozu będę potrzebować do tego zadania?" to ten mod pomoże znaleźć odpowiedzi.
+Maksymalna liczba umów i ilość generowanych kontraktów w każdym cyklu jest automatycznie dostosowywana do liczby pól na mapie. Możesz natychmiast generować nowe kontrakty za pomocą przycisku "Nowe Kontrakty" lub usunąć wszystkie za pomocą przycisku "Wyczyść Kontrakty".
+Możesz sortować dostępne kontrakty według typu i numeru pola, według całkowitego zysku lub zysku na minutę, aby ułatwić znalezienie tego, który cię interesuje. Możesz ustawić maksymalną liczbę jednocześnie aktywnych kontraktów.
+Dzięki przyciskowi "Szczegóły" możesz włączyć/wyłączyć wyświetlanie dodatkowych informacji o kontrakcie. Takie jak szacunki kosztów materiałów eksploatacyjnych, takich jak nawóz, herbicyd lub nasiona. 
+Dla kontraktów związanych z żniwem i owijaniem balotów pokazuje minimalną ilość do dostarczenia oraz ilość, którą można zachować (i sprzedać).
+Na tej podstawie oblicza się łączną wartość zysku z kontraktu, czyli nagrodę minus koszty dla kontraktów dotyczących nawożenia, oprysku lub siewu, a nagrodę plus wartość zachowanego żniwa dla kontraktów żniwowych lub balowania. 
+Mod szacuje nawet czas, jaki prawdopodobnie będzie potrzebny do całkowitego ukończenia zadania, biorąc pod uwagę prędkość pracy i szerokość roboczą odpowiednich pojazdów/narzędzi leasingowych oferowanych w ramach kontraktu.
+Uwaga: Wszystkie wartości wyświetlane w widoku szczegółów są SZACUNKAMI. Nie należy traktować ich jako absolutnych, lecz raczej jako wskazówki do wyboru preferowanych kontraktów wśród innych.
+Mod śledzi ilość zakończonych kontraktów dla każdego z rolników NPC (liczba zakończonych zadań jest wyświetlana poniżej obrazu rolnika, jeśli opcja "Szczegóły" jest włączona).
+Jeśli włączysz opcję trybu rabatowego lub trybu trudnego (w ustawieniach modu), ilość zakończonych zadań wpływa na rozgrywkę.
+
+Changelog v1.2.8.5
+Przymusowe oranie po zbiorach korzeniowych (#123). Oddzielna opcja instantfermentacji (#158)
+Zapis właścicieli farm NPC w farmland.xml (#153).
+Wsparcie dla misji z sianiem trawy.
+
+Changelog v1.2.8.0
+Dostosowana nagroda za orkę. Sortowanie według NPC i wartości kontraktu (#137)
+Pozwala na kosiarki/kosy na misjach żniw (#137)
+Pozwala na belki misji Göweil (#144)
+			
+Changelog v1.2.7.9
+Pozwala na 240er bale jako bale misji, czyli instantfermentacja (wymaga modu arcusin Multipack D14) (#131)
+Dodane 240er bali do owijarki Kuhn sw4014.
+			
+Changelog v1.2.7.8:
+Pozwala na natychmiastową fermentację owiniętych belek
+Pozwala na bale misji w magazynie
+Rozpoznaje nieznane fillTypes
+Dodaje wartości "wyłącz" do ustawień trybu trudnego
+Pozwala na wóz do zbierania kiszonki na misjach z sianiem trawy (#118)
+Formatowanie wartości nagrody > 100.000 (#113)
+Odczytuje userDefined z modSettings/FS22_BetterContracts/<nazwaMapy>/ (problem #115)
+			
+Changelog v1.2.7.5:
+Dodaje wyświetlanie wszystkich aktywnych zadań w gospodarstwach (tylko w trybie wieloosobowym)
+Zwiększa zakres ustawień dla sukcesu zbiorów, oddzielna opcja dla owijania
+Dodaje drugi pasek postępu dla aktywnych kontraktów żniwnych
+Naprawia problem Maize+ z Pumps'n Hoses BGA
+Dodaje ustawienie zmiany interwału czasowego między generacjami kontraktów
+Naprawia brakującą ikonę dla misji z wałkiem, nie wyświetla negatywnych wartości "do zrobienia"
+Naprawia tagi misji wizualnych dla trybu wieloosobowego: renderIcon().
+			
+Changelog v1.2.7.0:
+Naprawia problem z klikaniem myszą "Kup Farmland"
+Dodaje opcję zmiany współczynnika sukcesu kontraktu żniw
+Tagi wizualne dla pól misji i pojazdów
+Pokazuje wynajęte pojazdy dla aktywnych kontraktów.
+			
+Changelog v1.2.6.2:
+Strona ustawień interfejsu użytkownika w głównym menu
+Pokazuje właściciela rolnictwa w widoku zakupu/sprzedaży farmland w mapie w menu gry
+Wyświetla liczbę zakończonych zadań pod obrazem rolnika (jeśli opcja "Szczegóły" jest włączona).
+			
+Changelog v1.2.5.0:
+Tryb trudny: aktywne kontrakty wygasają o północy, kara za anulowanie
+Tryb rabatowy: uzyskuj zniżkę na cenę pola, w zależności od liczby misji
+Mniej ostrzeżeń o brakujących pojazdach misji.
+			
+Changelog v1.2.4.4:
+Naprawione przyciski filtrujące, aby wyświetlać inne typy misji, jeśli są dostępne.
+Naprawione wyświetlanie "czas do końca" dla kontraktów transportowych w grze wieloosobowej
+Umowy na odchwaszczanie i nawożenie mogą teraz być konfigurowane dla leniwych NPC
+Kompatybilność z innymi modami kontraktów.
+			
+Changelog v1.2.4.2:
+"Leniwi NPC" (pozostawiają więcej pracy dla kontraktów) można skonfigurować włączone/wyłączone
+Maksymalna liczba aktywnych kontraktów jest konfigurowalna
+Wskaźnik aktywnych kontraktów z wypożyczonym sprzętem
+Przyciski "Wyczyść" i "Nowe kontrakty" w grach wieloosobowych działają tylko dla użytkownika głównego
+Rozpoznaje FS22_DynamicMissionVehicles.
+			
+Changelog v1.2.4.0:
+Dodano (tymczasowe) rozwiązanie dla "leniwych NPC": pozostawianie więcej pracy dla kontraktów
+Pozwala na inne rodzaje umów (w przyszłości)
+Naprawiono problemy z rozdzielczością ekranu.
+			
+Changelog v1.2.3.0:
+Dodana funkcja filtrowania listy umów.
+			
+Changelog v1.2.2.0:
+Dostosowane obliczenia wartości "zachowaj / dostarcz" dla kontraktów żniwnych / balowania
+Dodano zapobieganie konfliktom z innymi modami
+Wsparcie dla FS22_SupplyTransportContracts, FS22_TransportMissions.			
+			]]>
+		</pl>
 	</description>
 	<iconFilename>icon.dds</iconFilename>
 	<multiplayer supported="true" />
