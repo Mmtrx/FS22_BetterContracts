@@ -76,10 +76,10 @@
 		<text name="bc_maxActive_tooltip" text="Maksymalna liczba jednocześnie aktywnych umów." />
 		<text name="bc_refreshMP" text="Lista umów do usunięcia/odświeżenia" />
 		<text name="bc_refreshMP_tooltip" text="Kto może usuwać/odświeżać umowy w grze wieloosobowej." />
-		<text name="bc_ferment" text="Insta-Fermenting" />
-		<text name="bc_ferment_tooltip" text="Allows player to insta-ferment a wrapped grass bale from the F1 menu." />
-		<text name="bc_forcePlow" text="Root Crop Plowing" />
-		<text name="bc_forcePlow_tooltip" text="Every harvest of corn/ potato/ sugarbeet requires subsequent plowing." />
+		<text name="bc_ferment" text="Natychmiastowa Fermentacja" />
+		<text name="bc_ferment_tooltip" text="Pozwala graczowi na natychmiastową fermentację owiniętej bali trawy z menu F1." />
+		<text name="bc_forcePlow" text="Orka po Zbiorach Roślin Korzeniowych" />
+		<text name="bc_forcePlow_tooltip" text="Każdy zbór kukurydzy/zimowitów/buraków cukrowych wymaga następnej orki." />
 		<text name="bc_debug" text="Tryb debugowania" />
 		<text name="bc_debug_tooltip" text="Jeśli aktywny, wyświetla informacje debugowania w logach. Może pomóc w znalezieniu błędów." />
 
