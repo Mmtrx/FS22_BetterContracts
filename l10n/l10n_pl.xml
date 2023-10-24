@@ -15,7 +15,7 @@
 
 		<text name="bc_chaff" text="Zetnij %s" />
 		<text name="bc_jobType_chaff" text="Ścieczka qq" />
-		<text name="bc_harvest" text="Zbiór " />
+		<text name="bc_harvest" text="Zbiór %s" />
 		<text name="bc_leased" text="/ Wynajęte  " />
 		<text name="bc_enoughMissions" text="Twój gospodarstwo osiągnęło już maksymalną liczbę kontraktów." />
 
