@@ -59,7 +59,7 @@
 		
 		<!-- Sort button help text -->
 		<text name="SC_sortCat" text="Kontrakt type" />
-		<text name="SC_sortRev" text="revenue" />
+		<text name="SC_sortRev" text="værdi" />
 		<text name="SC_sortNpc" text="farmer" />
 		<text name="SC_sortProf" text="netto profit" />
 		<text name="SC_sortpMin" text="profit per minut" />
@@ -79,10 +79,10 @@
 		<text name="bc_toDeliver_tooltip" text="Procent af den beregnet total udbytte du skal levere for at færdiggøre en høst kontrakt." />
 		<text name="bc_refreshMP" text="Kontrakt liste tilladelser" />
 		<text name="bc_refreshMP_tooltip" text="Hvem kan slette / opdatere kontrakter i et MP game." />
-		<text name="bc_ferment" text="Insta-Fermenting" />
-		<text name="bc_ferment_tooltip" text="Allows player to insta-ferment a wrapped grass bale from the F1 menu." />
-		<text name="bc_forcePlow" text="Root Crop Plowing" />
-		<text name="bc_forcePlow_tooltip" text="Every harvest of corn/ potato/ sugarbeet requires subsequent plowing." />
+		<text name="bc_ferment" text="Omgående-Gæring" />
+		<text name="bc_ferment_tooltip" text="Tillader spiller at omgående-gære en wrappet græs balle fra F1 menu." />
+		<text name="bc_forcePlow" text="Jord Afgrøder Pløjning" />
+		<text name="bc_forcePlow_tooltip" text="Hver høst af majs/ kartofler/ sukkerroer kræver altid pløjning." />
 		<text name="bc_debug" text="Debug Mode" />
 		<text name="bc_debug_tooltip" text="Printer info beskeder til log vis aaktiv. Kan hjælpe med at finde bugs." />
 

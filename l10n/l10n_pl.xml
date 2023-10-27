@@ -77,7 +77,7 @@
 		<text name="bc_maxActive" text="Liczba jednocześnie aktywnych umów" />
 		<text name="bc_maxActive_tooltip" text="Maksymalna liczba jednocześnie aktywnych umów." />
 		<text name="bc_refreshMP" text="Lista umów do usunięcia/odświeżenia" />
-		<text name="bc_refreshMP_tooltip" text="Kto może usuwać/odświeżać umowy w grze wieloosobowej." />
+		<text name="bc_refreshMP_tooltip" text="Kto może usuwać/odświeżać umowy w grze wieloosobowej." />d
 		<text name="bc_ferment" text="Natychmiastowa fermentacja" />
 		<text name="bc_ferment_tooltip" text="Umożliwia graczowi fermentację owiniętej beli trawy klawiszem z menu F1." />
 		<text name="bc_forcePlow" text="Orka roślin okopowych" />
