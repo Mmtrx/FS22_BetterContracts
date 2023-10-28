@@ -2,8 +2,8 @@
 <l10n>
 	<texts>
 		<!-- Keys -->
-		<text name="input_MENU_EXTRA_3" text="Better Contracts: Szczegóły wł./wył."/>
-		<text name="input_BC_MTOGGLE" text="BC: Przełącz wyświetlanie aktywnych kontraktów rolniczych"/>
+		<text name="input_MENU_EXTRA_3" text="Włącz/Wyłącz szczegóły"/>
+		<text name="input_BC_MTOGGLE" text="Przełącz wyświetlanie aktywnych kontraktów rolniczych"/>
 		<text name="bc_actionFerment" text="Fermentacja bel"/>
 		<!-- Gui Buttons -->
 		<text name="bc_hidden" text="Ukrytych: %d" />
@@ -13,11 +13,13 @@
 		<text name="bc_detailsOff" text="Szczegóły wył." />
 		<text name="bc_detailsOn" text="Szczegóły wł." />
 
+		<!-- Display texts -->
 		<text name="bc_chaff" text="Zetnij %s" />
-		<text name="bc_jobType_chaff" text="Ścieczka qq" />
+		<text name="bc_jobType_chaff" text="Sieczka qq" />
 		<text name="bc_harvest" text="Zbiór %s" />
 		<text name="bc_leased" text="/ Wynajęte  " />
 		<text name="bc_enoughMissions" text="Twój gospodarstwo osiągnęło już maksymalną liczbę kontraktów." />
+		<text name="bc_jobsCompleted" text="Zakończone zadania: %d" />
 
 		<!-- Hard mode -->
 		<text name="bc_penalty" text="Kara" />
@@ -44,7 +46,7 @@
 		<text name="SC_profit" text="Zysk ze zbiorów:" />
 		<text name="SC_usage" text="Zużycie:" />
 		<text name="SC_cost" text="Koszt materiału:" />
-		<text name="SC_togo" text="Przejdź do:" />
+		<text name="SC_togo" text="Pozostało:" />
 		<text name="SC_fillType" text="Rodzaj ładunku:" />
 		<text name="SC_profitSupply" text="Zysk:" />
 		<text name="SC_timeleft" text="Pozostały czas:" />
@@ -75,11 +77,11 @@
 		<text name="bc_maxActive" text="Liczba jednocześnie aktywnych umów" />
 		<text name="bc_maxActive_tooltip" text="Maksymalna liczba jednocześnie aktywnych umów." />
 		<text name="bc_refreshMP" text="Lista umów do usunięcia/odświeżenia" />
-		<text name="bc_refreshMP_tooltip" text="Kto może usuwać/odświeżać umowy w grze wieloosobowej." />
-		<text name="bc_ferment" text="Natychmiastowa Fermentacja" />
-		<text name="bc_ferment_tooltip" text="Pozwala graczowi na natychmiastową fermentację owiniętej bali trawy z menu F1." />
-		<text name="bc_forcePlow" text="Orka po Zbiorach Roślin Korzeniowych" />
-		<text name="bc_forcePlow_tooltip" text="Każdy zbór kukurydzy/zimowitów/buraków cukrowych wymaga następnej orki." />
+		<text name="bc_refreshMP_tooltip" text="Kto może usuwać/odświeżać umowy w grze wieloosobowej." />d
+		<text name="bc_ferment" text="Natychmiastowa fermentacja" />
+		<text name="bc_ferment_tooltip" text="Umożliwia graczowi fermentację owiniętej beli trawy klawiszem z menu F1." />
+		<text name="bc_forcePlow" text="Orka roślin okopowych" />
+		<text name="bc_forcePlow_tooltip" text="Każdy zbiór kukurydzy/ziemniaków/buraków cukrowych, wymaga późniejszej orki." />
 		<text name="bc_debug" text="Tryb debugowania" />
 		<text name="bc_debug_tooltip" text="Jeśli aktywny, wyświetla informacje debugowania w logach. Może pomóc w znalezieniu błędów." />
 
