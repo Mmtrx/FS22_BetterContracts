@@ -85,6 +85,14 @@ end
 
 --------------------- reward / lease cost ---------------------------------------------------------------
 function getReward(self,superf)
+	local bc = BetterContracts
+	local mission = bc.fieldToMission[self.field.fieldId]
+	if mission ~= nil then
+		local typeName = mission.type.name
+		if typeName == "mow_bale" and bc.config.multRewardMow ~= nil  then
+			return bc.config.multRewardMow * superf(self)
+		end
+	end
 	return BetterContracts.config.multReward * superf(self)
 end
 function calcLeaseCost(self,superf)

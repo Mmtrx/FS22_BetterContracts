@@ -251,6 +251,7 @@ function readconfig(self)
 		self.config.forcePlow =	xmlFile:getValue(key.."#forcePlow", false)			
 		self.config.maxActive = xmlFile:getValue(key.."#maxActive", 3)
 		self.config.multReward= xmlFile:getValue(key.."#reward", 1.)
+		self.config.multRewardMow = xmlFile:getValue(key .. "#rewardMow", 1.)
 		self.config.multLease = xmlFile:getValue(key.."#lease", 1.)
 		self.config.toDeliver = xmlFile:getValue(key.."#deliver", 0.94)
 		self.config.toDeliverBale = xmlFile:getValue(key.."#deliver", 0.90)
@@ -433,6 +434,7 @@ function BetterContracts:initialize()
 		forcePlow = false, 			-- force plow after root crop harvest
 		maxActive = 3, 				-- max active contracts
 		multReward = 1., 			-- general reward multiplier
+		multRewardMow = 1.,   		-- mow reward multiplier
 		multLease = 1.,				-- general lease cost multiplier
 		toDeliver = 0.94,			-- HarvestMission.SUCCESS_FACTOR
 		toDeliverBale = 0.90,		-- BaleMission.SUCCESS_FACTOR
@@ -702,6 +704,7 @@ function BetterContracts:onPostSaveSavegame(saveDir, savegameIndex)
 	xmlFile:setBool ( key.."#forcePlow", 	  conf.forcePlow)
 	xmlFile:setInt  ( key.."#maxActive",	  conf.maxActive)
 	xmlFile:setFloat( key.."#reward", 		  conf.multReward)
+	xmlFile:setFloat( key.."#rewardMow", 	  conf.multRewardMow)
 	xmlFile:setFloat( key.."#lease", 		  conf.multLease)
 	xmlFile:setFloat( key.."#deliver", 		  conf.toDeliver)
 	xmlFile:setFloat( key.."#deliverBale", 	  conf.toDeliverBale)
