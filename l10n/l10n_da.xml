@@ -70,6 +70,8 @@
 		<text name="bc_baseSettings" text="Grund Indstillinger" />
 		<text name="bc_rewardMultiplier" text="Belønning" />
 		<text name="bc_rewardMultiplier_tooltip" text="Juster belønningen for kontrakter." />
+		<text name="bc_rewardMultiplierMow" text="Mow and bale reward" />
+		<text name="bc_rewardMultiplierMow_tooltip" text="Adjust the mow and bale rewards for contracts offered." />
 		<text name="bc_leaseMultiplier" text="Lease Udgifter" />
 		<text name="bc_leaseMultiplier_tooltip" text="Juster udgiften for lånte maskiner til kontrakter." />
 		<text name="bc_maxActive" text="Aktuelt aktive kontrakter" />

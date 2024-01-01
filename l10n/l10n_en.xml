@@ -70,8 +70,8 @@
 		<text name="bc_baseSettings" text="Base Settings" />
 		<text name="bc_rewardMultiplier" text="Reward" />
 		<text name="bc_rewardMultiplier_tooltip" text="Adjust the rewards for contracts offered." />
-		<text name="bc_rewardMultiplierMow" text="Mow reward" />
-		<text name="bc_rewardMultiplierMow_tooltip" text="Adjust the mow rewards for contracts offered." />
+		<text name="bc_rewardMultiplierMow" text="Mow and bale reward" />
+		<text name="bc_rewardMultiplierMow_tooltip" text="Adjust the mow and bale rewards for contracts offered." />
 		<text name="bc_leaseMultiplier" text="Lease Cost" />
 		<text name="bc_leaseMultiplier_tooltip" text="Adjust the cost for borrowing equipment for contracts." />
 		<text name="bc_maxActive" text="Concurrently active contracts" />

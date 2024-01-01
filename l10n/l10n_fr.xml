@@ -70,7 +70,7 @@
 		<text name="bc_baseSettings" text="Paramètres de base" />
 		<text name="bc_rewardMultiplier" text="Récompense" />
 		<text name="bc_rewardMultiplier_tooltip" text="Ajustez les récompenses des contrats proposés." />		
-		<text name="bc_rewardMultiplierMow" text="Récompense pressage" />
+		<text name="bc_rewardMultiplierMow" text="Récompense de pressage" />
 		<text name="bc_rewardMultiplierMow_tooltip" text="Ajustez les récompenses des contrats de pressage proposés." />
 		<text name="bc_leaseMultiplier" text="Coût de la location" />
 		<text name="bc_leaseMultiplier_tooltip" text="Ajuster le coût d'emprunt du matériel pour les contrats." />
