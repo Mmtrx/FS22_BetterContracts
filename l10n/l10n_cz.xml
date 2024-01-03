@@ -71,6 +71,8 @@
 		<text name="bc_baseSettings" text="Základní nastavení" />
 		<text name="bc_rewardMultiplier" text="Odměna" />
 		<text name="bc_rewardMultiplier_tooltip" text="Upravte odměny za nabízené zakázky." />
+		<text name="bc_rewardMultiplierMow" text="Mow and bale reward" />
+		<text name="bc_rewardMultiplierMow_tooltip" text="Adjust the mow and bale rewards for contracts offered." />
 		<text name="bc_leaseMultiplier" text="Náklady na pronájem" />
 		<text name="bc_leaseMultiplier_tooltip" text="Upravte náklady na zapůjčení vybavení pro zakázky." />
 		<text name="bc_maxActive" text="Souběžně aktivní zakázky" />

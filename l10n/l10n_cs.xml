@@ -71,6 +71,8 @@
 		<text name="bc_baseSettings" text="基础设置" />
 		<text name="bc_rewardMultiplier" text="奖励" />
 		<text name="bc_rewardMultiplier_tooltip" text="调整合同所提供的奖励。" />
+		<text name="bc_rewardMultiplierMow" text="Mow and bale reward" />
+		<text name="bc_rewardMultiplierMow_tooltip" text="Adjust the mow and bale rewards for contracts offered." />
 		<text name="bc_leaseMultiplier" text="租借花费" />
 		<text name="bc_leaseMultiplier_tooltip" text="调整合同中租借设备的花费。" />
 		<text name="bc_maxActive" text="同时生效的合同" />

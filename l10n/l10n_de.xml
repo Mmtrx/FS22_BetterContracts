@@ -71,6 +71,8 @@
 		<text name="bc_baseSettings" text="Grundeinstellungen" />
 		<text name="bc_rewardMultiplier" text="Basislohn" />
 		<text name="bc_rewardMultiplier_tooltip" text="Passt die Lohnhöhe für die angebotenen Verträge an." />
+		<text name="bc_rewardMultiplierMow" text="Basislohn Ballen pressen" />
+		<text name="bc_rewardMultiplierMow_tooltip" text="Ändert die Lohnhöhe nur für Verträge zum Ballen pressen." />
 		<text name="bc_leaseMultiplier" text="Kosten Leihgeräte" />
 		<text name="bc_leaseMultiplier_tooltip" text="Passt die Kosten für bei Verträgen angebotene Leihgeräte an." />
 		<text name="bc_maxActive" text="Gleichzeitig aktive Verträge" />

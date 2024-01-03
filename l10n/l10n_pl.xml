@@ -73,6 +73,8 @@
 		<text name="bc_baseSettings" text="Podstawowe ustawienia" />
 		<text name="bc_rewardMultiplier" text="Nagroda" />
 		<text name="bc_rewardMultiplier_tooltip" text="Dostosuj nagrody za oferowane umowy." />
+		<text name="bc_rewardMultiplierMow" text="Mow and bale reward" />
+		<text name="bc_rewardMultiplierMow_tooltip" text="Adjust the mow and bale rewards for contracts offered." />
 		<text name="bc_leaseMultiplier" text="Koszt wypożyczenia" />
 		<text name="bc_leaseMultiplier_tooltip" text="Dostosuj koszt wypożyczenia sprzętu na potrzeby umów." />
 		<text name="bc_maxActive" text="Liczba jednocześnie aktywnych umów" />

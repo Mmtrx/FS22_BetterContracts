@@ -26,11 +26,22 @@ BCSettingsBySubtitle = {
 	title = "bc_baseSettings",
 	elements = {
 		{name = "multReward", 
-		values = {.8,.9,1,1.1,1.2,1.3,1.4},
-		texts = {"-20 %","-10 %","standard","+10 %","+20 %","+30 %","+40 %"},
-		default = 3,
+		values = { .1, .3, .5, .8, .9, 1, 1.1, 1.2, 1.3, 1.4 },
+		texts = { "-90 %", "-70 %", "-50 %", "-20 %", "-10 %", "standard", "+10 %", "+20 %", "+30 %", "+40 %" },
+		default = 6,
 		title = "bc_rewardMultiplier",
 		tooltip = "bc_rewardMultiplier_tooltip",
+		actionFunc = function(self,ix) 
+			BetterContracts:refresh() -- to recalc contract rewards
+			end,
+		noTranslate = true
+			},
+		{name = "multRewardMow", 
+		values = { .1, .3, .5, .8, .9, 1, 1.1, 1.2, 1.3, 1.4 },
+		texts = { "-90 %", "-70 %", "-50 %", "-20 %", "-10 %", "standard", "+10 %", "+20 %", "+30 %", "+40 %" },
+		default = 6,
+		title = "bc_rewardMultiplierMow",
+		tooltip = "bc_rewardMultiplierMow_tooltip",
 		actionFunc = function(self,ix) 
 			BetterContracts:refresh() -- to recalc contract rewards
 			end,

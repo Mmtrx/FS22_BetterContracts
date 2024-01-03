@@ -70,6 +70,8 @@
 		<text name="bc_baseSettings" text="Базовые настройки" />
 		<text name="bc_rewardMultiplier" text="Цена работ" />
 		<text name="bc_rewardMultiplier_tooltip" text="Скорректируйте предлагаемую выплату за выполнению контрактов." />
+		<text name="bc_rewardMultiplierMow" text="Mow and bale reward" />
+		<text name="bc_rewardMultiplierMow_tooltip" text="Adjust the mow and bale rewards for contracts offered." />
 		<text name="bc_leaseMultiplier" text="Стоимость аренды" />
 		<text name="bc_leaseMultiplier_tooltip" text="Скорректируйте стоимость аренды оборудования для контрактов." />
 		<text name="bc_maxActive" text="Одновременно активные контракты" />

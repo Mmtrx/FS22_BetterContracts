@@ -95,6 +95,10 @@ end
 
 --------------------- reward / lease cost ---------------------------------------------------------------
 function getReward(self,superf)
+	-- overwrites AbstractFieldMission:getReward()
+	if self.type.name == "mow_bale" then
+		return bc.config.multRewardMow * superf(self)
+	end		
 	return BetterContracts.config.multReward * superf(self)
 end
 function calcLeaseCost(self,superf)
