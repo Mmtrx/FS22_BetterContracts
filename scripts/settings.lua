@@ -10,6 +10,7 @@
 --  v1.2.7.7	29.03.2023	add "off" values to hardMode settings
 --  v1.2.7.9	03.05.2023	more values discPerJob, discMaxJobs
 --  v1.2.8.3	10.10.2023	force plow after root crop harvest. Insta-ferment separate setting (#158)
+--	v1.2.8.7 	03.12.2023	new setting "hardLimit": limit jobs per farm and month (#168)
 --=======================================================================================================
 local function lazyNPCDisabled()
 	return not BetterContracts.config.lazyNPC
@@ -191,6 +192,14 @@ BCSettingsBySubtitle = {
 		title = "bc_hardExpire",
 		tooltip = "bc_hardExpire_tooltip",
 		isDisabledFunc = hardDisabled,
+			},
+		{name = "hardLimit",
+		min = -1, max = 10, increment = 1, 
+		default = 1,
+		title = "bc_hardLimit",
+		tooltip = "bc_hardLimit_tooltip",
+		isDisabledFunc = hardDisabled,
+		noTranslate = true
 			},
 		},
 	},

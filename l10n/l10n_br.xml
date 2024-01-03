@@ -28,6 +28,7 @@
 		<text name="bc_harvest" text="Colheita de:" />
 		<text name="bc_leased" text="Alugado " />
 		<text name="bc_enoughMissions" text="Sua fazenda já tem o número máximo de contratos." />
+		<text name="bc_monthlyLimit" text="Your farm has reached the maximum number of contracts for this month." />
 
 		<text name="SC_widhei" text="Largura/Altura máxima:" />
 		<text name="SC_worktim" text="Tempo Estimado:" />

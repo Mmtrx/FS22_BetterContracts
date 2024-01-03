@@ -20,6 +20,7 @@
 		<text name="bc_leased" text="/租借" />
 		<text name="bc_enoughMissions" text="你的农场承接的合同已达到最大数量。 " />
 		<text name="bc_jobsCompleted" text="完成的工作：%d" />
+		<text name="bc_monthlyLimit" text="Your farm has reached the maximum number of contracts for this month." />
 
 		<!-- Hard mode -->
 		<text name="bc_penalty" text="罚金" />

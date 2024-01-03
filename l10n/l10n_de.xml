@@ -20,6 +20,7 @@
 		<text name="bc_leased" text="/ Leased " />
 		<text name="bc_enoughMissions" text="Deine Farm hat bereits die maximale Zahl aktiver Lohnaufträge." />
 		<text name="bc_jobsCompleted" text="Anzahl erfolgreicher Jobs: %d" />
+		<text name="bc_monthlyLimit" text="Deine Farm hat die Maximalzahl Aufträge für diesen Monat erreicht." />
 
 		<!-- Hard mode -->
 		<text name="bc_penalty" text="Vertragsstrafe" />
@@ -106,6 +107,8 @@
 		<text name="bc_hardLease_tooltip" text="Anzahl der zu erfüllenden Verträge pro NPC-Farmer, bevor von diesem Farmer Geräte ausgeliehen werden können." />
 		<text name="bc_hardExpire" text="Zeitfenster" />
 		<text name="bc_hardExpire_tooltip" text="Am Ende welcher Periode ein laufender Vertrag spätestens beendet sein muss." />
+		<text name="bc_hardLimit" text="Verträge pro Monat" />
+		<text name="bc_hardLimit_tooltip" text="Anzahl Verträge, die pro Monat maximal angenommen werden können. (-1: no limit, 0: keine Verträge)" />
 
 		<text name="bc_discountMode" text="Nachlass bei Feldkäufen" />
 		<text name="bc_discountMode_tooltip" text="Wenn aktiviert, gewährt ein NPC Farmer einen Nachlass auf von ihm gekaufte Farmlands, der mit der Anzahl der erfolgreich für ihn erfüllten Verträge steigt." />

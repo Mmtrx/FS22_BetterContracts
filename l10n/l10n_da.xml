@@ -20,6 +20,7 @@
 		<text name="bc_leased" text="/ Leaset " />
 		<text name="bc_enoughMissions" text="Din gård har allerede maximum af kontrakter." />
 		<text name="bc_jobsCompleted" text="Jobs færdige: %d" />
+		<text name="bc_monthlyLimit" text="Your farm has reached the maximum number of contracts for this month." />
 
 		<!-- Hard mode -->
 		<text name="bc_penalty" text="Bøde" />

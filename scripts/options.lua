@@ -17,16 +17,26 @@
 --  v1.2.7.3	20.02.2023	double progress bar active contracts. Fix PnH BGA/ Maize+ 
 --  v1.2.7.7	29.03.2023	add "off" values to hardMode settings
 --  v1.2.8.3	10.10.2023	force plow after root crop harvest. Insta-ferment separate setting (#158)
+--	v1.2.8.7 	02.12.2023	npc should not work before noon of first day in month (#187)
+--							new setting "hardLimit": limit jobs per farm and month (#168)
 --=======================================================================================================
 
 --------------------- lazyNPC --------------------------------------------------------------------------- 
 function NPCHarvest(self, superf, field, allowUpdates)
-	if not BetterContracts.config.lazyNPC or not allowUpdates 
-		or BetterContracts.fieldToMission[field.fieldId] == nil then 
-		superf(self, field, allowUpdates)
+	if not BetterContracts.config.lazyNPC or not allowUpdates then 
+		return superf(self, field, allowUpdates) 
+	end
+	if not BetterContracts.NPCAllowWork then 
+		-- lazyNPC active, too early for NPC field work
+		table.insert(self.fieldsToUpdate, field)
 		return
 	end
-	-- there is a mission offered for this field, lazyNPC active, and field upates allowed
+	-- lazyNPC active, NPC field upates allowed
+	if BetterContracts.fieldToMission[field.fieldId] == nil then 
+		return superf(self, field, allowUpdates)
+	end
+
+	-- there is a mission offered for this field, lazyNPC active, NPC field upates allowed
 	local conf 		= BetterContracts.config
 	local prob 		= BetterContracts.npcProb
 	local limeMiss 	= BetterContracts.limeMission
@@ -94,9 +104,13 @@ end
 --------------------- manage npc jobs per farm ----------------------------------------------------------
 function farmWrite(self, streamId)
 	-- appended to Farm:writeStream()
-	-- write stats.npcJobs when MP syncing a farm
 	if self.isSpectator	then return end 
 
+	-- write jobsLeft for current month
+	self.jobsLeft = self.jobsLeft or BetterContracts.config.hardLimit 
+	streamWriteUInt8(streamId, self.jobsLeft) 		-- # of jobs left to accept this month
+
+	-- write stats.npcJobs when MP syncing a farm
 	local count = 0
 	if self.stats.npcJobs == nil then 
 		self.stats.npcJobs = {}
@@ -115,7 +129,10 @@ end
 function farmRead(self, streamId)
 	-- appended to Farm:readStream()
 	if self.isSpectator	then return end
-	 
+
+	-- read jobsLeft for current month
+	self.jobsLeft =  streamReadUInt8(streamId)
+
 	-- read npcJobs[npcIndex] for a farm
 	if self.stats.npcJobs == nil then 
 		self.stats.npcJobs = {}
@@ -179,6 +196,7 @@ function saveToXML(self, xmlFile, key)
 			xmlFile:setInt(npcKey .. "#count", npc or 0)
 		end)
 	end
+	xmlFile:setInt(key..".jobsLeft", self.jobsLeft or BetterContracts.config.hardLimit)
 end
 function loadFromXML(self, xmlFile, key)
 	-- appended to FarmStats:loadFromXMLFile()
@@ -187,6 +205,8 @@ function loadFromXML(self, xmlFile, key)
 		local ix = xmlFile:getInt(npcKey.."#index")
 		self.npcJobs[ix] = xmlFile:getInt(npcKey.."#count", 0)
 	end)
+	-- load avail monthly jobs contingent
+	self.jobsLeft = xmlFile:getInt(key..".jobsLeft", BetterContracts.config.hardLimit)
 end
 
 --------------------- hard mode ------------------------------------------------------------------------- 
@@ -306,31 +326,63 @@ function startContract(frCon, superf, wantsLease)
 		})
 		return
 	end
-	-- (hardMode) check if enough jobs complete to allow lease
-	if wantsLease and self.config.hardMode then 
+	-- (hardMode) --
+	if self.config.hardMode then 
 		local farm = g_farmManager:getFarmById(farmId)
-		local contract = frCon:getSelectedContract()
-		local npc = contract.mission:getNPC()
-		local jobs = 0
-		if farm.stats.npcJobs ~= nil and farm.stats.npcJobs[npc.index] ~= nil then 
-			jobs = farm.stats.npcJobs[npc.index]
+		if wantsLease then 
+		-- check if enough jobs complete to allow lease
+			local contract = frCon:getSelectedContract()
+			local npc = contract.mission:getNPC()
+			local jobs = 0
+			if farm.stats.npcJobs ~= nil and farm.stats.npcJobs[npc.index] ~= nil then 
+				jobs = farm.stats.npcJobs[npc.index]
+			end
+			if jobs < self.config.hardLease then
+				local txt = string.format(g_i18n:getText("bc_leaseNotEnough"),
+					self.config.hardLease - jobs, npc.title)
+				g_gui:showInfoDialog({
+					visible = true,
+					text = txt,
+					dialogType = DialogElement.TYPE_INFO
+				})
+				return
+			end
 		end
-		if jobs < self.config.hardLease then
-			local txt = string.format(g_i18n:getText("bc_leaseNotEnough"),
-				self.config.hardLease - jobs, npc.title)
+		-- check available monthly jobs limit
+		farm.jobsLeft = farm.jobsLeft or BetterContracts.config.hardLimit
+		if farm.jobsLeft == 0 then 
 			g_gui:showInfoDialog({
 				visible = true,
-				text = txt,
+				text = g_i18n:getText("bc_monthlyLimit"),
 				dialogType = DialogElement.TYPE_INFO
 			})
 			return
+		else
+			farm.jobsLeft = farm.jobsLeft -1
 		end
 	end
 	superf(frCon, wantsLease)
 end
 function BetterContracts:onPeriodChanged()
+	if g_server == nil then return end 
+	self.NPCAllowWork = false  	-- prevent any NPC field work at start of month
+
+	-- reset monthly limit for all farms:
+	if self.config.hardLimit > -1 then 
+		for _,farm in pairs(g_farmManager:getFarms()) do
+			if farm.farmId ~= FarmManager.SPECTATOR_FARM_ID then
+				local mlist = table.ifilter(g_missionManager:getMissionsList(farm.farmId), function(m)
+					return m.status ~= AbstractMission.STATUS_STOPPED
+					end)
+				local count = table.size(mlist)
+				farm.jobsLeft =  math.max(self.config.hardLimit - count, 0)
+				debugPrint("*BC: farm %s has %d jobs. Limit set to %d", farm.name, count, farm.jobsLeft)
+			end
+		end
+	end
+
 	-- hard mode: cancel any active field missions
-	if g_server ~= nil and self.config.hardMode and self.config.hardExpire == SC.MONTH then  
+	if self.config.hardMode and self.config.hardExpire == SC.MONTH then  
 		for _, m in ipairs(g_missionManager:getActiveMissions()) do 
 			if m:hasField() then
 				g_missionManager:cancelMission(m)
@@ -349,10 +401,17 @@ function BetterContracts:onDayChanged()
 	end
 end
 function BetterContracts:onHourChanged()
+	local env = g_currentMission.environment
+
+	-- check if NPCs can work
+	if self.config.lazyNPC and g_server ~= nil and 
+		env.currentDayInPeriod == 1 and env.currentHour == 12 then 
+		self.NPCAllowWork = true 
+	end
+
 	-- hard mode: issue warnings 6,3,1 h before active missions cancel
 	if not self.config.hardMode or self.config.hardExpire == SC.OFF or g_client == nil 
 		then return end
-	local env = g_currentMission.environment
 	if self.config.hardExpire == SC.MONTH and 
 		env.currentDayInPeriod ~= env.daysPerPeriod then return end
 	if not table.hasElement({18,21,23}, env.currentHour) then return end 
@@ -506,28 +565,22 @@ function BetterContracts:onFarmlandStateChanged(landId, farmId)
 	end
 end
 function farmlandManagerSaveToXMLFile(self, superf, xmlFilename)
-	local xmlFile = createXMLFile("farmlandsXML", xmlFilename, "farmlands")
-	if xmlFile ~= nil then
-		local index = 0
+	if superf(self, xmlFilename) then
+		local xmlFile = XMLFile.load("farmlandsXML", xmlFilename, "farmlands")
+		if xmlFile == nil then return false end 
 
-		for farmlandId, farmId in pairs(self.farmlandMapping) do
-			local farmlandKey = string.format("farmlands.farmland(%d)", index)
-
-			setXMLInt(xmlFile, farmlandKey .. "#id", farmlandId)
-			setXMLInt(xmlFile, farmlandKey .. "#farmId", Utils.getNoNil(farmId, FarmlandManager.NO_OWNER_FARM_ID))
-			local farmland = self.farmlands[farmlandId]
+		xmlFile:iterate("farmlands.farmland", function(index,  key)
+			local id = xmlFile:getInt(key.."#id")
+			local farmland = self.farmlands[id]
 			if farmland ~= nil then 
-				setXMLInt(xmlFile, farmlandKey .. "#npcIndex", farmland.npcIndex)
+				xmlFile:setInt(key.."#npcIndex", farmland.npcIndex)
 			end
-			index = index + 1
-		end
+		end)
 
-		saveXMLFile(xmlFile)
-		delete(xmlFile)
-
+		xmlFile:save()
+		xmlFile:delete()
 		return true
 	end
-
 	return false
 end
 ----------------------------------------

@@ -28,7 +28,7 @@ function BetterContracts.loadMissionVehicles(missionManager, superFunc, xmlFilen
 	if self.overwrittenVehicles then return true end -- do not add further vecs to a userdefined setup
 	
 	if superFunc(missionManager, xmlFilename, baseDirectory) then 
-		if self.loadedVehicles then return true end
+		if self.loadedVehicles then return true end -- we already loaded our extra missionVehicles
 
 		if self.debug then
 			self:checkExtraMissionVehicles(self.directory .. "missionVehicles/baseGame.xml")
@@ -71,6 +71,7 @@ end
 function BetterContracts:validateMissionVehicles()
 	-- check if vehicle groups for each missiontype/fieldsize are defined
 	debugPrint("* %s validating Mission Vehicles..", self.name)
+	local ok = true
 	local type 
 	for _,mt in ipairs(g_missionManager.missionTypes) do
 		if mt.category == MissionManager.CATEGORY_FIELD or 
@@ -82,10 +83,63 @@ function BetterContracts:validateMissionVehicles()
 					#g_missionManager.missionVehicles[type][f] == 0 then
 					Logging.warning("[%s] No missionVehicles for %s missions on %s fields",
 						self.name, type, f)
+					ok = false
 				end
 			end
 		end
 	end
+	return ok
+end
+
+function BetterContracts:printMissionVehicles()
+	-- print vehicle groups for each missiontype/fieldsize 
+	print("* MissionManager has loaded following vehicle groups *")
+	local type 
+	local sep = string.rep("-", 34)
+	for _,mt in ipairs(g_missionManager.missionTypes) do
+		if mt.category == MissionManager.CATEGORY_FIELD or 
+		   mt.category == MissionManager.CATEGORY_GRASS_FIELD then
+			type = mt.name
+			for _,f in ipairs({"small","medium","large"}) do
+				print(sep ..string.format(" %s %s: ", type, f) ..sep)
+				if g_missionManager.missionVehicles[type] and 
+				 	g_missionManager.missionVehicles[type][f] then 
+				 	local lastVariant = nil
+				 	local groups = table.copyIndex(g_missionManager.missionVehicles[type][f])
+				 	if groups[1].variant ~= nil then 
+				 		-- sort groups by variant
+				 		table.sort(groups, function(a, b)
+				 			return a.variant < b.variant
+				 			end)
+				 		lastVariant = "yes"
+				 	end
+					for i, group in ipairs(groups) do
+						if lastVariant and lastVariant ~= group.variant then  
+							lastVariant = group.variant
+							print(string.format("variant %s:", lastVariant))
+						end
+						printGroup(group)
+					end
+				end
+			end
+		end
+	end
+end
+
+function printGroup(group)
+	-- print mission vehicles in group
+	local vecs = group.vehicles 
+	local vtext = ""
+	local row = {}
+	for _,vec in ipairs(vecs) do
+		local item = g_storeManager:getItemByXMLFilename(vec.filename)
+		vtext = string.format("%s %s", g_brandManager:getBrandByIndex(item.brandIndex).title, item.name )
+		for configName, configValue in pairs(vec.configurations) do
+			vtext = vtext .. string.format(" %s:%d", configName, configValue)
+		end
+		table.insert(row, vtext)
+	end
+	print(string.format("%2d: %s", group.identifier, table.concat(row, ", ")))
 end
 
 function BetterContracts:checkExtraMissionVehicles(xmlFilename)

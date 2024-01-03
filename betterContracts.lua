@@ -64,6 +64,9 @@
 --  v1.2.8.2	22.09.2023	support chaff mission. Insta-ferment only in debug mode (#158)
 --  v1.2.8.3	10.10.2023	force plow after root crop harvest (#123). Insta-ferment separate setting (#158)
 --  v1.2.8.5	10.10.2023	add settings ferment, forcePlow to readconfig(), onPostSaveSavegame()
+--  v1.2.8.6	12.10.2023	add bcPrintVehicles console command. Fix farmlandManagerSaveToXMLFile() (#169)
+--	v1.2.8.7 	02.12.2023	npc should not work before noon of first day in month (#187)
+--							new setting "hardLimit": limit jobs per farm and month (#168)
 --=======================================================================================================
 SC = {
 	FERTILIZER = 1, -- prices index
@@ -231,6 +234,7 @@ function registerXML(self)
 	self.xmlSchema:register(XMLValueType.FLOAT, key.."#penalty")
 	self.xmlSchema:register(XMLValueType.INT,   key.."#leaseJobs")
 	self.xmlSchema:register(XMLValueType.INT,   key.."#expire")
+	self.xmlSchema:register(XMLValueType.INT,   key.."#hardLimit")
 
 	local key = self.baseXmlKey..".generation"
 	self.xmlSchema:register(XMLValueType.INT, 	key.."#interval")
@@ -276,6 +280,7 @@ function readconfig(self)
 			self.config.hardPenalty = MathUtil.round(xmlFile:getValue(key.."#penalty", 0.1),2)			
 			self.config.hardLease =		xmlFile:getValue(key.."#leaseJobs", 2)		
 			self.config.hardExpire =	xmlFile:getValue(key.."#expire", SC.MONTH)		
+			self.config.hardLimit =		xmlFile:getValue(key.."#hardLimit", -1)		
 		end
 		key = self.baseXmlKey..".generation"
 		self.config.generationInterval = xmlFile:getValue(key.."#interval", 1)
@@ -452,7 +457,9 @@ function BetterContracts:initialize()
 		hardPenalty = 0.1, 		-- % of total reward for missin cancel
 		hardLease =	2, 			-- # of jobs to allow borrowing equipment
 		hardExpire = SC.MONTH, 	-- or "day"
+		hardLimit = -1, 		-- max jobs to accept per farm and month
 	}
+	self.NPCAllowWork = false 				-- npc should not work before noon of last 2 days in month
 	self.settingsByName = {}				-- will hold setting objects, init by BCsetting.init()
 	self.settings = BCsetting.init(self) 	-- settings list
 	self.missionVecs = {} 					-- holds names of active mission vehicles
@@ -625,8 +632,9 @@ function BetterContracts:onPostLoadMap(mapNode, mapFile)
 		if self.config.discountMode then txt = txt..", discountMode" end
 		debugPrint(txt)
 	end
-	addConsoleCommand("bcprint","Print detail stats for all available missions.","consoleCommandPrint",self)
+	addConsoleCommand("bcPrint","Print detail stats for all available missions.","consoleCommandPrint",self)
 	addConsoleCommand("bcMissions","Print stats for other clients active missions.","bcMissions",self)
+	addConsoleCommand("bcPrintVehicles","Print all available vehicle groups for mission types.","printMissionVehicles",self)
 	if self.config.debug then
 		addConsoleCommand("bcFieldGenerateMission", "Force generating a new mission for given field", "consoleGenerateFieldMission", g_missionManager)
 		addConsoleCommand("gsMissionLoadAllVehicles", "Loading and unloading all field mission vehicles", "consoleLoadAllFieldMissionVehicles", g_missionManager)
@@ -727,6 +735,7 @@ function BetterContracts:onPostSaveSavegame(saveDir, savegameIndex)
 		xmlFile:setFloat(key.."#penalty", 	conf.hardPenalty)
 		xmlFile:setInt  (key.."#leaseJobs",	conf.hardLease)
 		xmlFile:setInt  (key.."#expire",	conf.hardExpire)
+		xmlFile:setInt  (key.."#hardLimit",	conf.hardLimit)
 	end
 	key = self.baseXmlKey .. ".generation"
 	xmlFile:setInt	( key.."#interval",   conf.generationInterval)

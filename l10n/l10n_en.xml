@@ -20,6 +20,7 @@
 		<text name="bc_leased" text="/ Leased " />
 		<text name="bc_enoughMissions" text="Your farm already has the maximum number of contracts." />
 		<text name="bc_jobsCompleted" text="Jobs completed: %d" />
+		<text name="bc_monthlyLimit" text="Your farm has reached the maximum number of contracts for this month." />
 
 		<!-- Hard mode -->
 		<text name="bc_penalty" text="Penalty" />
@@ -106,6 +107,8 @@
 		<text name="bc_hardLease_tooltip" text="Number of successful jobs for an NPC farmer, before they lend you their equipment." />
 		<text name="bc_hardExpire" text="Deadline" />
 		<text name="bc_hardExpire_tooltip" text="At the end of what time period all active contracts must be completed." />
+		<text name="bc_hardLimit" text="Contracts per Month" />
+		<text name="bc_hardLimit_tooltip" text="Max number of contracts that can be accepted during one month. (-1: no limit, 0: no contracts)" />
 
 		<text name="bc_discountMode" text="Field purchase discount" />
 		<text name="bc_discountMode_tooltip" text="If active, an NPC farmer give a discount on farmland purchases. Discount increases with the number of completed jobs for this farmer." />

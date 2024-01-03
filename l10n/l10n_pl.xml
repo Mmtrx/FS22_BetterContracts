@@ -20,6 +20,7 @@
 		<text name="bc_leased" text="/ Wynajęte  " />
 		<text name="bc_enoughMissions" text="Twój gospodarstwo osiągnęło już maksymalną liczbę kontraktów." />
 		<text name="bc_jobsCompleted" text="Zakończone zadania: %d" />
+		<text name="bc_monthlyLimit" text="Your farm has reached the maximum number of contracts for this month." />
 
 		<!-- Hard mode -->
 		<text name="bc_penalty" text="Kara" />

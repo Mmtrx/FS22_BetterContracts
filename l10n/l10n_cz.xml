@@ -29,6 +29,7 @@
 		<text name="bc_harvest" text="Skliz. " />
 		<text name="bc_leased" text="/ Nájem " />
 		<text name="bc_enoughMissions" text="Vaše farma již má maximální počet zakázek." />
+		<text name="bc_monthlyLimit" text="Your farm has reached the maximum number of contracts for this month." />
 		
 		<text name="SC_widhei" text="Max šířka/délka:" />
 		<text name="SC_worktim" text="Předpokládaný čas:" />

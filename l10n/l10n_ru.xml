@@ -29,6 +29,7 @@
 		<text name="bc_harvest" text="Собр. " />
 		<text name="bc_leased" text="/Аренд. техника " />
 		<text name="bc_enoughMissions" text="Ваша ферма уже имеет максимальное количество контрактов." />
+		<text name="bc_monthlyLimit" text="Your farm has reached the maximum number of contracts for this month." />
 		<text name="SC_widhei" text="Макс. ширина/длина:" />
 		<text name="SC_worktim" text="Расчётное время:" />
 		<text name="SC_price" text="Цена/1000 л:" />
