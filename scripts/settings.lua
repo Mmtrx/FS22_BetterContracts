@@ -21,254 +21,396 @@ end
 local function discountDisabled()
 	return not BetterContracts.config.discountMode
 end
+
+REWARD_VALUES = { .1, .3, .5, .8, .9, 1, 1.1, 1.2, 1.3, 1.4 }
+REWARD_TEXTS = { "-90 %", "-70 %", "-50 %", "-20 %", "-10 %", "standard", "+10 %", "+20 %", "+30 %", "+40 %" }
+REWARD_DEFAULT_VALUE = 6
 BCSettingsBySubtitle = {
 	{
-	title = "bc_baseSettings",
-	elements = {
-		{name = "multReward", 
-		values = { .1, .3, .5, .8, .9, 1, 1.1, 1.2, 1.3, 1.4 },
-		texts = { "-90 %", "-70 %", "-50 %", "-20 %", "-10 %", "standard", "+10 %", "+20 %", "+30 %", "+40 %" },
-		default = 6,
-		title = "bc_rewardMultiplier",
-		tooltip = "bc_rewardMultiplier_tooltip",
-		actionFunc = function(self,ix) 
-			BetterContracts:refresh() -- to recalc contract rewards
-			end,
-		noTranslate = true
+		title = "bc_baseSettings",
+		elements = {
+			{
+				name = "multLease",
+				min = .8,
+				max = 1.5,
+				increment = .1,
+				values = { .8, .9, 1, 1.1, 1.2, 1.3, 1.4, 1.5 },
+				texts = { "-20 %", "-10 %", "standard", "+10 %", "+20 %", "+30 %", "+40 %", "+50 %" },
+				default = 3,
+				title = "bc_leaseMultiplier",
+				tooltip = "bc_leaseMultiplier_tooltip",
+				noTranslate = true
 			},
-		{name = "multRewardMow", 
-		values = { .1, .3, .5, .8, .9, 1, 1.1, 1.2, 1.3, 1.4 },
-		texts = { "-90 %", "-70 %", "-50 %", "-20 %", "-10 %", "standard", "+10 %", "+20 %", "+30 %", "+40 %" },
-		default = 6,
-		title = "bc_rewardMultiplierMow",
-		tooltip = "bc_rewardMultiplierMow_tooltip",
-		actionFunc = function(self,ix) 
-			BetterContracts:refresh() -- to recalc contract rewards
-			end,
-		noTranslate = true
+			{
+				name = "maxActive",
+				values = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 },
+				texts = { "unlimited", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" },
+				default = 1,
+				title = "bc_maxActive",
+				tooltip = "bc_maxActive_tooltip",
+				noTranslate = true
 			},
-		{name = "multLease", 
-		min = .8, max = 1.5, increment = .1,
-		values = {.8,.9,1,1.1,1.2,1.3,1.4,1.5},
-		texts = {"-20 %","-10 %","standard","+10 %","+20 %","+30 %","+40 %","+50 %"},
-		default = 3,
-		title = "bc_leaseMultiplier",
-		tooltip = "bc_leaseMultiplier_tooltip",
-		noTranslate = true
+			{
+				name = "toDeliver",
+				min = .7,
+				max = .941,
+				increment = .03,
+				unit = true,
+				default = 9,
+				title = "bc_toDeliver",
+				tooltip = "bc_toDeliver_tooltip",
+				actionFunc = function(self, ix)
+					HarvestMission.SUCCESS_FACTOR = self.values[ix]
+					BetterContracts:refresh() -- to recalc deliver/keep for harvest contr
+				end,
+				noTranslate = true
 			},
-		{name = "maxActive", 
-		values = {0,1,2, 3, 4, 5, 6, 7, 8, 9, 10},
-		texts = {"unlimited", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"},
-		default = 1,
-		title = "bc_maxActive",
-		tooltip = "bc_maxActive_tooltip",
-		noTranslate = true
+			{
+				name = "toDeliverBale",
+				min = .7,
+				max = .91,
+				increment = .04,
+				unit = true,
+				default = 6,
+				title = "bc_toDeliverBale",
+				tooltip = "bc_toDeliver_tooltip",
+				actionFunc = function(self, ix)
+					BaleMission.FILL_SUCCESS_FACTOR = self.values[ix]
+					BetterContracts:refresh() -- to recalc deliver/keep for baling contr
+				end,
+				noTranslate = true
 			},
-		{name = "toDeliver", 
-		min = .7, max = .941, increment = .03, unit = true,
-		default = 9,
-		title = "bc_toDeliver",
-		tooltip = "bc_toDeliver_tooltip",
-		actionFunc = function(self,ix) 
-			HarvestMission.SUCCESS_FACTOR = self.values[ix]
-			BetterContracts:refresh() -- to recalc deliver/keep for harvest contr
-			end,
-		noTranslate = true
+			{
+				name = "refreshMP",
+				values = { SC.ADMIN, SC.FARMMANAGER, SC.PLAYER },
+				texts = { "ui_admin", "ui_farmManager", "ui_players" },
+				default = 1,
+				title = "bc_refreshMP",
+				tooltip = "bc_refreshMP_tooltip",
+				isDisabledFunc = function()
+					return not g_currentMission.missionDynamicInfo.isMultiplayer
+				end,
 			},
-		{name = "toDeliverBale", 
-		min = .7, max = .91, increment = .04, unit = true,
-		default = 6,
-		title = "bc_toDeliverBale",
-		tooltip = "bc_toDeliver_tooltip",
-		actionFunc = function(self,ix) 
-			BaleMission.FILL_SUCCESS_FACTOR = self.values[ix]
-			BetterContracts:refresh() -- to recalc deliver/keep for baling contr
-			end,
-		noTranslate = true
+			{
+				name = "ferment",
+				values = { false, true },
+				texts = { "ui_off", "ui_on" },
+				default = 1,
+				title = "bc_ferment",
+				tooltip = "bc_ferment_tooltip",
 			},
-		{name = "refreshMP", 
-		values = {SC.ADMIN, SC.FARMMANAGER, SC.PLAYER},
-		texts = {"ui_admin","ui_farmManager","ui_players"},
-		default = 1,
-		title = "bc_refreshMP",
-		tooltip = "bc_refreshMP_tooltip",
-		isDisabledFunc = function() 
-			return not g_currentMission.missionDynamicInfo.isMultiplayer end,
+			{
+				name = "forcePlow",
+				values = { false, true },
+				texts = { "ui_off", "ui_on" },
+				default = 1,
+				title = "bc_forcePlow",
+				tooltip = "bc_forcePlow_tooltip",
 			},
-		{name = "ferment",
-		values = {false, true},
-		texts = {"ui_off", "ui_on"},
-		default = 1,
-		title = "bc_ferment",
-		tooltip = "bc_ferment_tooltip",
-			},
-		{name = "forcePlow",
-		values = {false, true},
-		texts = {"ui_off", "ui_on"},
-		default = 1,
-		title = "bc_forcePlow",
-		tooltip = "bc_forcePlow_tooltip",
-			},
-		{name = "debug",
-		values = {false, true},
-		texts = {"ui_off", "ui_on"},
-		default = 1,
-		title = "bc_debug",
-		tooltip = "bc_debug_tooltip",
+			{
+				name = "debug",
+				values = { false, true },
+				texts = { "ui_off", "ui_on" },
+				default = 1,
+				title = "bc_debug",
+				tooltip = "bc_debug_tooltip",
 			},
 		},
 	},
 	{
-	title = "bc_lazyNPC",
-	elements = {
-		{name = "lazyNPC",
-		values = {false, true},
-		texts = {"ui_no", "ui_yes"},
-		default = 1,
-		title = "bc_mainSwitch",
-		tooltip = "bc_lazyNPC_tooltip",
-		},
-		{name = "npcHarvest",
-		values = {false, true},
-		texts = {"ui_off", "bc_active"},
-		default = 1,
-		title = "fieldJob_jobType_harvesting",
-		tooltip = "bc_lazyNPCHarvest_tooltip",
-		isDisabledFunc = lazyNPCDisabled,
-		},
-		{name = "npcSow",
-		values = {false, true},
-		texts = {"ui_off", "bc_active"},
-		default = 1,
-		title = "fieldJob_jobType_sowing",
-		tooltip = "bc_lazyNPCSow_tooltip",
-		isDisabledFunc = lazyNPCDisabled,
-		},
-		{name = "npcPlowCultivate",
-		values = {false, true},
-		texts = {"ui_off", "bc_active"},
-		default = 1,
-		title = "bc_lazyNPCPlow",
-		tooltip = "bc_lazyNPCPlow_tooltip",
-		isDisabledFunc = lazyNPCDisabled,
-		},
-		{name = "npcFertilize",
-		values = {false, true},
-		texts = {"ui_off", "bc_active"},
-		default = 1,
-		title = "fieldJob_jobType_fertilizing",
-		isDisabledFunc = lazyNPCDisabled,
-		tooltip = "bc_lazyNPCFertilize_tooltip",
-		},
-		{name = "npcWeed",
-		values = {false, true},
-		texts = {"ui_off", "bc_active"},
-		default = 1,
-		title = "fieldJob_jobType_weeding",
-		tooltip = "bc_lazyNPCWeed_tooltip",
-		isDisabledFunc = lazyNPCDisabled,
+		title = "bc_rewardSettings",
+		elements = {
+			{
+				name = "multRewardMowBale",
+				values = REWARD_VALUES,
+				texts = REWARD_TEXTS,
+				default = REWARD_DEFAULT_VALUE,
+				title = "bc_rewardMultiplier_mowBale",
+				tooltip = "bc_rewardMultiplier_mowBale_tooltip",
+				actionFunc = function(self, ix)
+					BetterContracts:refresh() -- to recalc contract rewards
+				end,
+				noTranslate = true
+			},
+			{
+				name = "multRewardPlow",
+				values = REWARD_VALUES,
+				texts = REWARD_TEXTS,
+				default = REWARD_DEFAULT_VALUE,
+				title = "bc_rewardMultiplier_plow",
+				tooltip = "bc_rewardMultiplier_plow_tooltip",
+				actionFunc = function(self, ix)
+					BetterContracts:refresh() -- to recalc contract rewards
+				end,
+				noTranslate = true
+			},
+			{
+				name = "multRewardCultivate",
+				values = REWARD_VALUES,
+				texts = REWARD_TEXTS,
+				default = REWARD_DEFAULT_VALUE,
+				title = "bc_rewardMultiplier_cultivate",
+				tooltip = "bc_rewardMultiplier_cultivate_tooltip",
+				actionFunc = function(self, ix)
+					BetterContracts:refresh() -- to recalc contract rewards
+				end,
+				noTranslate = true
+			},
+			{
+				name = "multRewardSow",
+				values = REWARD_VALUES,
+				texts = REWARD_TEXTS,
+				default = REWARD_DEFAULT_VALUE,
+				title = "bc_rewardMultiplier_sow",
+				tooltip = "bc_rewardMultiplier_sow_tooltip",
+				actionFunc = function(self, ix)
+					BetterContracts:refresh() -- to recalc contract rewards
+				end,
+				noTranslate = true
+			},
+			{
+				name = "multRewardHarvest",
+				values = REWARD_VALUES,
+				texts = REWARD_TEXTS,
+				default = REWARD_DEFAULT_VALUE,
+				title = "bc_rewardMultiplier_harvest",
+				tooltip = "bc_rewardMultiplier_harvest_tooltip",
+				actionFunc = function(self, ix)
+					BetterContracts:refresh() -- to recalc contract rewards
+				end,
+				noTranslate = true
+			},
+			{
+				name = "multRewardWeed",
+				values = REWARD_VALUES,
+				texts = REWARD_TEXTS,
+				default = REWARD_DEFAULT_VALUE,
+				title = "bc_rewardMultiplier_weed",
+				tooltip = "bc_rewardMultiplier_weed_tooltip",
+				actionFunc = function(self, ix)
+					BetterContracts:refresh() -- to recalc contract rewards
+				end,
+				noTranslate = true
+			},
+			{
+				name = "multRewardSpray",
+				values = REWARD_VALUES,
+				texts = REWARD_TEXTS,
+				default = REWARD_DEFAULT_VALUE,
+				title = "bc_rewardMultiplier_spray",
+				tooltip = "bc_rewardMultiplier_spray_tooltip",
+				actionFunc = function(self, ix)
+					BetterContracts:refresh() -- to recalc contract rewards
+				end,
+				noTranslate = true
+			},
+			{
+				name = "multRewardFertilize",
+				values = REWARD_VALUES,
+				texts = REWARD_TEXTS,
+				default = REWARD_DEFAULT_VALUE,
+				title = "bc_rewardMultiplier_fertilize",
+				tooltip = "bc_rewardMultiplier_fertilize_tooltip",
+				actionFunc = function(self, ix)
+					BetterContracts:refresh() -- to recalc contract rewards
+				end,
+				noTranslate = true
+			},
+			{
+				name = "multRewardOthers",
+				values = REWARD_VALUES,
+				texts = REWARD_TEXTS,
+				default = REWARD_DEFAULT_VALUE,
+				title = "bc_rewardMultiplier_others",
+				tooltip = "bc_rewardMultiplier_others_tooltip",
+				actionFunc = function(self, ix)
+					BetterContracts:refresh() -- to recalc contract rewards
+				end,
+				noTranslate = true
+			},
+		}
+	},
+	{
+		title = "bc_lazyNPC",
+		elements = {
+			{
+				name = "lazyNPC",
+				values = { false, true },
+				texts = { "ui_no", "ui_yes" },
+				default = 1,
+				title = "bc_mainSwitch",
+				tooltip = "bc_lazyNPC_tooltip",
+			},
+			{
+				name = "npcHarvest",
+				values = { false, true },
+				texts = { "ui_off", "bc_active" },
+				default = 1,
+				title = "fieldJob_jobType_harvesting",
+				tooltip = "bc_lazyNPCHarvest_tooltip",
+				isDisabledFunc = lazyNPCDisabled,
+			},
+			{
+				name = "npcSow",
+				values = { false, true },
+				texts = { "ui_off", "bc_active" },
+				default = 1,
+				title = "fieldJob_jobType_sowing",
+				tooltip = "bc_lazyNPCSow_tooltip",
+				isDisabledFunc = lazyNPCDisabled,
+			},
+			{
+				name = "npcPlowCultivate",
+				values = { false, true },
+				texts = { "ui_off", "bc_active" },
+				default = 1,
+				title = "bc_lazyNPCPlow",
+				tooltip = "bc_lazyNPCPlow_tooltip",
+				isDisabledFunc = lazyNPCDisabled,
+			},
+			{
+				name = "npcFertilize",
+				values = { false, true },
+				texts = { "ui_off", "bc_active" },
+				default = 1,
+				title = "fieldJob_jobType_fertilizing",
+				isDisabledFunc = lazyNPCDisabled,
+				tooltip = "bc_lazyNPCFertilize_tooltip",
+			},
+			{
+				name = "npcWeed",
+				values = { false, true },
+				texts = { "ui_off", "bc_active" },
+				default = 1,
+				title = "fieldJob_jobType_weeding",
+				tooltip = "bc_lazyNPCWeed_tooltip",
+				isDisabledFunc = lazyNPCDisabled,
 			}
 		},
 	},
 	{
-	title = "bc_hardMode",
-	elements = {
-		{name = "hardMode",
-		values = {false, true},
-		texts = {"ui_no", "ui_yes"},
-		default = 1,
-		title = "bc_mainSwitch",
-		tooltip = "bc_hardMode_tooltip",
+		title = "bc_hardMode",
+		elements = {
+			{
+				name = "hardMode",
+				values = { false, true },
+				texts = { "ui_no", "ui_yes" },
+				default = 1,
+				title = "bc_mainSwitch",
+				tooltip = "bc_hardMode_tooltip",
 			},
-		{name = "hardPenalty",
-		min = .0, max = .7, increment = .1, unit = true,
-		default = 2,
-		title = "bc_hardPenalty",
-		tooltip = "bc_hardPenalty_tooltip",
-		isDisabledFunc = hardDisabled,
-		noTranslate = true
+			{
+				name = "hardPenalty",
+				min = .0,
+				max = .7,
+				increment = .1,
+				unit = true,
+				default = 2,
+				title = "bc_hardPenalty",
+				tooltip = "bc_hardPenalty_tooltip",
+				isDisabledFunc = hardDisabled,
+				noTranslate = true
 			},
-		{name = "hardLease",
-		min = 0, max = 7, increment = 1, 
-		default = 2,
-		title = "bc_hardLease",
-		tooltip = "bc_hardLease_tooltip",
-		isDisabledFunc = hardDisabled,
-		noTranslate = true
+			{
+				name = "hardLease",
+				min = 0,
+				max = 7,
+				increment = 1,
+				default = 2,
+				title = "bc_hardLease",
+				tooltip = "bc_hardLease_tooltip",
+				isDisabledFunc = hardDisabled,
+				noTranslate = true
 			},
-		{name = "hardExpire",
-		values = {SC.OFF, SC.DAY, SC.MONTH},
-		texts = {"ui_off", "ui_day", "ui_month"},
-		default = 3,
-		title = "bc_hardExpire",
-		tooltip = "bc_hardExpire_tooltip",
-		isDisabledFunc = hardDisabled,
+			{
+				name = "hardExpire",
+				values = { SC.OFF, SC.DAY, SC.MONTH },
+				texts = { "ui_off", "ui_day", "ui_month" },
+				default = 3,
+				title = "bc_hardExpire",
+				tooltip = "bc_hardExpire_tooltip",
+				isDisabledFunc = hardDisabled,
 			},
-		{name = "hardLimit",
-		min = -1, max = 10, increment = 1, 
-		default = 1,
-		title = "bc_hardLimit",
-		tooltip = "bc_hardLimit_tooltip",
-		isDisabledFunc = hardDisabled,
-		noTranslate = true
-			},
-		},
-	},
-	{
-	title = "bc_discountMode",
-	elements = {
-		{name = "discountMode",
-		values = {false, true},
-		texts = {"ui_no", "ui_yes"},
-		default = 1,
-		title = "bc_mainSwitch",
-		tooltip = "bc_discountMode_tooltip",
-			},
-		{name = "discPerJob",
-		min = .01, max = .14, increment = .01, unit = true,
-		--values = {.05,.08,.11,.14},
-		--texts = {"5 %","8 %","11 %","14 %", },
-		default = 1,
-		title = "bc_discPerJob",
-		tooltip = "bc_discPerJob_tooltip",
-		isDisabledFunc = discountDisabled,
-		noTranslate = true
-			},
-		{name = "discMaxJobs",
-		min = 1, max = 20, increment = 1,
-		--values = {1,2,3,4,5,6,7},
-		--texts = {"1", "2", "3", "4", "5", "6", "7",},
-		default = 5,
-		title = "bc_discMaxJobs",
-		tooltip = "bc_discMaxJobs_tooltip",
-		isDisabledFunc = discountDisabled,
-		noTranslate = true
+			{
+				name = "hardLimit",
+				min = -1,
+				max = 10,
+				increment = 1,
+				default = 1,
+				title = "bc_hardLimit",
+				tooltip = "bc_hardLimit_tooltip",
+				isDisabledFunc = hardDisabled,
+				noTranslate = true
 			},
 		},
 	},
 	{
-	title = "bc_missionGeneration",
-	elements = {
-		{name = "generationInterval",
-		min = 1, max = 24, increment = 1,
-		default = 1,
-		title = "bc_generationInterval",
-		tooltip = "bc_generationInterval_tooltip",
-		actionFunc = function(self,ix)
-			BetterContracts:updateGenerationSettings() -- recalculate generation settings
-			end,
-		noTranslate = true
+		title = "bc_discountMode",
+		elements = {
+			{
+				name = "discountMode",
+				values = { false, true },
+				texts = { "ui_no", "ui_yes" },
+				default = 1,
+				title = "bc_mainSwitch",
+				tooltip = "bc_discountMode_tooltip",
 			},
-		{name = "missionGenPercentage",
-		values = {0.01, 0.02, 0.04, 0.05, 0.1, 0.2},
-		texts = {"1%", "2%", "4%", "5%", "10%", "20%"},
-		default = 0.2,
-		title = "bc_missionGenPercentage",
-		tooltip = "bc_missionGenPercentage_tooltip",
-		actionFunc = function(self,ix)
-			BetterContracts:updateGenerationSettings() -- recalculate generation settings
-			end,
-		noTranslate = true
+			{
+				name = "discPerJob",
+				min = .01,
+				max = .14,
+				increment = .01,
+				unit = true,
+				--values = {.05,.08,.11,.14},
+				--texts = {"5 %","8 %","11 %","14 %", },
+				default = 1,
+				title = "bc_discPerJob",
+				tooltip = "bc_discPerJob_tooltip",
+				isDisabledFunc = discountDisabled,
+				noTranslate = true
+			},
+			{
+				name = "discMaxJobs",
+				min = 1,
+				max = 20,
+				increment = 1,
+				--values = {1,2,3,4,5,6,7},
+				--texts = {"1", "2", "3", "4", "5", "6", "7",},
+				default = 5,
+				title = "bc_discMaxJobs",
+				tooltip = "bc_discMaxJobs_tooltip",
+				isDisabledFunc = discountDisabled,
+				noTranslate = true
+			},
+		},
+	},
+	{
+		title = "bc_missionGeneration",
+		elements = {
+			{
+				name = "generationInterval",
+				min = 1,
+				max = 24,
+				increment = 1,
+				default = 1,
+				title = "bc_generationInterval",
+				tooltip = "bc_generationInterval_tooltip",
+				actionFunc = function(self, ix)
+					BetterContracts:updateGenerationSettings() -- recalculate generation settings
+				end,
+				noTranslate = true
+			},
+			{
+				name = "missionGenPercentage",
+				values = { 0.01, 0.02, 0.04, 0.05, 0.1, 0.2 },
+				texts = { "1%", "2%", "4%", "5%", "10%", "20%" },
+				default = 0.2,
+				title = "bc_missionGenPercentage",
+				tooltip = "bc_missionGenPercentage_tooltip",
+				actionFunc = function(self, ix)
+					BetterContracts:updateGenerationSettings() -- recalculate generation settings
+				end,
+				noTranslate = true
 			},
 		},
 	},
@@ -282,10 +424,10 @@ function BCsetting.new(data, customMt)
 	self.type = AIParameterType.SELECTOR
 	self.name = data.name
 	self.data = data
-	if data.values ~=nil and next(data.values) ~=nil then
+	if data.values ~= nil and next(data.values) ~= nil then
 		self.values = table.copy(data.values)
 		self.texts = table.copy(data.texts)
-	elseif data.min ~= nil and data.max ~=nil then
+	elseif data.min ~= nil and data.max ~= nil then
 		self.data.values = {}
 		self.data.texts = {}
 		BCsetting.generateValues(self, self.data.values, self.data.texts, data.min, data.max, data.increment, data.unit)
@@ -299,7 +441,7 @@ function BCsetting.new(data, customMt)
 
 	-- index of the current value/text
 	self.default = data.default
-	self.current = data.default or 1 
+	self.current = data.default or 1
 	-- index of the previous value/text
 	self.previous = 1
 	self.isDisabledFunc = data.isDisabledFunc
@@ -307,10 +449,11 @@ function BCsetting.new(data, customMt)
 	self.guiElement = nil
 	return self
 end
+
 function BCsetting.init(bc)
 	-- initialize setting objects from constants
 	local settings = {}
-	for _, subtitle in ipairs(BCSettingsBySubtitle) do 
+	for _, subtitle in ipairs(BCSettingsBySubtitle) do
 		for _, data in ipairs(subtitle.elements) do
 			local setting = BCsetting.new(data)
 			setting:setValue(bc.config[setting.name])
@@ -320,30 +463,32 @@ function BCsetting.init(bc)
 	end
 	return settings
 end
+
 function BCsetting:generateValues(values, texts, min, max, inc, percent)
 	inc = inc or 1
-	for i=min, max, inc do 
+	for i = min, max, inc do
 		table.insert(values, i)
 		local value = MathUtil.round(i, 2)
-		local text = percent and string.format("%d %%",value*100) or tostring(value)
+		local text = percent and string.format("%d %%", value * 100) or tostring(value)
 		table.insert(texts, text)
 	end
 end
+
 function BCsetting:setValue(value)
 	-- set the settings current corresponding to input value. Return false, if value nil or not found
-	local function func(...) return false end 
+	local function func(...) return false end
 	if value ~= nil then
-		if type(value) == "number" then 
+		if type(value) == "number" then
 			func = function(a, b)
 				local epsilon = self.data.incremental or 0.01
 				if a == nil or b == nil then return false end
-				return a > b - epsilon/2 and a <= b + epsilon/2 
+				return a > b - epsilon / 2 and a <= b + epsilon / 2
 			end
 		else
 			func = function(a, b) return a == b end
 		end
 	else
-		Logging.warning("[BetterContracts] %s:setValue() called with nil value",self.name)
+		Logging.warning("[BetterContracts] %s:setValue() called with nil value", self.name)
 		return false
 	end
 	-- find the value requested, set current correspondingly
@@ -356,19 +501,21 @@ function BCsetting:setValue(value)
 	end
 	return false
 end
+
 function BCsetting:setIx(ix)
 	-- set it to values[ix]
 	local conf = BetterContracts.config
-	if self.current ~= ix then 
+	if self.current ~= ix then
 		self.previous = self.current
-		self.current = ix 
+		self.current = ix
 		conf[self.name] = self.values[ix]
-		if self.actionFunc ~= nil then 
+		if self.actionFunc ~= nil then
 			self:actionFunc(ix)
 		end
-		debugPrint("** %s set to %s **", self.name,self.values[ix])
+		debugPrint("** %s set to %s **", self.name, self.values[ix])
 	end
 end
+
 function BCsetting:setGuiElement(element)
 	local labels = {}
 	for i = 1, #self.texts do
@@ -388,13 +535,15 @@ function BCsetting:setGuiElement(element)
 	element.bc_setting = self
 
 	local isDisabledFunc = self.isDisabledFunc
-	if isDisabledFunc then 
+	if isDisabledFunc then
 		element:setDisabled(isDisabledFunc())
 	end
 end
+
 function BCsetting:writeStream(streamId, connection)
 	streamWriteInt32(streamId, self.current)
 end
+
 function BCsetting:readStream(streamId, connection)
 	local ix = streamReadInt32(streamId)
 	self:setIx(ix)

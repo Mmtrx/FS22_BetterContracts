@@ -69,10 +69,6 @@
 		<text name="bc_settingsPage_title" text="Paramètres du contrat" />
 
 		<text name="bc_baseSettings" text="Paramètres de base" />
-		<text name="bc_rewardMultiplier" text="Récompense" />
-		<text name="bc_rewardMultiplier_tooltip" text="Ajustez les récompenses des contrats proposés." />		
-		<text name="bc_rewardMultiplierMow" text="Récompense de pressage" />
-		<text name="bc_rewardMultiplierMow_tooltip" text="Ajustez les récompenses des contrats de pressage proposés." />
 		<text name="bc_leaseMultiplier" text="Coût de la location" />
 		<text name="bc_leaseMultiplier_tooltip" text="Ajuster le coût d'emprunt du matériel pour les contrats." />
 		<text name="bc_maxActive" text="Contrats actifs simultanément" />
@@ -85,6 +81,26 @@
 		<text name="bc_forcePlow_tooltip" text="Every harvest of corn/ potato/ sugarbeet requires subsequent plowing." />
 		<text name="bc_debug" text="Debug Modus" />
 		<text name="bc_debug_tooltip" text="Prints info messages to the log if active. Can help to find bugs." />
+
+		<text name="bc_rewardSettings" text="Paramètres des récompenses" />
+		<text name="bc_multRewardMowBale" text="Pressage" />
+		<text name="bc_multRewardMowBale_tooltip" text="Ajustez les récompenses des contrats de pressage proposés." />
+		<text name="bc_multRewardPlow" text="Labourage" />
+		<text name="bc_multRewardPlow_tooltip" text="Ajustez les récompenses des contrats de labourage proposés." />
+		<text name="bc_multRewardCultivate" text="Pressage" />
+		<text name="bc_multRewardCultivate_tooltip" text="Ajustez les récompenses des contrats de pressage proposés." />
+		<text name="bc_multRewardSow" text="Ensemencement" />
+		<text name="bc_multRewardSow_tooltip" text="Ajustez les récompenses des contrats d'ensemencement proposés." />
+		<text name="bc_multRewardHarvest" text="Récolte" />
+		<text name="bc_multRewardHarvest_tooltip" text="Ajustez les récompenses des contrats de récolte proposés." />
+		<text name="bc_multRewardWeed" text="Désherbage" />
+		<text name="bc_multRewardWeed_tooltip" text="Ajustez les récompenses des contrats de désherbage proposés." />
+		<text name="bc_multRewardSpray" text="Pulvérisation" />
+		<text name="bc_multRewardSpray_tooltip" text="Ajustez les récompenses des contrats de pulvérisation proposés." />
+		<text name="bc_multRewardFertilize" text="Fertilisation" />
+		<text name="bc_multRewardFertilize_tooltip" text="Ajustez les récompenses des contrats de fertilisation proposés." />
+		<text name="bc_multRewardOthers" text="Autres" />
+		<text name="bc_multRewardOthers_tooltip" text="Ajustez les autres récompenses des contrats proposés." />
 
 		<text name="bc_lazyNPC" text="Lazy Farmers" />
 		<text name="bc_mainSwitch" text="Activated" />

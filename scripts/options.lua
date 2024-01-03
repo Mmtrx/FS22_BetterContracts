@@ -8,31 +8,31 @@
 --  v1.2.5.0 	31.10.2022	hard mode: active miss time out at midnght. Penalty for missn cancel
 --  v1.2.6.0 	30.11.2022	UI for all settings
 --  v1.2.6.4 	17.01.2023	fix issue #88: onClickBuyFarmland() if discountMode off
---  v1.2.6.5 	18.01.2023	add setting "toDeliver": harvest contract success factor. 
+--  v1.2.6.5 	18.01.2023	add setting "toDeliver": harvest contract success factor.
 --							Improve reward multiplier getReward()
---  v1.2.7.0 	29.01.2023	visual tags for mission fields and vehicles. 
---							show leased vehicles for active contracts 
---  v1.2.7.1 	10.02.2023	fix mission visual tags for MP: renderIcon(). 
+--  v1.2.7.0 	29.01.2023	visual tags for mission fields and vehicles.
+--							show leased vehicles for active contracts
+--  v1.2.7.1 	10.02.2023	fix mission visual tags for MP: renderIcon().
 --  v1.2.7.2 	12.02.2023	icon for roller missions. Don't show negative togos
---  v1.2.7.3	20.02.2023	double progress bar active contracts. Fix PnH BGA/ Maize+ 
+--  v1.2.7.3	20.02.2023	double progress bar active contracts. Fix PnH BGA/ Maize+
 --  v1.2.7.7	29.03.2023	add "off" values to hardMode settings
 --  v1.2.8.3	10.10.2023	force plow after root crop harvest. Insta-ferment separate setting (#158)
 --	v1.2.8.7 	02.12.2023	npc should not work before noon of first day in month (#187)
 --							new setting "hardLimit": limit jobs per farm and month (#168)
 --=======================================================================================================
 
---------------------- lazyNPC --------------------------------------------------------------------------- 
+--------------------- lazyNPC ---------------------------------------------------------------------------
 function NPCHarvest(self, superf, field, allowUpdates)
-	if not BetterContracts.config.lazyNPC or not allowUpdates then 
-		return superf(self, field, allowUpdates) 
+	if not BetterContracts.config.lazyNPC or not allowUpdates then
+		return superf(self, field, allowUpdates)
 	end
-	if not BetterContracts.NPCAllowWork then 
+	if not BetterContracts.NPCAllowWork then
 		-- lazyNPC active, too early for NPC field work
 		table.insert(self.fieldsToUpdate, field)
 		return
 	end
 	-- lazyNPC active, NPC field upates allowed
-	if BetterContracts.fieldToMission[field.fieldId] == nil then 
+	if BetterContracts.fieldToMission[field.fieldId] == nil then
 		return superf(self, field, allowUpdates)
 	end
 
@@ -49,7 +49,7 @@ function NPCHarvest(self, superf, field, allowUpdates)
 		local witheredState = fruitDesc.witheredState
 		if witheredState ~= nil then
 			area, total = FieldUtil.getFruitArea(x - 1, z - 1, x + 1, z - 1, x - 1, z + 1, FieldUtil.FILTER_EMPTY, FieldUtil.FILTER_EMPTY, field.fruitType, witheredState, witheredState, 0, 0, 0, false)
-			withered = area > 0.5 * total 
+			withered = area > 0.5 * total
 		end
 		if conf.npcHarvest then
 			-- don't let NPCs harvest
@@ -60,24 +60,24 @@ function NPCHarvest(self, superf, field, allowUpdates)
 			maxHarvestState = FieldUtil.getMaxHarvestState(field, field.fruitType)
 			if maxHarvestState == harvestReadyState then return end
 		end
-		if conf.npcWeed and not withered then 
+		if conf.npcWeed and not withered then
 			-- leave field with weeds for weeding/ spraying
 			local maxWeedState = FieldUtil.getMaxWeedState(field)
-			if maxWeedState >= 3 and math.random() < prob.weed then return 
+			if maxWeedState >= 3 and math.random() < prob.weed then return
 			end
 		end
 		if conf.npcPlowCultivate then
 			-- leave a cut field for plow/ grubber/ lime mission
 			area, total = FieldUtil.getFruitArea(x - 1, z - 1, x + 1, z - 1, x - 1, z + 1, FieldUtil.FILTER_EMPTY, FieldUtil.FILTER_EMPTY, field.fruitType, fruitDesc.cutState, fruitDesc.cutState, 0, 0, 0, false)
-			if area > 0.5 * total and 
+			if area > 0.5 * total and
 				g_currentMission.snowSystem.height < SnowSystem.MIN_LAYER_HEIGHT then
 				local limeFactor = FieldUtil.getLimeFactor(field)
 				if limeMiss and limeFactor == 0 and math.random() < prob.lime then return
-				elseif math.random() < prob.plowCultivate then return 
-				end 
+				elseif math.random() < prob.plowCultivate then return
+				end
 			end
 		end
-		if conf.npcFertilize and not withered then 
+		if conf.npcFertilize and not withered then
 			local sprayFactor = FieldUtil.getSprayFactor(field)
 			if sprayFactor < 1 and math.random() < prob.fertilize then return
 			end
@@ -86,8 +86,8 @@ function NPCHarvest(self, superf, field, allowUpdates)
 		-- leave empty (plowed/grubbered) field for sow/ lime mission
 		local limeFactor = FieldUtil.getLimeFactor(field)
 		if limeMiss and limeFactor == 0 and math.random() < prob.lime then return
-		elseif self:getFruitIndexForField(field) ~= nil and 
-			math.random() < prob.sow then return 
+		elseif self:getFruitIndexForField(field) ~= nil and
+			math.random() < prob.sow then return
 		end
 	end
 	superf(self, field, allowUpdates)
@@ -95,11 +95,26 @@ end
 
 --------------------- reward / lease cost ---------------------------------------------------------------
 function getReward(self,superf)
-	-- overwrites AbstractFieldMission:getReward()
+	-- overwrites AbstractFieldMission:getReward()	
 	if self.type.name == "mow_bale" then
-		return BetterContracts.config.multRewardMow * superf(self)
-	end		
-	return BetterContracts.config.multReward * superf(self)
+		return BetterContracts.config.multRewardMowBale * superf(self)
+    elseif self.type.name == "plow" then
+		return BetterContracts.config.multRewardPlow * superf(self)
+    elseif self.type.name == "cultivate" then
+		return BetterContracts.config.multRewardCultivate * superf(self)
+    elseif self.type.name == "sow" then
+		return BetterContracts.config.multRewardSow * superf(self)	
+    elseif self.type.name == "harvest" then
+		return BetterContracts.config.multRewardHarvest * superf(self)	
+    elseif self.type.name == "weed" then
+		return BetterContracts.config.multRewardWeed * superf(self)
+    elseif self.type.name == "spray" then
+		return BetterContracts.config.multRewardSpray * superf(self)
+    elseif self.type.name == "fertilize" then
+		return BetterContracts.config.multRewardFertilize * superf(self)
+	end
+
+	return BetterContracts.config.multRewardOthers * superf(self)
 end
 function calcLeaseCost(self,superf)
 	return BetterContracts.config.multLease * superf(self)
@@ -108,15 +123,15 @@ end
 --------------------- manage npc jobs per farm ----------------------------------------------------------
 function farmWrite(self, streamId)
 	-- appended to Farm:writeStream()
-	if self.isSpectator	then return end 
+	if self.isSpectator	then return end
 
 	-- write jobsLeft for current month
-	self.jobsLeft = self.jobsLeft or BetterContracts.config.hardLimit 
+	self.jobsLeft = self.jobsLeft or BetterContracts.config.hardLimit
 	streamWriteUInt8(streamId, self.jobsLeft) 		-- # of jobs left to accept this month
 
 	-- write stats.npcJobs when MP syncing a farm
 	local count = 0
-	if self.stats.npcJobs == nil then 
+	if self.stats.npcJobs == nil then
 		self.stats.npcJobs = {}
 	else
 		count = table.size(self.stats.npcJobs)		-- returns 0 if table is empty
@@ -138,7 +153,7 @@ function farmRead(self, streamId)
 	self.jobsLeft =  streamReadUInt8(streamId)
 
 	-- read npcJobs[npcIndex] for a farm
-	if self.stats.npcJobs == nil then 
+	if self.stats.npcJobs == nil then
 		self.stats.npcJobs = {}
 	end
 	local jobs = self.stats.npcJobs
@@ -153,7 +168,7 @@ function finish(self, success )
 	-- appended to AbstractFieldMission:finish(success)
 	debugPrint("** finish() %s %s on field %s",success,self.type.name, self.field.fieldId)
 	local farm =  g_farmManager:getFarmById(self.farmId)
-	if farm.stats.npcJobs == nil then 
+	if farm.stats.npcJobs == nil then
 		farm.stats.npcJobs = {}
 	end
 	local jobs = farm.stats.npcJobs
@@ -161,30 +176,30 @@ function finish(self, success )
 
 	if success then
 		-- (always) count as valid job for this npc:
-		if jobs[npcIndex] == nil then 
-			jobs[npcIndex] = 1 
+		if jobs[npcIndex] == nil then
+			jobs[npcIndex] = 1
 		else
 			jobs[npcIndex] = jobs[npcIndex] +1
 		end
 		-- show notifications, if discount mode
-		if BetterContracts.config.discountMode and g_client 
+		if BetterContracts.config.discountMode and g_client
 			and  g_currentMission:getFarmId() == self.farmId then
 			local discPerJob = BetterContracts.config.discPerJob
 			local disMax = math.min(BetterContracts.config.discMaxJobs,math.floor(0.5 / discPerJob))
 			local disJobs = math.min(jobs[npcIndex], disMax)
 			local disct = disJobs * 100 * discPerJob
 			local npc = self:getNPC()
-			g_currentMission:addIngameNotification(FSBaseMission.INGAME_NOTIFICATION_OK, 
+			g_currentMission:addIngameNotification(FSBaseMission.INGAME_NOTIFICATION_OK,
 					string.format(g_i18n:getText("bc_discValue"), npc.title, disct))
 			if jobs[npcIndex] >= disMax then
-				g_currentMission:addIngameNotification(FSBaseMission.INGAME_NOTIFICATION_OK, 
+				g_currentMission:addIngameNotification(FSBaseMission.INGAME_NOTIFICATION_OK,
 					string.format(g_i18n:getText("bc_maxJobs"), npc.title))
 			end
 		end
 	elseif BetterContracts.config.hardMode then
 		-- reduce # valid jobs for this npc:
-		if jobs[npcIndex] == nil then 
-			jobs[npcIndex] = 0 
+		if jobs[npcIndex] == nil then
+			jobs[npcIndex] = 0
 		else
 			jobs[npcIndex] = math.max(0, jobs[npcIndex] -1)
 		end
@@ -194,7 +209,7 @@ function saveToXML(self, xmlFile, key)
 	-- appended to FarmStats:saveToXMLFile(), self is farm.stats
 	local jobs = self.npcJobs
 	if jobs ~= nil then
-		xmlFile:setTable(key .. ".npcJobs.npc", jobs, 
+		xmlFile:setTable(key .. ".npcJobs.npc", jobs,
 			function (npcKey, npc, npcIndex)
 			xmlFile:setInt(npcKey .. "#index", npcIndex)
 			xmlFile:setInt(npcKey .. "#count", npc or 0)
@@ -213,18 +228,18 @@ function loadFromXML(self, xmlFile, key)
 	self.jobsLeft = xmlFile:getInt(key..".jobsLeft", BetterContracts.config.hardLimit)
 end
 
---------------------- hard mode ------------------------------------------------------------------------- 
+--------------------- hard mode -------------------------------------------------------------------------
 function AbstractFieldMission:calculateStealingCost()
 	-- calc penalty for canceled field mission
 	if BetterContracts.config.hardMode and not self.success and self.reward then
-		return self:getReward() * BetterContracts.config.hardPenalty 
+		return self:getReward() * BetterContracts.config.hardPenalty
 	end
 	return 0
 end
 function harvestCalcStealing(self,superf)
 	local steal = superf(self)
 	local penal = 0
-	if BetterContracts.config.hardMode then 
+	if BetterContracts.config.hardMode then
 		penal = HarvestMission:superClass().calculateStealingCost(self)
 		debugPrint("BC: harvest steal/ penalty is %.1f / %.1f", steal, penal)
 	end
@@ -242,7 +257,7 @@ function updateDetails(self, section, index)
 	local mission = contract.mission
 
 	-- hard Mode: vehicle lease cost also for canceled mission
-	if bc.config.hardMode and contract.finished and not mission.success then 
+	if bc.config.hardMode and contract.finished and not mission.success then
 		local lease, penal = 0, 0
 		if mission:hasLeasableVehicles() and mission.spawnedVehicles then
 			lease = - MathUtil.round(mission.vehicleUseCost)
@@ -252,7 +267,7 @@ function updateDetails(self, section, index)
 			penal = - MathUtil.round(mission.stealingCost)
 			self.tallyBox:getDescendantByName("stealingText"):setText(g_i18n:getText("bc_penalty"))
 		end
-		local total = lease + penal 
+		local total = lease + penal
 		self.tallyBox:getDescendantByName("leaseCost"):setText(g_i18n:formatMoney(lease, 0, true, true))
 		self.tallyBox:getDescendantByName("stealing"):setText(g_i18n:formatMoney(penal, 0, true, true))
 		self.tallyBox:getDescendantByName("total"):setText(g_i18n:formatMoney(total, 0, true, true))
@@ -260,14 +275,14 @@ function updateDetails(self, section, index)
 	local noActive = not contract.active or not bc.isOn
 
 	-- toggle standard / enhanced progress bars
-	bc:showProgressBars(contract, not noActive and 
+	bc:showProgressBars(contract, not noActive and
 		table.hasElement({"harvest","mow_bale", "chaff"}, mission.type.name))
-	if noActive then return end 
+	if noActive then return end
 
 	-- update display for active contracts
 	if mission:hasLeasableVehicles() and mission.spawnedVehicles then
 		-- show leased vecs for active contract
-		local totalWidth = 0 
+		local totalWidth = 0
 		-- smaller vehiclesBox to not interfere with 2nd progress bar
 		self.vehicleTemplate:applyProfile("myVehiclesItem")
 		self.vehiclesBox:applyProfile("myVehiclesBox")
@@ -287,7 +302,7 @@ function updateDetails(self, section, index)
 end
 function BetterContracts:showProgressBars(contract, on)
 	-- hide standard progress bar
-	local off = not on 
+	local off = not on
 	local cbox = self.frCon
 	cbox.progressText:setVisible(off and contract.active)
 	cbox.progressTitleText:setVisible(off and contract.active)
@@ -297,7 +312,7 @@ function BetterContracts:showProgressBars(contract, on)
 	-- show my progress bars
 	self.my.box1:setVisible(on)
 	self.my.box2:setVisible(on)
-	if off then return end 
+	if off then return end
 
 	local fullWidth = self.my.progressBarBg.size[1] - self.my.progressBar1.margin[1] * 2
 	local fieldPercent = math.min(self.fieldPercent, 1)
@@ -321,7 +336,7 @@ function startContract(frCon, superf, wantsLease)
 	local farmId = g_currentMission:getFarmId()
 
 	-- overwrite dialog info box
-	if g_missionManager:hasFarmReachedMissionLimit(farmId) 
+	if g_missionManager:hasFarmReachedMissionLimit(farmId)
 		and BetterContracts.config.maxActive ~= 3 then
 		g_gui:showInfoDialog({
 			visible = true,
@@ -331,14 +346,14 @@ function startContract(frCon, superf, wantsLease)
 		return
 	end
 	-- (hardMode) --
-	if self.config.hardMode then 
+	if self.config.hardMode then
 		local farm = g_farmManager:getFarmById(farmId)
-		if wantsLease then 
+		if wantsLease then
 		-- check if enough jobs complete to allow lease
 			local contract = frCon:getSelectedContract()
 			local npc = contract.mission:getNPC()
 			local jobs = 0
-			if farm.stats.npcJobs ~= nil and farm.stats.npcJobs[npc.index] ~= nil then 
+			if farm.stats.npcJobs ~= nil and farm.stats.npcJobs[npc.index] ~= nil then
 				jobs = farm.stats.npcJobs[npc.index]
 			end
 			if jobs < self.config.hardLease then
@@ -354,7 +369,7 @@ function startContract(frCon, superf, wantsLease)
 		end
 		-- check available monthly jobs limit
 		farm.jobsLeft = farm.jobsLeft or BetterContracts.config.hardLimit
-		if farm.jobsLeft == 0 then 
+		if farm.jobsLeft == 0 then
 			g_gui:showInfoDialog({
 				visible = true,
 				text = g_i18n:getText("bc_monthlyLimit"),
@@ -368,11 +383,11 @@ function startContract(frCon, superf, wantsLease)
 	superf(frCon, wantsLease)
 end
 function BetterContracts:onPeriodChanged()
-	if g_server == nil then return end 
+	if g_server == nil then return end
 	self.NPCAllowWork = false  	-- prevent any NPC field work at start of month
 
 	-- reset monthly limit for all farms:
-	if self.config.hardLimit > -1 then 
+	if self.config.hardLimit > -1 then
 		for _,farm in pairs(g_farmManager:getFarms()) do
 			if farm.farmId ~= FarmManager.SPECTATOR_FARM_ID then
 				local mlist = table.ifilter(g_missionManager:getMissionsList(farm.farmId), function(m)
@@ -386,8 +401,8 @@ function BetterContracts:onPeriodChanged()
 	end
 
 	-- hard mode: cancel any active field missions
-	if self.config.hardMode and self.config.hardExpire == SC.MONTH then  
-		for _, m in ipairs(g_missionManager:getActiveMissions()) do 
+	if self.config.hardMode and self.config.hardExpire == SC.MONTH then
+		for _, m in ipairs(g_missionManager:getActiveMissions()) do
 			if m:hasField() then
 				g_missionManager:cancelMission(m)
 			end
@@ -396,9 +411,9 @@ function BetterContracts:onPeriodChanged()
 end
 function BetterContracts:onDayChanged()
 	-- hard mode: cancel any active field missions
-	if g_server == nil or not self.config.hardMode 
+	if g_server == nil or not self.config.hardMode
 		or self.config.hardExpire ~= SC.DAY then return end
-	for _, m in ipairs(g_missionManager:getActiveMissions()) do 
+	for _, m in ipairs(g_missionManager:getActiveMissions()) do
 		if m:hasField() then
 			g_missionManager:cancelMission(m)
 		end
@@ -408,27 +423,27 @@ function BetterContracts:onHourChanged()
 	local env = g_currentMission.environment
 
 	-- check if NPCs can work
-	if self.config.lazyNPC and g_server ~= nil and 
-		env.currentDayInPeriod == 1 and env.currentHour == 12 then 
-		self.NPCAllowWork = true 
+	if self.config.lazyNPC and g_server ~= nil and
+		env.currentDayInPeriod == 1 and env.currentHour == 12 then
+		self.NPCAllowWork = true
 	end
 
 	-- hard mode: issue warnings 6,3,1 h before active missions cancel
-	if not self.config.hardMode or self.config.hardExpire == SC.OFF or g_client == nil 
+	if not self.config.hardMode or self.config.hardExpire == SC.OFF or g_client == nil
 		then return end
-	if self.config.hardExpire == SC.MONTH and 
+	if self.config.hardExpire == SC.MONTH and
 		env.currentDayInPeriod ~= env.daysPerPeriod then return end
-	if not table.hasElement({18,21,23}, env.currentHour) then return end 
+	if not table.hasElement({18,21,23}, env.currentHour) then return end
 
 	local farmId = g_currentMission:getFarmId()
-	local count = 0 
-	for _, m in ipairs(g_missionManager:getActiveMissions()) do 
-		if m:hasField() and m.farmId == farmId then 
+	local count = 0
+	for _, m in ipairs(g_missionManager:getActiveMissions()) do
+		if m:hasField() and m.farmId == farmId then
 			count = count +1
 		end
 	end
 	if count > 0 then
-		g_currentMission:addIngameNotification(FSBaseMission.INGAME_NOTIFICATION_CRITICAL, 
+		g_currentMission:addIngameNotification(FSBaseMission.INGAME_NOTIFICATION_CRITICAL,
 			string.format(g_i18n:getText("bc_warnTimeout"), count))
 	end
 end
@@ -437,12 +452,12 @@ function onButtonCancel(self, superf)
 	if not bc.config.hardMode or bc.config.hardPenalty == 0.0
 		then return superf(self) end
 	local contract = self:getSelectedContract()
-	local m = contract.mission 
+	local m = contract.mission
 	--local difficulty = 0.7 + 0.3 * g_currentMission.missionInfo.economicDifficulty
 	local text = g_i18n:getText("fieldJob_endContract")
 	local reward = m:getReward()
-	if reward then  
-		local penalty = MathUtil.round(reward * bc.config.hardPenalty) 
+	if reward then
+		local penalty = MathUtil.round(reward * bc.config.hardPenalty)
 		text = text.. g_i18n:getText("bc_warnCancel") ..
 		 g_i18n:formatMoney(penalty, 0, true, true)
 	end
@@ -453,7 +468,7 @@ function onButtonCancel(self, superf)
 	})
 end
 
---------------------- discount mode --------------------------------------------------------------------- 
+--------------------- discount mode ---------------------------------------------------------------------
 function AbstractFieldMission:getNPC()
 		local npcIndex = self.field.farmland.npcIndex
 		return g_npcManager:getNPCByIndex(npcIndex)
@@ -480,13 +495,13 @@ function onClickFarmland(self, elem, X, Z)
 	bc.my.ownerText:setVisible(false)
 	bc.my.ownerLabel:setVisible(false)
 
-	if not bc.config.discountMode or 
-		self.mode ~= InGameMenuMapFrame.MODE_FARMLANDS then return end 
+	if not bc.config.discountMode or
+		self.mode ~= InGameMenuMapFrame.MODE_FARMLANDS then return end
 
 	local farmland = self.selectedFarmland
 	if farmland == nil or not farmland.showOnFarmlandsScreen
 		or not self.canBuy
-		then return 
+		then return
 	end
 	local price, disct = getDiscountPrice(farmland)
 	if price <= self.playerFarm:getBalance() then
@@ -516,7 +531,7 @@ function onClickBuyFarmland(self, superf)
 		local text = string.format(self.l10n:getText(InGameMenuMapFrame.L10N_SYMBOL.DIALOG_BUY_FARMLAND), priceText)
 		local callback, target, args = self.onYesNoBuyFarmland, self, nil
 
-		if discMode then  
+		if discMode then
 			callback = BetterContracts.onYesNoBuyFarmland
 			target = BetterContracts
 			args = {self.selectedFarmland.id, g_currentMission:getFarmId(), price}
@@ -537,7 +552,7 @@ function onClickBuyFarmland(self, superf)
 	end
 end
 function BetterContracts:onYesNoBuyFarmland(yes, args)
-	if yes then 
+	if yes then
 		-- remove owner info:
 		local bc = BetterContracts
 		bc.my.ownerText:setVisible(false)
@@ -548,35 +563,35 @@ end
 function BetterContracts:onFarmlandStateChanged(landId, farmId)
 	-- if client buys/sells farmland, FarmlandStateEvent is sent to server, then broadcast to all clients
 	-- so we only change npcJobs on server and on the client who bought the farmland
-	if farmId == FarmlandManager.NO_OWNER_FARM_ID 
+	if farmId == FarmlandManager.NO_OWNER_FARM_ID
 		or not self.config.discountMode or not g_currentMission.isMissionStarted
-		then return end 
+		then return end
 	if not (g_server or g_currentMission:getFarmId() == farmId)
-		then return end 
+		then return end
 
 	-- decrease npcJobs to 0, or by discMaxJobs for npc seller of farmland
 	local farm =  g_farmManager:getFarmById(farmId)
 	local npcIndex = g_farmlandManager:getFarmlandById(landId).npcIndex
-	if farm == nil or npcIndex == nil then return end 
+	if farm == nil or npcIndex == nil then return end
 	
-	if farm.stats.npcJobs == nil then 
+	if farm.stats.npcJobs == nil then
 		farm.stats.npcJobs = {}
-	elseif farm.stats.npcJobs[npcIndex] ~= nil then  
-		farm.stats.npcJobs[npcIndex] = 
+	elseif farm.stats.npcJobs[npcIndex] ~= nil then
+		farm.stats.npcJobs[npcIndex] =
 		math.max(farm.stats.npcJobs[npcIndex] - self.config.discMaxJobs, 0)
 	else
-		farm.stats.npcJobs[npcIndex] = 0 
+		farm.stats.npcJobs[npcIndex] = 0
 	end
 end
 function farmlandManagerSaveToXMLFile(self, superf, xmlFilename)
 	if superf(self, xmlFilename) then
 		local xmlFile = XMLFile.load("farmlandsXML", xmlFilename, "farmlands")
-		if xmlFile == nil then return false end 
+		if xmlFile == nil then return false end
 
 		xmlFile:iterate("farmlands.farmland", function(index,  key)
 			local id = xmlFile:getInt(key.."#id")
 			local farmland = self.farmlands[id]
-			if farmland ~= nil then 
+			if farmland ~= nil then
 				xmlFile:setInt(key.."#npcIndex", farmland.npcIndex)
 			end
 		end)
@@ -590,23 +605,23 @@ end
 ----------------------------------------
 function renderIcon(self, x, y, rot)
 	-- appended to FieldHotspot:render()
-	if self.field == nil or self.name == "" then return end 
+	if self.field == nil or self.name == "" then return end
 
 	local bc = BetterContracts
 	local mission = bc.fieldToMission[self.field.fieldId]
-	if mission ~= nil then 
-		local typeName = mission.type.name 
+	if mission ~= nil then
+		local typeName = mission.type.name
 		-- only show if Details on and mission type not filtered off
-		if not bc.isOn or not bc.filterState[typeName] then return end 
+		if not bc.isOn or not bc.filterState[typeName] then return end
 
 		-- select icon:
 		local icon = bc.missionIcons[typeName]
-		local other 
-		if icon == nil then 
-			if typeName == "cultivate"  or typeName=="roll" then other = "plow" 
+		local other
+		if icon == nil then
+			if typeName == "cultivate"  or typeName=="roll" then other = "plow"
 			elseif typeName=="spray" or typeName=="lime" then other = "fertilize"
 			elseif typeName=="chaff" then other = "harvest"
-			elseif typeName=="mow_bale" then 
+			elseif typeName=="mow_bale" then
 				other = "hay"
 				if mission.fillType == FillType.SILAGE then other = "silage"
 				end
@@ -633,7 +648,7 @@ function harvestCompleteField(self)
 	if not BetterContracts.config.forcePlow then return end
 	
 	local ft = g_fruitTypeManager:getFruitTypeByIndex(self.field.fruitType)
-	if string.find("MAIZE POTATO SUGARBEET", ft.name) then 
+	if string.find("MAIZE POTATO SUGARBEET", ft.name) then
 		self.fieldPlowFactor = 0 -- force plowing after root crop harvest
 	end
 end
