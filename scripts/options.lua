@@ -19,6 +19,7 @@
 --  v1.2.8.3	10.10.2023	force plow after root crop harvest. Insta-ferment separate setting (#158)
 --	v1.2.8.7 	02.12.2023	npc should not work before noon of first day in month (#187)
 --							new setting "hardLimit": limit jobs per farm and month (#168)
+--							new setting "multRewardMow" for baling contracts (#199)
 --=======================================================================================================
 
 --------------------- lazyNPC --------------------------------------------------------------------------- 
@@ -111,8 +112,8 @@ function farmWrite(self, streamId)
 	if self.isSpectator	then return end 
 
 	-- write jobsLeft for current month
-	self.jobsLeft = self.jobsLeft or BetterContracts.config.hardLimit 
-	streamWriteUInt8(streamId, self.jobsLeft) 		-- # of jobs left to accept this month
+	self.stats.jobsLeft = self.stats.jobsLeft or BetterContracts.config.hardLimit 
+	streamWriteUInt8(streamId, self.stats.jobsLeft) 	-- # of jobs left to accept this month
 
 	-- write stats.npcJobs when MP syncing a farm
 	local count = 0
@@ -135,7 +136,7 @@ function farmRead(self, streamId)
 	if self.isSpectator	then return end
 
 	-- read jobsLeft for current month
-	self.jobsLeft =  streamReadUInt8(streamId)
+	self.stats.jobsLeft =  streamReadUInt8(streamId)
 
 	-- read npcJobs[npcIndex] for a farm
 	if self.stats.npcJobs == nil then 
@@ -200,7 +201,10 @@ function saveToXML(self, xmlFile, key)
 			xmlFile:setInt(npcKey .. "#count", npc or 0)
 		end)
 	end
-	xmlFile:setInt(key..".jobsLeft", self.jobsLeft or BetterContracts.config.hardLimit)
+	local bc = BetterContracts
+	if bc.config.hardMode and bc.config.hardLimit > -1 then
+		xmlFile:setInt(key..".jobsLeft", self.jobsLeft, BetterContracts.config.hardLimit)
+	end
 end
 function loadFromXML(self, xmlFile, key)
 	-- appended to FarmStats:loadFromXMLFile()
@@ -352,38 +356,47 @@ function startContract(frCon, superf, wantsLease)
 				return
 			end
 		end
+		if self.config.hardLimit > -1 then
 		-- check available monthly jobs limit
-		farm.jobsLeft = farm.jobsLeft or BetterContracts.config.hardLimit
-		if farm.jobsLeft == 0 then 
-			g_gui:showInfoDialog({
-				visible = true,
-				text = g_i18n:getText("bc_monthlyLimit"),
-				dialogType = DialogElement.TYPE_INFO
-			})
-			return
-		else
-			farm.jobsLeft = farm.jobsLeft -1
+			if farm.stats.jobsLeft == -1 then  	-- hardLimit was set during this game
+				farm.stats.jobsLeft = self.config.hardLimit
+			end
+			if farm.stats.jobsLeft == 0 then 
+				g_gui:showInfoDialog({
+					visible = true,
+					text = g_i18n:getText("bc_monthlyLimit"),
+					dialogType = DialogElement.TYPE_INFO
+				})
+				return
+			else
+				farm.stats.jobsLeft = farm.stats.jobsLeft -1
+			end
 		end
 	end
 	superf(frCon, wantsLease)
 end
-function BetterContracts:onPeriodChanged()
-	if g_server == nil then return end 
-	self.NPCAllowWork = false  	-- prevent any NPC field work at start of month
-
-	-- reset monthly limit for all farms:
-	if self.config.hardLimit > -1 then 
-		for _,farm in pairs(g_farmManager:getFarms()) do
-			if farm.farmId ~= FarmManager.SPECTATOR_FARM_ID then
-				local mlist = table.ifilter(g_missionManager:getMissionsList(farm.farmId), function(m)
-					return m.status ~= AbstractMission.STATUS_STOPPED
-					end)
-				local count = table.size(mlist)
-				farm.jobsLeft =  math.max(self.config.hardLimit - count, 0)
-				debugPrint("*BC: farm %s has %d jobs. Limit set to %d", farm.name, count, farm.jobsLeft)
-			end
+function BetterContracts:resetJobsLeft()
+	-- recalc jobs left per farm
+	for _,farm in pairs(g_farmManager:getFarms()) do
+		if farm.farmId ~= FarmManager.SPECTATOR_FARM_ID then
+			local mlist = table.ifilter(g_missionManager:getMissionsList(farm.farmId), function(m)
+				return m.status ~= AbstractMission.STATUS_STOPPED
+				end)
+			local count = table.size(mlist)
+			farm.stats.jobsLeft =  math.max(self.config.hardLimit - count, 0)
+			debugPrint("*BC: farm %s has %d jobs. Limit set to %d", farm.name, count, farm.stats.jobsLeft)
 		end
 	end
+end
+function BetterContracts:onPeriodChanged()
+	-- reset monthly limit for all farms:
+	if self.config.hardLimit > -1 then 
+		self:resetJobsLeft()
+	end
+
+	if g_server == nil then return end 
+	
+	self.NPCAllowWork = false  	-- prevent any NPC field work at start of month
 
 	-- hard mode: cancel any active field missions
 	if self.config.hardMode and self.config.hardExpire == SC.MONTH then  

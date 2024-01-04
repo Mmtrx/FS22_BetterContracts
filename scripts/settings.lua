@@ -11,6 +11,7 @@
 --  v1.2.7.9	03.05.2023	more values discPerJob, discMaxJobs
 --  v1.2.8.3	10.10.2023	force plow after root crop harvest. Insta-ferment separate setting (#158)
 --	v1.2.8.7 	03.12.2023	new setting "hardLimit": limit jobs per farm and month (#168)
+--							new setting "multRewardMow" for baling contracts (#199)
 --=======================================================================================================
 local function lazyNPCDisabled()
 	return not BetterContracts.config.lazyNPC
@@ -210,6 +211,16 @@ BCSettingsBySubtitle = {
 		title = "bc_hardLimit",
 		tooltip = "bc_hardLimit_tooltip",
 		isDisabledFunc = hardDisabled,
+		actionFunc = function(self,ix) 
+			-- set stats.jobsLeft for all farms
+			if ix == 1 then 		-- reset to no limit
+				for _, farm in pairs(g_farmManager:getFarms()) do
+					farm.stats.jobsLeft = -1
+				end
+			else
+				BetterContracts:resetJobsLeft()
+			end
+			end,
 		noTranslate = true
 			},
 		},
