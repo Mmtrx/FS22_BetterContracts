@@ -67,6 +67,7 @@
 --  v1.2.8.6	12.10.2023	add bcPrintVehicles console command. Fix farmlandManagerSaveToXMLFile() (#169)
 --	v1.2.8.7 	02.12.2023	npc should not work before noon of first day in month (#187)
 --							new setting "hardLimit": limit jobs per farm and month (#168)
+--							new setting "multRewardMow" for baling contracts (#199)
 --=======================================================================================================
 SC = {
 	FERTILIZER = 1, -- prices index
