@@ -69,10 +69,6 @@
 		<text name="bc_settingsPage_title" text="Contract Settings" />
 
 		<text name="bc_baseSettings" text="Base Settings" />
-		<text name="bc_rewardMultiplier" text="Reward" />
-		<text name="bc_rewardMultiplier_tooltip" text="Adjust the rewards for contracts offered." />
-		<text name="bc_rewardMultiplierMow" text="Mow and bale reward" />
-		<text name="bc_rewardMultiplierMow_tooltip" text="Adjust the mow and bale rewards for contracts offered." />
 		<text name="bc_leaseMultiplier" text="Lease Cost" />
 		<text name="bc_leaseMultiplier_tooltip" text="Adjust the cost for borrowing equipment for contracts." />
 		<text name="bc_maxActive" text="Concurrently active contracts" />
@@ -88,6 +84,26 @@
 		<text name="bc_forcePlow_tooltip" text="Every harvest of corn/ potato/ sugarbeet requires subsequent plowing." />
 		<text name="bc_debug" text="Debug Mode" />
 		<text name="bc_debug_tooltip" text="Prints info messages to the log if active. Can help to find bugs." />
+
+		<text name="bc_rewardSettings" text="Reward settings" />
+		<text name="bc_rewardMultiplier_mowBale" text="Mow and bale" />
+		<text name="bc_rewardMultiplier_mowBale_tooltip" text="Adjust the mow and bale rewards for contracts offered." />
+		<text name="bc_rewardMultiplier_plow" text="Plow" />
+		<text name="bc_rewardMultiplier_plow_tooltip" text="Adjust the plow rewards for contracts offered." />
+		<text name="bc_rewardMultiplier_cultivate" text="Cultivate" />
+		<text name="bc_rewardMultiplier_cultivate_tooltip" text="Adjust the cultivate rewards for contracts offered." />
+		<text name="bc_rewardMultiplier_sow" text="Sow" />
+		<text name="bc_rewardMultiplier_sow_tooltip" text="Adjust the sow rewards for contracts offered." />
+		<text name="bc_rewardMultiplier_harvest" text="Harvest" />
+		<text name="bc_rewardMultiplier_harvest_tooltip" text="Adjust the harvest rewards for contracts offered." />
+		<text name="bc_rewardMultiplier_weed" text="Weed" />
+		<text name="bc_rewardMultiplier_weed_tooltip" text="Adjust the weed rewards for contracts offered." />
+		<text name="bc_rewardMultiplier_spray" text="Spray" />
+		<text name="bc_rewardMultiplier_spray_tooltip" text="Adjust the spray rewards for contracts offered." />
+		<text name="bc_rewardMultiplier_fertilize" text="Fertilize" />
+		<text name="bc_rewardMultiplier_fertilize_tooltip" text="Adjust the fertilize rewards for contracts offered." />
+		<text name="bc_rewardMultiplier_others" text="Others" />
+		<text name="bc_rewardMultiplier_others_tooltip" text="Adjust the other rewards for contracts offered." />
 
 		<text name="bc_lazyNPC" text="Lazy Farmers" />
 
