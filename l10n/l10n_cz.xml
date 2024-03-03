@@ -29,7 +29,7 @@
 		<text name="bc_harvest" text="Skliz. " />
 		<text name="bc_leased" text="/ Nájem " />
 		<text name="bc_enoughMissions" text="Vaše farma již má maximální počet zakázek." />
-		<text name="bc_monthlyLimit" text="Your farm has reached the maximum number of contracts for this month." />
+		<text name="bc_monthlyLimit" text="Vaše farma dosáhla maximálního počtu zakázek pro tento měsíc." />
 		
 		<text name="SC_widhei" text="Max šířka/délka:" />
 		<text name="SC_worktim" text="Předpokládaný čas:" />
@@ -71,8 +71,8 @@
 		<text name="bc_baseSettings" text="Základní nastavení" />
 		<text name="bc_rewardMultiplier" text="Odměna" />
 		<text name="bc_rewardMultiplier_tooltip" text="Upravte odměny za nabízené zakázky." />
-		<text name="bc_rewardMultiplierMow" text="Mow and bale reward" />
-		<text name="bc_rewardMultiplierMow_tooltip" text="Adjust the mow and bale rewards for contracts offered." />
+		<text name="bc_rewardMultiplierMow" text="Odměna za sekání a lisování" />
+		<text name="bc_rewardMultiplierMow_tooltip" text="Upravte odměny za sekání a lisování balíků podle nabízených zakázek." />
 		<text name="bc_leaseMultiplier" text="Náklady na pronájem" />
 		<text name="bc_leaseMultiplier_tooltip" text="Upravte náklady na zapůjčení vybavení pro zakázky." />
 		<text name="bc_maxActive" text="Souběžně aktivní zakázky" />
@@ -106,6 +106,8 @@
 		<text name="bc_hardLease_tooltip" text="Počet úspěšných prací pro NPC farmáře, než vám půjčí své vybavení." />
 		<text name="bc_hardExpire" text="Uzávěrka" />
 		<text name="bc_hardExpire_tooltip" text="Na konci kterého časového období musí být dokončeny všechny aktivní zakázky." />
+		<text name="bc_hardLimit" text="Zakázky za měsíc" />
+		<text name="bc_hardLimit_tooltip" text="Maximální počet zakázek, které lze přijmout během jednoho měsíce. (-1: bez omezení, 0: žádné smlouvy)" />
 
 		<text name="bc_discountMode" text="Sleva na nákup polí" />
 		<text name="bc_discountMode_tooltip" text="Pokud je aktivní, NPC farmář poskytuje slevu na nákupy zemědělské půdy. Sleva se zvyšuje s počtem dokončených zakázek pro tohoto farmáře." />
