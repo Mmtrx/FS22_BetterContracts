@@ -24,7 +24,7 @@
 		<text name="bc_discValue" text="%s предоставляет вам скидку %d %% на будущую покупку участка." />
 
 		<!-- Display texts -->
-		<text name="bc_chaff" text="Скошено %s" />
+		<text name="bc_chaff" text="Скосить %s" />
 		<text name="bc_jobType_chaff" text="Заготовка корма" />
 		<text name="bc_harvest" text="Собр. " />
 		<text name="bc_leased" text="/Аренд. техника " />
