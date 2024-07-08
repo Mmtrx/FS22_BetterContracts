@@ -20,7 +20,7 @@
 		<text name="bc_leased" text="/ Wynajęte  " />
 		<text name="bc_enoughMissions" text="Twój gospodarstwo osiągnęło już maksymalną liczbę kontraktów." />
 		<text name="bc_jobsCompleted" text="Zakończone zadania: %d" />
-		<text name="bc_monthlyLimit" text="Your farm has reached the maximum number of contracts for this month." />
+		<text name="bc_monthlyLimit" text="Twoja farma osiągnęła maksymalną ilość kontraktów na ten miesiąc." />
 
 		<!-- Hard mode -->
 		<text name="bc_penalty" text="Kara" />
@@ -73,8 +73,8 @@
 		<text name="bc_baseSettings" text="Podstawowe ustawienia" />
 		<text name="bc_rewardMultiplier" text="Nagroda" />
 		<text name="bc_rewardMultiplier_tooltip" text="Dostosuj nagrody za oferowane umowy." />
-		<text name="bc_rewardMultiplierMow" text="Mow and bale reward" />
-		<text name="bc_rewardMultiplierMow_tooltip" text="Adjust the mow and bale rewards for contracts offered." />
+		<text name="bc_rewardMultiplierMow" text="Nagroda za koszenie i belowanie" />
+		<text name="bc_rewardMultiplierMow_tooltip" text="Dostosuj nagrody za koszenie i belowanie za oferowane umowy." />
 		<text name="bc_leaseMultiplier" text="Koszt wypożyczenia" />
 		<text name="bc_leaseMultiplier_tooltip" text="Dostosuj koszt wypożyczenia sprzętu na potrzeby umów." />
 		<text name="bc_maxActive" text="Liczba jednocześnie aktywnych umów" />
