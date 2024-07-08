@@ -3,8 +3,8 @@
 	<texts>
 		<!-- Keys -->
 		<text name = "input_MENU_EXTRA_3" text = "更好的合同：开启/关闭详情"/>
-		<text name = "input_BC_MTOGGLE" text = "BC: Toggle display of active farm contracts"/>
-		<text name = "bc_actionFerment" text = "Ferment Bale"/>
+		<text name = "input_BC_MTOGGLE" text = "BC: 切换活动农场合同的显示"/>
+		<text name = "bc_actionFerment" text = "青贮捆"/>
 		<!-- Gui Buttons -->
 		<text name="bc_hidden" text="隐藏的：%d" />
 		<text name="bc_other" text="其他" />
@@ -15,12 +15,12 @@
 
 		<!-- Display texts -->
 		<text name="bc_chaff" text="Cut %s" />
-		<text name="bc_jobType_chaff" text="Forage" />
+		<text name="bc_jobType_chaff" text="饲料" />
 		<text name="bc_harvest" text="收割" />
 		<text name="bc_leased" text="/租借" />
 		<text name="bc_enoughMissions" text="你的农场承接的合同已达到最大数量。 " />
 		<text name="bc_jobsCompleted" text="完成的工作：%d" />
-		<text name="bc_monthlyLimit" text="Your farm has reached the maximum number of contracts for this month." />
+		<text name="bc_monthlyLimit" text="您的农场已达到本月的最大合同数。" />
 
 		<!-- Hard mode -->
 		<text name="bc_penalty" text="罚金" />
@@ -55,13 +55,13 @@
 		<text name="SC_timeleft" text="剩余时间：" />
 
 		<!-- progress bars -->
-		<text name="bc_progField" text="Field progress" />
-		<text name="bc_progDeliver" text="Delivery progress" />
+		<text name="bc_progField" text="合同进度" />
+		<text name="bc_progDeliver" text="合同完成进度" />
 
 		<!-- Sort button help text -->
 		<text name="SC_sortCat" text="任务类型" />
-		<text name="SC_sortRev" text="revenue" />
-		<text name="SC_sortNpc" text="farmer" />
+		<text name="SC_sortRev" text="收入" />
+		<text name="SC_sortNpc" text="农户" />
 		<text name="SC_sortProf" text="净利润" />
 		<text name="SC_sortpMin" text="每分钟利润" />
 
@@ -71,22 +71,22 @@
 		<text name="bc_baseSettings" text="基础设置" />
 		<text name="bc_rewardMultiplier" text="奖励" />
 		<text name="bc_rewardMultiplier_tooltip" text="调整合同所提供的奖励。" />
-		<text name="bc_rewardMultiplierMow" text="Mow and bale reward" />
-		<text name="bc_rewardMultiplierMow_tooltip" text="Adjust the mow and bale rewards for contracts offered." />
+		<text name="bc_rewardMultiplierMow" text="割草和扎捆奖励" />
+		<text name="bc_rewardMultiplierMow_tooltip" text="调整所提供合同的割草和捆奖励。" />
 		<text name="bc_leaseMultiplier" text="租借花费" />
 		<text name="bc_leaseMultiplier_tooltip" text="调整合同中租借设备的花费。" />
 		<text name="bc_maxActive" text="同时生效的合同" />
 		<text name="bc_maxActive_tooltip" text="同时生效的合同的最大数量。" />
 		<text name="bc_refreshMP" text="合同权限列表" />
 		<text name="bc_refreshMP_tooltip" text="谁可以在多人游戏中删除/刷新合同。" />
-		<text name="bc_ferment" text="Insta-Fermenting" />
-		<text name="bc_ferment_tooltip" text="Allows player to insta-ferment a wrapped grass bale from the F1 menu." />
-		<text name="bc_forcePlow" text="Root Crop Plowing" />
-		<text name="bc_forcePlow_tooltip" text="Every harvest of corn/ potato/ sugarbeet requires subsequent plowing." />
+		<text name="bc_ferment" text="快速发酵" />
+		<text name="bc_ferment_tooltip" text="允许玩家从F1菜单中安装发酵包好的草捆。" />
+		<text name="bc_forcePlow" text="根茎作物翻耕" />
+		<text name="bc_forcePlow_tooltip" text="每次收获玉米/土豆/甜菜都需要随后翻耕。" />
 		<text name="bc_debug" text="Debug模式" />
 		<text name="bc_debug_tooltip" text="打印信息到日志。可以帮助寻找Bug。" />
 
-		<text name="bc_lazyNPC" text="懒惰的农户" />
+		<text name="bc_lazyNPC" text="勤劳的农户" />
 
 		<text name="bc_mainSwitch" text="开启" />
 		<text name="bc_active" text="开启" />
@@ -114,14 +114,14 @@
 		<text name="bc_discMaxJobs" text="影响折扣的任务数量" />
 		<text name="bc_discMaxJobs_tooltip" text="将会减少最大的折扣，例如：每个合同的折扣为11%，任务的数量为3，则最大折扣为33%。注意：在购买农田时，当前完成的工作数量将被这个值减少。" />
 		
-		<text name="bc_toDeliver" text="Delivery on harvest contracts" />
-		<text name="bc_toDeliverBale" text="Delivery for baling contracts" />
-		<text name="bc_toDeliver_tooltip" text="Percentage of the estimated total yield you must deliver to complete a harvest contract." />
+		<text name="bc_toDeliver" text="收割合同交付" />
+		<text name="bc_toDeliverBale" text="打包合同交付" />
+		<text name="bc_toDeliver_tooltip" text="完成收割合同必须交付的估计总产量的百分比。" />
 		
-		<text name="bc_missionGeneration" text="Contract generation" />
-		<text name="bc_generationInterval" text="Generation Interval" />
-		<text name="bc_generationInterval_tooltip" text="Amount of in-game hours to wait before generating new contracts." />
-		<text name="bc_missionGenPercentage" text="Generation percentage" />
-		<text name="bc_missionGenPercentage_tooltip" text="Percentage of max contracts to be generated each time." />
+		<text name="bc_missionGeneration" text="生成合同" />
+		<text name="bc_generationInterval" text="生成合同的间隔" />
+		<text name="bc_generationInterval_tooltip" text="生成新合同之前需要等待的游戏内小时数。" />
+		<text name="bc_missionGenPercentage" text="发电百分比" />
+		<text name="bc_missionGenPercentage_tooltip" text="每次生成的最大合同百分比。" />
 	</texts>
 </l10n>
