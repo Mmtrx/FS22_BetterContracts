@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<l10n>
+	<texts>
+		<!-- Keys -->
+		<text name = "input_MENU_EXTRA_3" text = "更好的合約：開啟/關閉詳情"/>
+		<text name = "input_BC_MTOGGLE" text = "BC：切換顯示生效的農場合約"/>
+		<text name = "bc_actionFerment" text = "發酵捆"/>
+		<!-- Gui Buttons -->
+		<text name="bc_hidden" text="已隱藏：%d" />
+		<text name="bc_other" text="其他" />
+		<text name="bc_new_contracts" text="新合約" />
+		<text name="bc_clear_contracts" text="清除合約" />
+		<text name="bc_detailsOff" text="關閉詳情" />
+		<text name="bc_detailsOn" text="開啟詳情" />
+
+		<!-- Display texts -->
+		<text name="bc_chaff" text="Cut %s" />
+		<text name="bc_jobType_chaff" text="飼料" />
+		<text name="bc_harvest" text="收割" />
+		<text name="bc_leased" text="/租借" />
+		<text name="bc_enoughMissions" text="你的農場承接的合約已達到最大數量。 " />
+		<text name="bc_jobsCompleted" text="完成的工作： %d" />
+		<text name="bc_monthlyLimit" text="您的農場已達到本月合約數量上限." />
+
+		<!-- Hard mode -->
+		<text name="bc_penalty" text="罰金" />
+		<text name="bc_warnTimeout" text="請在午夜之前完成你的%d個合約，從而避免支付任務失敗導致的罰金。" />
+		<text name="bc_warnCancel" text="合約的罰金將至少為" />
+		<text name="bc_leaseNotEnough" text="在租借機器之前，你需要用你自己的設備再完成%d個任務。" />
+
+		<!-- discount mode -->
+		<text name="bc_maxJobs" text="你的折扣已經達到了最大值：s%。" />
+		<text name="bc_discount" text="（%d%% 折扣）" />
+		<text name="bc_discValue" text="%s 授予您 %d %% 折扣，用於日後購買田地。" />
+		<text name="bc_owner" text="所有者：" />
+
+		<!-- npc details box -->
+		<text name="SC_widhei" text="最大寬度/高度：" />
+		<text name="SC_worktim" text="預計時間：" />
+		<text name="SC_price" text="價格：" />
+		<text name="SC_profpmin" text="每分鐘利潤：" />
+		<text name="SC_sort" text="排序" />
+
+		<text name="SC_field" text="田地%d/%s" />
+		<text name="SC_fillType" text="貨物類型：" />
+		<text name="SC_worked" text="已工作的田地：" />
+		<text name="SC_delivered" text="已運輸：" />
+		<text name="SC_deliver" text="必須運輸：" />
+		<text name="SC_keep" text="可以保留：" />
+		<text name="SC_profit" text="收割利潤：" />
+		<text name="SC_profitSupply" text="利潤：" />
+		<text name="SC_usage" text="用量：" />
+		<text name="SC_cost" text="材料花費：" />
+		<text name="SC_togo" text="未完成：" />
+		<text name="SC_timeleft" text="剩餘時間：" />
+
+		<!-- progress bars -->
+		<text name="bc_progField" text="田地進度" />
+		<text name="bc_progDeliver" text="運送進度" />
+
+		<!-- Sort button help text -->
+		<text name="SC_sortCat" text="任務類型" />
+		<text name="SC_sortRev" text="收入" />
+		<text name="SC_sortNpc" text="農民" />
+		<text name="SC_sortProf" text="淨利" />
+		<text name="SC_sortpMin" text="每分鐘利潤" />
+
+		<!-- Settings Page -->
+		<text name="bc_settingsPage_title" text="合約設置" />
+
+		<text name="bc_baseSettings" text="基礎設置" />
+		<text name="bc_rewardMultiplier" text="獎勵" />
+		<text name="bc_rewardMultiplier_tooltip" text="調整合約所提供的獎勵。" />
+		<text name="bc_rewardMultiplierMow" text="割草和打捆獎勵" />
+		<text name="bc_rewardMultiplierMow_tooltip" text="針對提供的合約調整割草和打捆獎勵。" />
+		<text name="bc_leaseMultiplier" text="租借花費" />
+		<text name="bc_leaseMultiplier_tooltip" text="調整合約中租借設備的花費。" />
+		<text name="bc_maxActive" text="同時生效的合約" />
+		<text name="bc_maxActive_tooltip" text="同時生效的最大合約數。" />
+		<text name="bc_refreshMP" text="合約權限列表" />
+		<text name="bc_refreshMP_tooltip" text="誰可以在多人遊戲中刪除/刷新合約。" />
+		<text name="bc_ferment" text="立即發酵" />
+		<text name="bc_ferment_tooltip" text="讓玩家從 F1 選單中對打包好的草捆立即進行發酵。" />
+		<text name="bc_forcePlow" text="根莖作物耕作" />
+		<text name="bc_forcePlow_tooltip" text="每次收穫玉米/馬鈴薯/甜菜後，都需要進行後續耕作。" />
+		<text name="bc_debug" text="Debug模式" />
+		<text name="bc_debug_tooltip" text="如果啟動，會將資訊列印到日誌。有助於找出錯誤。" />
+
+		<text name="bc_lazyNPC" text="懶惰的農民" />
+
+		<text name="bc_mainSwitch" text="開啟" />
+		<text name="bc_active" text="開啟" />
+		<text name="bc_lazyNPC_tooltip" text="如果開啟, 農民NPC會更加頻繁地跳過他們的田地工作，因此可以提供更多的合約。" />
+		<text name="bc_lazyNPCHarvest_tooltip" text="如果開啟, 農民NPC從來不進行收割。將會為你產生大量的工作。" />
+		<text name="bc_lazyNPCSow_tooltip" text="如果開啟, 農民NPC將會很少進行播種工作，反而向你提供合約任務。" />
+		<text name="bc_lazyNPCPlow" text="犁地和耕田" />
+		<text name="bc_lazyNPCPlow_tooltip" text="如果開啟，農民NPC將更少地自己犁地或耕田。" />
+		<text name="bc_lazyNPCFertilize_tooltip" text="如果開啟，農民NPC將會很少進行施肥工作，反而向你提供合約任務。" />
+		<text name="bc_lazyNPCWeed_tooltip" text="如果開啟，農民NPC將會很少進行除草，反而向你提供噴灑除草劑和除草合約任務。" />
+
+		<text name="bc_hardMode" text="更高難度" />
+		<text name="bc_hardMode_tooltip" text="如果開啟，所有生效的合約最遲必須在月底完成。取消合約需要支付罰金。租借設備只有在完成一定的任務後才解鎖。" />
+		<text name="bc_hardPenalty" text="罰金" />
+		<text name="bc_hardPenalty_tooltip" text="取消合約的罰金總額（占合約報酬的百分比）。" />
+		<text name="bc_hardLease" text="解鎖設備租借" />
+		<text name="bc_hardLease_tooltip" text="在農民NPC租借他們的設備給你之前，你需要完成的任務數量。" />
+		<text name="bc_hardExpire" text="最後期限" />
+		<text name="bc_hardExpire_tooltip" text="在什麽時候截止，所有生效的合約必須被完成。" />
+		<text name="bc_hardLimit" text="每月合約數" />
+		<text name="bc_hardLimit_tooltip" text="一個月內可以接受的最大合約數。 （-1：無限制，0：無合約）" />
+
+		<text name="bc_discountMode" text="田地購買折扣" />
+		<text name="bc_discountMode_tooltip" text="如果開啟，一個農民NPC將會給你田地購買的折扣。折扣將會隨著你為該農民NPC完成的任務數量增加。" />
+		<text name="bc_discPerJob" text="每個已完成合約的折扣" />
+		<text name="bc_discPerJob_tooltip" text="每完成一項任務，農民NPC就會增加相應的折扣。最高折扣不能超過50%。" />
+		<text name="bc_discMaxJobs" text="影響折扣的任務數量" />
+		<text name="bc_discMaxJobs_tooltip" text="可以降低的最大折扣，例如：每個合約折扣 = 11%，工作數量 = 3 -> 最大折扣 = 33%。注意： 在購買田地時，目前已完成的工作數量將會減少此值。" />
+		
+		<text name="bc_toDeliver" text="收穫合約交付" />
+		<text name="bc_toDeliverBale" text="打包合約交付" />
+		<text name="bc_toDeliver_tooltip" text="完成收穫合約所需交付的預計總產量的百分比。" />
+		
+		<text name="bc_missionGeneration" text="合約生成" />
+		<text name="bc_generationInterval" text="產生間隔" />
+		<text name="bc_generationInterval_tooltip" text="產生新合約之前需要等待的遊戲時間。" />
+		<text name="bc_missionGenPercentage" text="產生百分比" />
+		<text name="bc_missionGenPercentage_tooltip" text="每次產生最大合約的百分比。" />
+	</texts>
+</l10n>
