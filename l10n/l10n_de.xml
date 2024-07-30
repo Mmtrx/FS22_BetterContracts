@@ -14,6 +14,8 @@
 		<text name="bc_detailsOn" text="Details an" />
 
 		<!-- Display texts --> 
+		<text name="bc_mowed" text="Gemäht:" />
+		<text name="bc_tomow" text="Zu mähen:" />
 		<text name="bc_chaff" text="Häcksle %s" />
 		<text name="bc_jobType_chaff" text="Häckseln" />
 		<text name="bc_harvest" text="Ernte %s" />

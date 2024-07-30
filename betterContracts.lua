@@ -68,6 +68,7 @@
 --	v1.2.8.7 	02.12.2023	npc should not work before noon of first day in month (#187)
 --							new setting "hardLimit": limit jobs per farm and month (#168)
 --							new setting "multRewardMow" for baling contracts (#199)
+--	v1.2.8.8 	08.07.2024	compatibility with FS22_KommunalServices (#233)
 --=======================================================================================================
 SC = {
 	FERTILIZER = 1, -- prices index
@@ -177,6 +178,9 @@ function catMissionTypes(self)
 	addMapping("roll","helpLine_ImproveYield_Rolling", SC.SIMPLE) 		-- roller mission by tn4799
 	addMapping("lime","helpLine_ImproveYield_Liming", SC.SPREAD) 		-- lime mission by Mmtrx
 	addMapping("chaff","bc_jobType_chaff", SC.HARVEST) 					-- chaff mission by Mmtrx
+	if self.kommunal then 
+		addMapping("kommunal","fieldJob_jobType_kommunal", SC.OTHER) 	-- kommunal mission by SMI modding
+	end
 	for _, missionType in pairs(g_missionManager.missionTypes) do
 		if self.typeToCat[missionType.typeId] == nil then
 			addMapping(missionType.name, SC.OTHER) -- default category for not registered mission types
@@ -197,6 +201,7 @@ function checkOtherMods(self)
 		FS22_TransportMissions = "transportMission",
 		FS22_LimeMission = "limeMission",
 		FS22_MaizePlus = "maizePlus",
+		FS22_KommunalServices = "kommunal",
 		}
 	for mod, switch in pairs(mods) do
 		if g_modIsLoaded[mod] then
@@ -510,8 +515,8 @@ function BetterContracts:initialize()
 		weed = 0.9,
 		lime = 0.9
 	}
-	catMissionTypes(self) 		-- init self.typeToCat[]
 	checkOtherMods(self)
+	catMissionTypes(self) 		-- init self.typeToCat[]
 	registerXML(self) 			-- register xml: self.xmlSchema
 
 	-- to show our ingame menu settings page when admin logs in:

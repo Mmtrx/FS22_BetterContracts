@@ -24,9 +24,11 @@
 		<text name="bc_discValue" text="%s grants you %d %% discount for future field purchases." />
 
 		<!-- Display texts -->
+		<text name="bc_mowed" text="Mowed:" />
+		<text name="bc_tomow" text="To mow:" />
 		<text name="bc_chaff" text="Hachez %s" />
 		<text name="bc_jobType_chaff" text="Hacheuse" />
-		<text name="bc_harvest" text="Réco. " />
+		<text name="bc_harvest" text="Réco. %s" />
 		<text name="bc_leased" text="/ Leased " />
 		<text name="bc_enoughMissions" text="Votre ferme a déjà maximum des contrats actifs." />
 		<text name="bc_monthlyLimit" text="Your farm has reached the maximum number of contracts for this month." />

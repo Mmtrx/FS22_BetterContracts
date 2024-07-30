@@ -14,6 +14,8 @@
 		<text name="bc_detailsOn" text="Szczegóły wł." />
 
 		<!-- Display texts -->
+		<text name="bc_mowed" text="Mowed:" />
+		<text name="bc_tomow" text="To mow:" />
 		<text name="bc_chaff" text="Zetnij %s" />
 		<text name="bc_jobType_chaff" text="Sieczka qq" />
 		<text name="bc_harvest" text="Zbiór %s" />

@@ -23,9 +23,11 @@
 		<text name="bc_discount" text=" (%d%% desconto)" />
 		<text name="bc_discValue" text="%s concede a você %d %% desconto para futuras compras de campo." />		
 		<!-- Display texts -->
+		<text name="bc_mowed" text="Mowed:" />
+		<text name="bc_tomow" text="To mow:" />
 		<text name="bc_chaff" text="Cut %s" />
 		<text name="bc_jobType_chaff" text="Forage" />
-		<text name="bc_harvest" text="Colheita de:" />
+		<text name="bc_harvest" text="Colheita de %s:" />
 		<text name="bc_leased" text="Alugado " />
 		<text name="bc_enoughMissions" text="Sua fazenda já tem o número máximo de contratos." />
 		<text name="bc_monthlyLimit" text="Your farm has reached the maximum number of contracts for this month." />

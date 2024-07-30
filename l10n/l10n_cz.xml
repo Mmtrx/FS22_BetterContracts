@@ -24,9 +24,11 @@
 		<text name="bc_discValue" text="%s vám poskytne %d %% slevu na budoucí nákupy polí." />
 
 		<!-- Display texts -->
+		<text name="bc_mowed" text="Mowed:" />
+		<text name="bc_tomow" text="To mow:" />
 		<text name="bc_chaff" text="Řezání %s" />
 		<text name="bc_jobType_chaff" text="Řezanka" />
-		<text name="bc_harvest" text="Skliz. " />
+		<text name="bc_harvest" text="Skliz. %s" />
 		<text name="bc_leased" text="/ Nájem " />
 		<text name="bc_enoughMissions" text="Vaše farma již má maximální počet zakázek." />
 		<text name="bc_monthlyLimit" text="Vaše farma dosáhla maximálního počtu zakázek pro tento měsíc." />

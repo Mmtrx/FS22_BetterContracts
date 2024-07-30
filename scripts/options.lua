@@ -245,6 +245,10 @@ function updateDetails(self, section, index)
 	if contract == nil then return end
 	local mission = contract.mission
 
+	if contract.finished then
+		bc.my.npcbox:setVisible(false)  	-- remove our npcbox
+	end
+
 	-- hard Mode: vehicle lease cost also for canceled mission
 	if bc.config.hardMode and contract.finished and not mission.success then 
 		local lease, penal = 0, 0

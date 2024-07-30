@@ -14,9 +14,11 @@
 		<text name="bc_detailsOn" text="Детали вкл." />
 		
 		<!-- Display texts -->
+		<text name="bc_mowed" text="Mowed:" />
+		<text name="bc_tomow" text="To mow:" />
 		<text name="bc_chaff" text="Скосить %s" />
 		<text name="bc_jobType_chaff" text="Заготовка корма" />
-		<text name="bc_harvest" text="Собр. " />
+		<text name="bc_harvest" text="Собр. %s" />
 		<text name="bc_leased" text="/Аренд. техника " />
 		<text name="bc_enoughMissions" text="Ваша ферма уже имеет максимальное количество контрактов." />
 		<text name="bc_jobsCompleted" text="Выполненные контракты: %d" />

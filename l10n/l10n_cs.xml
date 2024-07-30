@@ -14,9 +14,11 @@
 		<text name="bc_detailsOn" text="开启详情" />
 
 		<!-- Display texts -->
+		<text name="bc_mowed" text="Mowed:" />
+		<text name="bc_tomow" text="To mow:" />
 		<text name="bc_chaff" text="Cut %s" />
 		<text name="bc_jobType_chaff" text="饲料" />
-		<text name="bc_harvest" text="收割" />
+		<text name="bc_harvest" text="收割 %s" />
 		<text name="bc_leased" text="/租借" />
 		<text name="bc_enoughMissions" text="你的农场承接的合同已达到最大数量。 " />
 		<text name="bc_jobsCompleted" text="完成的工作：%d" />

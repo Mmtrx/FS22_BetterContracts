@@ -27,6 +27,7 @@
 --  v1.2.7.5	26.02.2023	display other farms active contracts (MP only)
 --  v1.2.7.6	21.03.2023	format rewd values > 100.000 (issue #113)
 --  v1.2.8.0	03.08.2023	Sort per NPC and contract value
+--	v1.2.8.8 	07.07.2024	compatibility with FS22_KommunalServices (#233)
 --=======================================================================================================
 
 --- Adds a new page to the in game menu.
@@ -112,8 +113,6 @@ function loadGuiFile(self, fname, parent, initial)
 	-- load gui from file, attach to parent, call initial func
 	if fileExists(fname) then
 		xmlFile = loadXMLFile("Temp", fname)
-		local fbox = self.frCon.farmerBox
-		-- load our "npcbox" as child of farmerBox:
 		g_gui:loadGuiRec(xmlFile, "GUI", parent, self.frCon)
 		initial(parent)
 		delete(xmlFile)
@@ -319,7 +318,19 @@ function detailsButtonCallback(inGameMenu)
 	local s, i = frCon.contractsList:getSelectedPath()
 	frCon:updateDetailContents(s, i)
 end
-
+--[[
+function updateDetailContents(self, section, index)
+	-- appended to InGameMenuContractsFrame:updateDetailContents, to set npcbox invisible for finished contracts
+	local contract = nil
+	local sectionContracts = self.sectionContracts[section]
+	if sectionContracts ~= nil then
+		contract = sectionContracts.contracts[index]
+	end
+	if contract ~= nil and contract.finished then
+		BetterContracts.my.npcbox:setVisible(false)
+	end
+end
+]]
 function makeCon(m)
 	local missionInfo = m:getData()
 	return {
@@ -648,7 +659,8 @@ function updateFarmersBox(frCon, field, npc)
 		self.my.line5:setText(g_i18n:getText("SC_price")) 
 		self.my.price:setText(g_i18n:formatMoney(c.price))
         return
-    elseif cat == SC.OTHER then  -- platinum mission types
+    elseif cat == SC.OTHER then  
+    	-- platinum mission types
         self.my.field:setText("")
 		self.my.line5:setText("")
 		self.my.price:setText("")
@@ -656,6 +668,14 @@ function updateFarmersBox(frCon, field, npc)
         self.my.valu4a:setText("")
         self.my.line4b:setText("")
         self.my.valu4b:setText("")
+    	if m.type.name == "kommunal" then 
+			self.my.line4b:setText(g_i18n:getText("bc_tomow"))
+			self.my.valu4b:setText(g_i18n:formatArea((m.area_tot - m.area_trimmed)/1000,3))
+			if cont.active then
+				self.my.line4a:setText(g_i18n:getText("bc_mowed"))
+				self.my.valu4a:setText(g_i18n:formatArea(m.area_trimmed/1000, 3))
+			end
+    	end
 		return
 	end 
 
