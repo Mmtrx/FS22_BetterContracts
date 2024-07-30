@@ -14,6 +14,8 @@
 		<text name="bc_detailsOn" text="開啟詳情" />
 
 		<!-- Display texts -->
+		<text name="bc_mowed" text="已除草：" />
+		<text name="bc_tomow" text="割草：" />
 		<text name="bc_chaff" text="Cut %s" />
 		<text name="bc_jobType_chaff" text="飼料" />
 		<text name="bc_harvest" text="收割" />
@@ -77,6 +79,9 @@
 		<text name="bc_leaseMultiplier_tooltip" text="調整合約中租借設備的花費。" />
 		<text name="bc_maxActive" text="同時生效的合約" />
 		<text name="bc_maxActive_tooltip" text="同時生效的最大合約數。" />
+		<text name="bc_toDeliver" text="收穫合約交付" />
+		<text name="bc_toDeliverBale" text="打包合約交付" />
+		<text name="bc_toDeliver_tooltip" text="完成收穫合約所需交付的預計總產量的百分比。" />
 		<text name="bc_refreshMP" text="合約權限列表" />
 		<text name="bc_refreshMP_tooltip" text="誰可以在多人遊戲中刪除/刷新合約。" />
 		<text name="bc_ferment" text="立即發酵" />
@@ -115,11 +120,7 @@
 		<text name="bc_discPerJob_tooltip" text="每完成一項任務，農民NPC就會增加相應的折扣。最高折扣不能超過50%。" />
 		<text name="bc_discMaxJobs" text="影響折扣的任務數量" />
 		<text name="bc_discMaxJobs_tooltip" text="可以降低的最大折扣，例如：每個合約折扣 = 11%，工作數量 = 3 -> 最大折扣 = 33%。注意： 在購買田地時，目前已完成的工作數量將會減少此值。" />
-		
-		<text name="bc_toDeliver" text="收穫合約交付" />
-		<text name="bc_toDeliverBale" text="打包合約交付" />
-		<text name="bc_toDeliver_tooltip" text="完成收穫合約所需交付的預計總產量的百分比。" />
-		
+				
 		<text name="bc_missionGeneration" text="合約生成" />
 		<text name="bc_generationInterval" text="產生間隔" />
 		<text name="bc_generationInterval_tooltip" text="產生新合約之前需要等待的遊戲時間。" />
