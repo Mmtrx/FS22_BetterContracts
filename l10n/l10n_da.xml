@@ -118,6 +118,8 @@
 		<text name="bc_discPerJob_tooltip" text="En NPC-landmand øger deres rabat med dette beløb pr. udført job. Maksimal rabat må ikke overstige 50 %." />
 		<text name="bc_discMaxJobs" text="Antal rabat-effektive job" />
 		<text name="bc_discMaxJobs_tooltip" text="Kan reducere max rabat, f.eks. rabat pr. kontrakt = 11%, antal job = 3 -> max rabat = 33%. Forsigtig: Det nuværende antal fuldførte job vil falde med denne værdi ved køb af landbrugsjord." />
+		<text name="bc_fieldCompletion" text="Fieldwork complete" />
+		<text name="bc_fieldCompletion_tooltip" text="Min percentage of field area worked, to count as fieldwork complete." />
 			
 		<text name="bc_missionGeneration" text="Kontrakt generering" />
 		<text name="bc_generationInterval" text="Generation Interval" />

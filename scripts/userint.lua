@@ -111,7 +111,7 @@ function BetterContracts:getFromVehicle(cat, m)
 	local vec, con, vtype, wwidth, speed
 	local spr = "n/a" -- sprayer name
 
-	if m.vehiclesToLoad == nil then 
+	if m.vehiclesToLoad == nil or #m.vehiclesToLoad == 0 then 
 		self:warning(1, m.type.name, m.field.fieldId)
 		return false 
 	end

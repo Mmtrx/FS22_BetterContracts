@@ -65,6 +65,13 @@ BCSettingsBySubtitle = {
 		tooltip = "bc_maxActive_tooltip",
 		noTranslate = true
 			},
+		{name = "fieldCompletion", 
+		min = .8, max = .951, increment = .03, unit = true,
+		default = 6,
+		title = "bc_fieldCompletion",
+		tooltip = "bc_fieldCompletion_tooltip",
+		noTranslate = true
+			},
 		{name = "toDeliver", 
 		min = .7, max = .941, increment = .03, unit = true,
 		default = 9,

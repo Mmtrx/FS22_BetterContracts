@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <modDesc descVersion="80">
 	<author>Mmtrx</author>
-	<version>1.2.8.8</version>
+	<version>1.2.8.9</version>
 	<title>
 		<en>Better Contracts</en>
 	</title>
@@ -24,6 +24,9 @@ Disclaimer: All values shown in details display are ESTIMATES. You should not ta
 
 The mod keeps track of the amount of contracts you completed for each of the NPC farmers (number of completed jobs is displayed below the farmers image, if "Details" on). If you enable the optional discount mode or hard mode options (on the mods settings page), the amount of completed jobs influence gameplay.
 
+Changelog v1.2.8.9
+- adjustable field completion factor (#240)
+- compatibility with FS22_Through_The_Years (#238)
 Changelog v1.2.8.8
 - compatibility with FS22_KommunalServices (#233)
 - lazy NPCs should not work before noon of first day in month (#187)
@@ -308,7 +311,7 @@ Registro de alterações v1.2.2.0:
 ]]>
 		</br>
 	</description>
-	<iconFilename>icon.dds</iconFilename>
+	<iconFilename>icon_BetterContracts.dds</iconFilename>
 	<multiplayer supported="true" />
 	<extraSourceFiles>
 		<sourceFile filename="betterContracts.lua" />

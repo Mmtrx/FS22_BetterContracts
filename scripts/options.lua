@@ -94,7 +94,26 @@ function NPCHarvest(self, superf, field, allowUpdates)
 	superf(self, field, allowUpdates)
 end
 
---------------------- reward / lease cost ---------------------------------------------------------------
+--------------------- completion / reward / lease cost --------------------------------------------------
+function getCompletion(self,superf)
+	-- overwrites AbstractFieldMission:getCompletion()
+	local fieldCompletion = self:getFieldCompletion()
+	return fieldCompletion / BetterContracts.config.fieldCompletion 
+end
+function harvestCompletion(self,superf)
+	-- overwrites HarvestMission:getCompletion()
+	local sellCompletion = 
+	 math.min(self.depositedLiters / self.expectedLiters / HarvestMission.SUCCESS_FACTOR, 1)
+	local harvestCompletion = math.min(getCompletion(self), 1)
+	return math.min(1, 0.8 * harvestCompletion + 0.2 * sellCompletion)
+end
+function baleCompletion(self,superf)
+	-- overwrites BaleMission:getCompletion()
+	local sellCompletion = 
+	 math.min(self.depositedLiters / self.expectedLiters / BaleMission.FILL_SUCCESS_FACTOR, 1)
+	local harvestCompletion = math.min(getCompletion(self), 1)
+	return math.min(1, 0.2 * harvestCompletion + 0.8 * sellCompletion)
+end
 function getReward(self,superf)
 	-- overwrites AbstractFieldMission:getReward()
 	if self.type.name == "mow_bale" then

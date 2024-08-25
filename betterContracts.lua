@@ -69,6 +69,7 @@
 --							new setting "hardLimit": limit jobs per farm and month (#168)
 --							new setting "multRewardMow" for baling contracts (#199)
 --	v1.2.8.8 	08.07.2024	compatibility with FS22_KommunalServices (#233)
+--	v1.2.8.9 	12.08.2024	AbstractMission.SUCCESS_FACTOR adjustable
 --=======================================================================================================
 SC = {
 	FERTILIZER = 1, -- prices index
@@ -225,6 +226,8 @@ function registerXML(self)
 	self.xmlSchema:register(XMLValueType.FLOAT, self.baseXmlKey.."#rewardMow")
 	self.xmlSchema:register(XMLValueType.FLOAT, self.baseXmlKey.."#lease")
 	self.xmlSchema:register(XMLValueType.FLOAT, self.baseXmlKey.."#deliver")
+	self.xmlSchema:register(XMLValueType.FLOAT, self.baseXmlKey.."#deliverBale")
+	self.xmlSchema:register(XMLValueType.FLOAT, self.baseXmlKey.."#fieldCompletion")
 
 	local key = self.baseXmlKey..".lazyNPC"
 	self.xmlSchema:register(XMLValueType.BOOL, key.."#harvest")
@@ -265,7 +268,8 @@ function readconfig(self)
 		self.config.multRewardMow = xmlFile:getValue(key.."#rewardMow", 1.)
 		self.config.multLease = xmlFile:getValue(key.."#lease", 1.)
 		self.config.toDeliver = xmlFile:getValue(key.."#deliver", 0.94)
-		self.config.toDeliverBale = xmlFile:getValue(key.."#deliver", 0.90)
+		self.config.toDeliverBale = xmlFile:getValue(key.."#deliverBale", 0.90)
+		self.config.fieldCompletion = xmlFile:getValue(key.."#fieldCompletion", 0.95)
 		self.config.refreshMP =	xmlFile:getValue(key.."#refreshMP", 2)		
 		self.config.lazyNPC = 	xmlFile:getValue(key.."#lazyNPC", false)
 		self.config.hardMode = 	xmlFile:getValue(key.."#hard", false)
@@ -449,7 +453,8 @@ function BetterContracts:initialize()
 		multRewardMow = 1.,   		-- mow reward multiplier
 		multLease = 1.,				-- general lease cost multiplier
 		toDeliver = 0.94,			-- HarvestMission.SUCCESS_FACTOR
-		toDeliverBale = 0.90,		-- BaleMission.SUCCESS_FACTOR
+		toDeliverBale = 0.90,		-- BaleMission.FILL_SUCCESS_FACTOR
+		fieldCompletion = 0.95,		-- AbstractMission.SUCCESS_FACTOR
 		generationInterval = 1, 	-- MissionManager.MISSION_GENERATION_INTERVAL
 		missionGenPercentage = 0.2, -- percent of missions to be generated (default: 20%)
 		refreshMP = SC.ADMIN, 		-- necessary permission to refresh contract list (MP)
@@ -547,7 +552,10 @@ function BetterContracts:initialize()
 	Utility.appendedFunction(Farm,"readStream",farmRead)
 	Utility.overwrittenFunction(FarmlandManager, "saveToXMLFile", farmlandManagerSaveToXMLFile)
 
-	-- to adjust contracts reward / vehicle lease values:
+	-- to adjust contracts field compl / reward / vehicle lease values:
+	Utility.overwrittenFunction(AbstractFieldMission,"getCompletion",getCompletion)
+	Utility.overwrittenFunction(HarvestMission,"getCompletion",harvestCompletion)
+	Utility.overwrittenFunction(BaleMission,"getCompletion",baleCompletion)
 	Utility.overwrittenFunction(AbstractFieldMission,"getReward",getReward)
 	Utility.overwrittenFunction(AbstractFieldMission,"calculateVehicleUseCost",calcLeaseCost)
 
@@ -650,7 +658,7 @@ function BetterContracts:onPostLoadMap(mapNode, mapFile)
 		addConsoleCommand("gsMissionHarvestField", "Harvest a field and print the liters", "consoleHarvestField", g_missionManager)
 		addConsoleCommand("gsMissionTestHarvests", "Run an expansive tests for harvest missions", "consoleHarvestTests", g_missionManager)
 	end
-	-- init Harvest SUCCESS_FACTORs (std is harv = .93, bale = .9)
+	-- init Harvest SUCCESS_FACTORs (std is harv = .93, bale = .9, abstract = .95)
 	HarvestMission.SUCCESS_FACTOR = self.config.toDeliver
 	BaleMission.FILL_SUCCESS_FACTOR = self.config.toDeliverBale 
 
@@ -723,6 +731,7 @@ function BetterContracts:onPostSaveSavegame(saveDir, savegameIndex)
 	xmlFile:setFloat( key.."#lease", 		  conf.multLease)
 	xmlFile:setFloat( key.."#deliver", 		  conf.toDeliver)
 	xmlFile:setFloat( key.."#deliverBale", 	  conf.toDeliverBale)
+	xmlFile:setFloat( key.."#fieldCompletion",conf.fieldCompletion)
 	xmlFile:setInt  ( key.."#refreshMP",	  conf.refreshMP)
 	xmlFile:setBool ( key.."#lazyNPC", 		  conf.lazyNPC)
 	xmlFile:setBool ( key.."#discount", 	  conf.discountMode)

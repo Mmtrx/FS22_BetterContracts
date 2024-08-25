@@ -120,6 +120,8 @@
 		<text name="bc_toDeliver" text="Dostawa przy umowach o zbiór" />
 		<text name="bc_toDeliverBale" text="Dostawa przy umowach związanych z belowaniem" />
 		<text name="bc_toDeliver_tooltip" text="Procent oszacowanego całkowitego plonu, który musisz dostarczyć, aby zakończyć umowę na zbiór." />
+		<text name="bc_fieldCompletion" text="Fieldwork complete" />
+		<text name="bc_fieldCompletion_tooltip" text="Min percentage of field area worked, to count as fieldwork complete." />
 		
 		<text name="bc_missionGeneration" text="Generowanie umów" />
 		<text name="bc_generationInterval" text="Interwał generacji" />

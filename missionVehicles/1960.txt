@@ -1,0 +1,180 @@
+---------------- 1960 - 1969 -------------------------------------
+<!-- tractor --> 
+MF
+			<vehicle filename="MF100series3cyl.xml" requiredMod="FS22_MasseyFerguson_SmallClassics"> <!-- tractor -->
+        		<configuration name="attacherJoint" id="3"/>
+        		<configuration name="vehicleType" id="2"/>
+        		<configuration name="design" id="2"/>
+        		<configuration name="motor" id="18"/>
+			</vehicle>
+JohnDeere 
+			<vehicle filename="series710.xml" requiredMod="FS22_johnDeereSeries710"/> <!-- tractor -->
+
+			<vehicle filename="JD_EYM_4020.xml" requiredMod="FS22_JohnDeere4020"> <!-- tractor -->
+        		<configuration name="attacherJoint" id="2"/>
+        		<configuration name="wheel" id="3"/>
+        		<configuration name="design" id="4"/>
+        		<configuration name="motor" id="4"/>
+			</vehicle>
+MicroTractor
+			<vehicle filename="Xml/TobataCabra.xml" requiredMod="FS22_Micro_Tractor_Sprayer_Package"> 
+        		<configuration name="motor" id="2"/>
+        		<configuration name="design" id="2"/>
+			</vehicle>
+<!-  trailers _______________________________________________
+Carreta
+			<vehicle filename="XML/CarretaAgricolaTamdem.xml" requiredMod="FS22_Agricultural_Trailer"> <!-- trailer -->
+        		<configuration name="fillUnit" id="4"/>
+        		<configuration name="dischargeable" id="2"/>
+        		<configuration name="design2" id="2"/>
+        		<configuration name="design" id="2"/>
+        		<configuration name="tensionBelts" id="2"/>
+        		<configuration name="fillVolume" id="3"/>
+			</vehicle>
+THK			
+			<vehicle filename="thk5_zsk.xml" requiredMod="FS22_THK5"> 
+        	<configuration name="fillVolume" id="2"/>
+        	<configuration name="trailer" id="2"/>
+        	<configuration name="fillUnit" id="2"/>
+			</vehicle>
+Skoda			
+			<vehicle filename="Liaz.xml" requiredMod="FS22_Liaz_Pack"> 
+        		<configuration name="attacherJoint" id="1"/>
+        		<configuration name="rimColor" id="61"/>
+        		<configuration name="baseMaterial" id="15"/>
+        		<configuration name="designMaterial2" id="15"/>
+			</vehicle>
+			<vehicle filename="Korba.xml" requiredMod="FS22_706MT_Pack"/> 
+<!-  plows     _______________________________________________
+Unia PZ525
+			<vehicle filename="Pz525.xml" requiredMod="FS22_Unia_PZ_pack"> 
+        		<configuration name="vehicleType" id="3"/>
+			</vehicle>
+Lemken D24
+			<vehicle filename="Lemken.xml" requiredMod="FS22_Lemken_d24"> 
+        		<configuration name="baseMaterial" id="79"/>
+			</vehicle>
+<!-  cultivators______________________________________________
+Lizard Egge
+			<vehicle filename="brony.xml" requiredMod="FS22_lizardHarrows5"> 
+       			<configuration name="design" id="2"/>
+       			<configuration name="design2" id="2"/>
+			</vehicle>
+Sam 3m
+			<vehicle filename="sam.xml" requiredMod="FS22_Sam3M"/> 
+International
+			<vehicle filename="i37.xml" requiredMod="FS22_International_37"/> 
+Fortschritt
+			<vehicle filename="Fortschritt_B391_cu.xml" requiredMod="FS22_Fortschritt_T890_Pack"> 
+        		<configuration name="design" id="2"/>
+			</vehicle>
+<!-  seeders _________________________________________________
+Isaria
+			<vehicle filename="Isaria6000S.xml" requiredMod="FS22_Isaria6000S"/> 
+			
+Lzard TR500
+			<vehicle filename="DistribuidorDeSementes.xml" requiredMod="FS22_LizardTR500"/> 
+			
+Micro
+			<vehicle filename="Xml/DistribuidorDeSementes.xml" requiredMod="FS22_Micro_Tractor_Sprayer_Package"/> 
+			
+<!-  planter  _________________________________________________
+Cyclo
+			<vehicle filename="IH800CycloEYM.xml" requiredMod="FS22_IH_CycloEYM800_4Row"/> 
+
+<!-  fertilizer _________________________________________________
+Kos
+			<vehicle filename="N015.xml" requiredMod="FS22_KOS_N015"/> 
+Lizard
+			<vehicle filename="Lizard330.xml" requiredMod="FS22_Lizard_Spreader"/> 
+Gülle
+			<vehicle filename="zjv_manure.xml" requiredMod="FS22_zjv"/> 
+Miststreuer
+			<vehicle filename="N235.xml" requiredMod="FS22_FMR_N235"> 
+        		<configuration name="vehicleType" id="4"/>
+        		<configuration name="powerConsumer" id="2"/>
+        		<configuration name="trailer" id="3"/>
+        		<configuration name="inputAttacherJoint" id="2"/>
+        		<configuration name="fillVolume" id="4"/>
+        		<configuration name="fillUnit" id="2"/>
+			</vehicle>
+<!-  striegel _________________________________________________
+Fortschritt
+			<vehicle filename="Fortschritt_B391.xml" requiredMod="FS22_Fortschritt_T890_Pack"> <!-- weeder -->
+        		<configuration name="design" id="2"/>
+        		<configuration name="baseMaterial" id="3"/>
+			</vehicle>
+Betonwalze
+			<vehicle filename="cr290.xml" requiredMod="FS22_concreteRolls"/> 
+			
+<!-  sprayer _________________________________________________
+JD 250
+			<vehicle filename="johnDeere250_sprayer.xml" requiredMod="FS22_JohnDeere_250_Sprayer"> 
+        		<configuration name="design" id="2"/>
+        		<configuration name="baseMaterial" id="3"/>
+			</vehicle>
+<!-  roller _________________________________________________
+LH5 schwere Wiesenwalze
+			<vehicle filename="xml/LVH5.xml" requiredMod="FS22_LizardLVrollers"> 
+        		<configuration name="baseMaterial" id="5"/>
+        		<configuration name="designMaterial" id="46"/>
+        		<configuration name="folding" id="2"/>
+        		<configuration name="design" id="4"/>
+			</vehicle>
+Lizard
+			<vehicle filename="Lizard_RingRoller_4000_Old.xml" requiredMod="FS22_Lizard_RingRoller_pack"/> 
+			
+<!-  combine _________________________________________________
+MF
+			<vehicle filename="mf87.xml" requiredMod="FS22_MF87"> 
+		        <configuration name="design4" id="2"/>
+			</vehicle>
+
+Fahr			
+			<vehicle filename="EYM_FahrM66.xml" requiredMod="FS22_FahrM66"/> <!-- combine -->
+ Header Grain			
+			<vehicle filename="EYM_FahrM66Cutter.xml" requiredMod="FS22_FahrM66"/> 
+ Header Maize			
+			<vehicle filename="EYM_FahrM66CornHeader.xml" requiredMod="FS22_FahrM66"/> 
+Cotton
+			<vehicle filename="$data/vehicles/lizard/module4/module4.xml"/> 
+			<vehicle filename="$data/vehicles/johnDeere/cp690/cp690.xml"/> 
+
+<!-  mower _________________________________________________
+Lizard front
+			<vehicle filename="xml/Front_Hydraulisch.xml" requiredMod="FS22_Lizard_CuttingBars"/> <!-- mower -->
+Lizard heck
+			<vehicle filename="xml/Heck_Butterfly.xml" requiredMod="FS22_Lizard_CuttingBars"/> 
+Fiore
+			<vehicle filename="FBR_FIORE.xml" requiredMod="FS22_Fbr_Fiore_console"> 
+        		<configuration name="folding" id="4"/>
+			</vehicle>
+
+<!-  wender/schwad _________________________________________________
+Vermeer
+			<vehicle filename="td190.xml" requiredMod="FS22_LEM_TD100"/> 
+Schwader
+			<vehicle filename="zgrabiarka_5.xml" requiredMod="FS22_lizardWindrower"/> 
+Ladewagen
+			<vehicle filename="T072.xml" requiredMod="FS22_Lizard_T072"/> 
+
+<!-  Baler    _________________________________________________
+Mascar
+			<vehicle filename="Mascar2120.xml" requiredMod="FS22_Mascar2120"/> 
+			<vehicle filename="przyczepa.xml" requiredMod="FS22_homemadeTrailer"> 
+        		<configuration name="design2" id="2"/>
+			</vehicle>
+			<vehicle filename="elhoJM2.xml" requiredMod="FS22_ElhoJM2"/> 
+Wickler
+			<vehicle filename="$data/vehicles/kuhn/sw4014/sw4014.xml"/> 
+Lader
+			<vehicle filename="$ddata/vehicles/newHolland/l218/l218.xml"/>
+			<vehicle filename="$data/vehicles/paladin/baleSpear/baleSpear.xml"/>
+<!-  Potato    _________________________________________________
+Planter
+			<vehicle filename="planter.xml" requiredMod="FS22_LizardS208"/> 
+Roder
+			<vehicle filename="Akpil_Bulwa_2.xml" requiredMod="FS22_AkpilBulwa"/> 
+Rüben
+			<vehicle filename="sokser.xml" requiredMod="FS22_LizardPHMini"/> 
+-->

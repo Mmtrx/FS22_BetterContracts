@@ -119,6 +119,8 @@
 		<text name="bc_toDeliver" text="收割合同交付" />
 		<text name="bc_toDeliverBale" text="打包合同交付" />
 		<text name="bc_toDeliver_tooltip" text="完成收割合同必须交付的估计总产量的百分比。" />
+		<text name="bc_fieldCompletion" text="Fieldwork complete" />
+		<text name="bc_fieldCompletion_tooltip" text="Min percentage of field area worked, to count as fieldwork complete." />
 		
 		<text name="bc_missionGeneration" text="生成合同" />
 		<text name="bc_generationInterval" text="生成合同的间隔" />
