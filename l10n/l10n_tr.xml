@@ -17,8 +17,8 @@
 		<text name="bc_mowed" text="Biçilen:" />
 		<text name="bc_tomow" text="Biçilecek:" />
 		<text name="bc_chaff" text="Kıyılmış %s" />
-		<text name="bc_jobType_chaff" text="Hayvan Yemi" />
-		<text name="bc_harvest" text="Hasat %s" />
+		<text name="bc_jobType_chaff" text="Yem Hasadı" />
+		<text name="bc_harvest" text="%s Hasadı" />
 		<text name="bc_leased" text="/ Kiralanmış" />
 		<text name="bc_enoughMissions" text="Çiftliğiniz zaten maksimum kontrat sayısına ulaşmış durumda." />
 		<text name="bc_jobsCompleted" text="Tamamlanan işler: %d" />
