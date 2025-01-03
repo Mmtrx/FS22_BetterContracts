@@ -82,6 +82,8 @@
 		<text name="bc_toDeliver" text="Entrega en contratos de cosecha" />
 		<text name="bc_toDeliverBale" text="Entrega para contratos de empacado" />
 		<text name="bc_toDeliver_tooltip" text="Porcentaje del rendimiento total estimado que debe entregar para completar un contrato de cosecha." />
+		<text name="bc_fieldCompletion" text="Trabajo Campo Completado" />
+		<text name="bc_fieldCompletion_tooltip" text="Porcentaje de area mínima tarbajada, cuenta como trabajo completado." />
 		<text name="bc_refreshMP" text="Lista de contratos de autorización" />
 		<text name="bc_refreshMP_tooltip" text="Quien puede borrar/refrescar los contratos en multijugador." />
 		<text name="bc_ferment" text="Fermentación Instantanea" />
