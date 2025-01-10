@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<l10n>
+	<texts>
+		<!-- Keys -->
+		<text name = "input_MENU_EXTRA_3" text = "Better Contracts: Detalles On/Off"/>
+		<text name = "input_BC_MTOGGLE" text = "BC: Ver contratos activos."/>
+		<text name = "bc_actionFerment" text = "Fermentar Paca"/>
+		<!-- Gui Buttons -->
+		<text name="bc_hidden" text="Ocultar: %d" />
+		<text name="bc_other" text="Otro" />
+		<text name="bc_new_contracts" text="Nuevos Contratos" />
+		<text name="bc_clear_contracts" text="Limpair Contratos" />
+		<text name="bc_detailsOff" text="Ocultar Detalles" />
+		<text name="bc_detailsOn" text="Ver Detalles" />
+
+		<!-- Display texts -->
+		<text name="bc_mowed" text="Segado:" />
+		<text name="bc_tomow" text="Por Segar:" />
+		<text name="bc_chaff" text="Cortar %s" />
+		<text name="bc_jobType_chaff" text="Paja Pic." />
+		<text name="bc_harvest" text="Cosec. %s" />
+		<text name="bc_leased" text="/ Alquilado " />
+		<text name="bc_enoughMissions" text="Tu granja tiene actualmente el máximo de contratos permitidos." />
+		<text name="bc_jobsCompleted" text="Trabajos Completados: %d" />
+		<text name="bc_monthlyLimit" text="Tu granja ha rechazado el número máximo de contratos para este mes." />
+
+		<!-- Hard mode -->
+		<text name="bc_penalty" text="Penalización" />
+		<text name="bc_warnTimeout" text="Por favor completa tu contrato(s) %d antes de medianoche, para evitar penalizaciones." />
+		<text name="bc_warnCancel" text=" La penalización será como mínimo de " />
+		<text name="bc_leaseNotEnough" text="Necesitas completar %d trabajos más para %s con tu maquinaria antes de tomar prestada su propia maquinaria." />
+
+		<!-- discount mode -->
+		<text name="bc_maxJobs" text="Has alcanzado el descuento máximo para %s." />
+		<text name="bc_discount" text=" (%d%% descuento)" />
+		<text name="bc_discValue" text="%s le concede %d %% descuento para futuras compras de campos." />
+		<text name="bc_owner" text="Propietario:" />
+
+		<!-- npc details box -->
+		<text name="SC_widhei" text="Max. Ancho/Alto:" />
+		<text name="SC_worktim" text="Tiempo Estimado:" />
+		<text name="SC_price" text="Precio:" />
+		<text name="SC_profpmin" text="Beneficio/min:" />
+		<text name="SC_sort" text="Ordenar" />
+
+		<text name="SC_field" text="Campo %d / %s" />
+		<text name="SC_fillType" text="Tipo de Mercancía:" />
+		<text name="SC_worked" text="Campo Trabajado:" />
+		<text name="SC_delivered" text="Entreagdo:" />
+		<text name="SC_deliver" text="Debe Entregar:" />
+		<text name="SC_keep" text="Puede Quedarse:" />
+		<text name="SC_profit" text="Beneficios de la Cosecha:" />
+		<text name="SC_profitSupply" text="Beneficios:" />
+		<text name="SC_usage" text="Uso:" />
+		<text name="SC_cost" text="Coste de Materiales:" />
+		<text name="SC_togo" text="Por Entregar:" />
+		<text name="SC_timeleft" text="Tiempo Restante:" />
+
+		<!-- progress bars -->
+		<text name="bc_progField" text="Progreso de Campo" />
+		<text name="bc_progDeliver" text="Progreso de Entrega" />
+
+		<!-- Sort button help text -->
+		<text name="SC_sortCat" text="Tipo de Misión" />
+		<text name="SC_sortRev" text="Ingresos" />
+		<text name="SC_sortNpc" text="Granjero" />
+		<text name="SC_sortProf" text="Beneficio Neto" />
+		<text name="SC_sortpMin" text="Beneficio/Min" />
+
+		<!-- Settings Page -->
+		<text name="bc_settingsPage_title" text="Ajustes Contratos" />
+
+		<text name="bc_baseSettings" text="Ajustes Generales" />
+		<text name="bc_rewardMultiplier" text="Recompensa" />
+		<text name="bc_rewardMultiplier_tooltip" text="Ajustar las recompensas de los contratos ofrecidos." />
+		<text name="bc_rewardMultiplierMow" text="Recompensa de segado y empacado" />
+		<text name="bc_rewardMultiplierMow_tooltip" text="Ajuste las recompensas de segado y empacado de los contratos ofrecidos." />
+		<text name="bc_leaseMultiplier" text="Coste de Alquiler" />
+		<text name="bc_leaseMultiplier_tooltip" text="Ajustar el coste del préstamo de equipos para contratos." />
+		<text name="bc_maxActive" text="Contratos activos simultáneamente" />
+		<text name="bc_maxActive_tooltip" text="Número máximo de contratos activos simultáneamente." />
+		<text name="bc_toDeliver" text="Entrega en contratos de cosecha" />
+		<text name="bc_toDeliverBale" text="Entrega para contratos de empacado" />
+		<text name="bc_toDeliver_tooltip" text="Porcentaje del rendimiento total estimado que debe entregar para completar un contrato de cosecha." />
+		<text name="bc_fieldCompletion" text="Trabajo Campo Completado" />
+		<text name="bc_fieldCompletion_tooltip" text="Porcentaje de area mínima tarbajada, cuenta como trabajo completado." />
+		<text name="bc_refreshMP" text="Lista de contratos de autorización" />
+		<text name="bc_refreshMP_tooltip" text="Quien puede borrar/refrescar los contratos en multijugador." />
+		<text name="bc_ferment" text="Fermentación Instantanea" />
+		<text name="bc_ferment_tooltip" text="Permite al jugador fermentación instantanea de una paca de hierba encintada desde el menú de ayuda (F1)."/>
+		<text name="bc_forcePlow" text="Arado de tuberculos" />
+		<text name="bc_forcePlow_tooltip" text="Cada cosecha de maíz, papa o remolacha azucarera requiere un arado posterior." />
+		<text name="bc_debug" text="Debug Mode" />
+		<text name="bc_debug_tooltip" text="Imprime mensajes de información en el registro si está activo. Puede ayudar a encontrar errores." />
+
+		<text name="bc_lazyNPC" text="Agricultores Perezosos" />
+
+		<text name="bc_mainSwitch" text="Activado" />
+		<text name="bc_active" text="Activado" />
+		<text name="bc_lazyNPC_tooltip" text="Si está activo, los agricultores NPC suelen faltar al trabajo en sus campos, por lo que se les pueden ofrecer más contratos." />
+		<text name="bc_lazyNPCHarvest_tooltip" text="Si está activo, los NPC no cosechan todo. Puede resultar demasiado trabajo para usted." />
+		<text name="bc_lazyNPCSow_tooltip" text="Si está activo, los NPC realizan trabajos de siembra con menor frecuencia y los ofrecen como contratos.." />
+		<text name="bc_lazyNPCPlow" text="Arado y Cultivado" />
+		<text name="bc_lazyNPCPlow_tooltip" text="Si está activo, NPC aran o cultivan con menos frecuencia por su cuenta." />
+		<text name="bc_lazyNPCFertilize_tooltip" text="Si está activo, NPC realizan trabajos de fertilización con menos frecuencia y los ofrecen como contratos.." />
+		<text name="bc_lazyNPCWeed_tooltip" text="Si está activo, NPC les importa menos las malas hierbas en sus campos y, en su lugar, ofrecen contratos de fumigación y escardado." />
+
+		<text name="bc_hardMode" text="Mayor Dificultad" />
+		<text name="bc_hardMode_tooltip" text="Si está activo, todos los contratos activos deben completarse a más tardar a fin de mes. La cancelación de un contrato tendrá un coste. El préstamo de equipos contratados solo se desbloquea después de completar algunos trabajos."/>
+		<text name="bc_hardPenalty" text="Penalización" />
+		<text name="bc_hardPenalty_tooltip" text="Importe de la penalización por cancelación del contrato (en % de recompensa del contrato)." />
+		<text name="bc_hardLease" text="Desbloquear equipo de préstamo" />
+		<text name="bc_hardLease_tooltip" text="Número de trabajos exitosos para un NPC, antes de que te presten su equipo." />
+		<text name="bc_hardExpire" text="Fecha límite" />
+		<text name="bc_hardExpire_tooltip" text="Al final de qué período de tiempo se deben completar todos los contratos activos." />
+		<text name="bc_hardLimit" text="Contratos Por Mes" />
+		<text name="bc_hardLimit_tooltip" text="Número máximo de contratos que se pueden aceptar durante un mes. (-1: Sin Límite, 0: Sin Contratos)" />
+
+		<text name="bc_discountMode" text="Descuento por compra de campo" />
+		<text name="bc_discountMode_tooltip" text="Si está activo, un NPC ofrece un descuento en la compra de campos. El descuento aumenta con la cantidad de trabajos completados para este granjero.." />
+		<text name="bc_discPerJob" text="Descuento por contrato completado" />
+		<text name="bc_discPerJob_tooltip" text="Un NPC aumenta su descuento en esta cantidad por cada trabajo completado. El descuento máximo no puede superar 50%." />
+		<text name="bc_discMaxJobs" text="Descuento Efectivo por trabajos." />
+		<text name="bc_discMaxJobs_tooltip" text="Puede reducir el descuento máximo, p.e. descuento por contrato = 11%, número de trabajos = 3 -> max descuento = 33%. Precaución: El número actual de trabajos completados se reducirá en este valor en el caso de la compra de tierras agrícolas." />
+				
+		<text name="bc_missionGeneration" text="Generación de contratos" />
+		<text name="bc_generationInterval" text="Generación de Intervalos" />
+		<text name="bc_generationInterval_tooltip" text="Cantidad de horas de juego que hay que esperar antes de generar nuevos contratos." />
+		<text name="bc_missionGenPercentage" text="Generación de Porcentaje" />
+		<text name="bc_missionGenPercentage_tooltip" text="Porcentaje del máximo de contratos que se generarán cada vez." />
+	</texts>
+</l10n>
