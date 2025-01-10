@@ -14,8 +14,8 @@
 		<text name="bc_detailsOn" text="Детали вкл." />
 		
 		<!-- Display texts -->
-		<text name="bc_mowed" text="Mowed:" />
-		<text name="bc_tomow" text="To mow:" />
+		<text name="bc_mowed" text="Обкошено:" />
+		<text name="bc_tomow" text="Обкосить:" />
 		<text name="bc_chaff" text="Скосить %s" />
 		<text name="bc_jobType_chaff" text="Заготовка корма" />
 		<text name="bc_harvest" text="Собр. %s" />
@@ -45,7 +45,7 @@
 
 		<text name="SC_field" text="Поле %d / %s" />
 		<text name="SC_fillType" text="Тип груза:" />
-		<text name="SC_worked" text="Выполнено:" />
+		<text name="SC_worked" text="Обработано:" />
 		<text name="SC_delivered" text="Доставлено:" />
 		<text name="SC_deliver" text="Требуется доставить:" />
 		<text name="SC_keep" text="Можно оставить:" />
@@ -82,8 +82,8 @@
 		<text name="bc_toDeliver" text="Доставка по контрактам на сбор урожая" />
 		<text name="bc_toDeliverBale" text="Доставка по контрактам на тюкование" />
 		<text name="bc_toDeliver_tooltip" text="Процент от расчётного общего урожая, который вы должны доставить, чтобы выполнить контракт на сбор урожая." />
-		<text name="bc_fieldCompletion" text="Fieldwork complete" />
-		<text name="bc_fieldCompletion_tooltip" text="Min percentage of field area worked, to count as fieldwork complete." />
+		<text name="bc_fieldCompletion" text="Минимальный % обработки поля" />
+		<text name="bc_fieldCompletion_tooltip" text="Минимальный процент обработанной площади поля, который считается завершёнными полевыми работами." />
 		<text name="bc_refreshMP" text="Управляющий контрактами в МП" />
 		<text name="bc_refreshMP_tooltip" text="Кто может удалять/обновлять контракты в сетевой игре." />
 		<text name="bc_ferment" text="Мгновенная ферментация" />
