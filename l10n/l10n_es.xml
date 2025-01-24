@@ -9,7 +9,7 @@
 		<text name="bc_hidden" text="Ocultar: %d" />
 		<text name="bc_other" text="Otro" />
 		<text name="bc_new_contracts" text="Nuevos Contratos" />
-		<text name="bc_clear_contracts" text="Limpair Contratos" />
+		<text name="bc_clear_contracts" text="Limpiar Contratos" />
 		<text name="bc_detailsOff" text="Ocultar Detalles" />
 		<text name="bc_detailsOn" text="Ver Detalles" />
 
